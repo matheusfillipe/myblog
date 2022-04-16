@@ -1,26 +1,22 @@
-/* Light mode */
-:root {
-   --body-bg: #FFFFFF;
-   --body-color: #000000;
+body {
+    --nav-height: 50px;
+    padding-top: var(--nav-height);
+    overflow:auto;
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-   :root {
-       --body-bg: #000000;
-       --body-color: #FFFFFF;
-   }
-}
 
 .orgyeah-header {
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0;
     float:left;
     width: 100%;
     background-color: transparent;
     overflow-y: hidden;
-    }
+    height: var(--nav-height);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+}
 
 .orgyeah-header img {
     padding: 6px 0px;
@@ -46,7 +42,7 @@
     padding: 0px 10px 0px 10px;
 }
 
-body {
-    padding-top: 65px;
-    overflow:auto;
+.nav--hidden {
+  transform: translateY(calc(-1 * var(--nav-height)));
+  box-shadow: none;
 }

@@ -242,7 +242,7 @@ is:
 
 $x_2 - x_1 = \sum_i^N A_i sin(\sqrt{\frac{k}{m}} \ t + t_i)$
 
-What this actually means is that there are multiple
+What this means in the end is that mathematically we could choose infinite constants $A_i$ and $t_i$ we could choose.
 
 
 

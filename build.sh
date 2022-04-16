@@ -49,4 +49,6 @@ gen_indexes
 
 mkdir -p html
 cp style.css html/
+cp script.js html/
+cp -r assets html/
 emacs -Q --script build-site.el

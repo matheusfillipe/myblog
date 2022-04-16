@@ -1,13 +1,34 @@
 #+SETUPFILE: https://gitlab.com/OlMon/org-themes/-/raw/master/src/latexcss/latexcss.theme
 #+HTML_HEAD: <link rel="stylesheet" href="https://latex.now.sh/style.css">
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/style.css" />
+#+HTML_HEAD: <script src="/script.js"></script>
+#+HTML_HEAD: <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+
 #+OPTIONS: toc:nil
 
 #+begin_export html
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@<version>/build/three.module.js"
+    }
+  }
+</script>
+
+<script type="module">
+
+  import * as THREE from 'three';
+
+  const scene = new THREE.Scene();
+
+</script>
+
 <div class="orgyeah-header">
   <div class="topbar-menu-container">
     <span class="topbar-menu"><a class="current" href="/">Home</a></span>
     <span class="topbar-menu"><a class="current" href="/series/index.html">Series</a></span>
   </div>
+</div>
+<div class="parallax">
 </div>
 #+end_export
