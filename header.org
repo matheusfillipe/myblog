@@ -1,0 +1,13 @@
+#+SETUPFILE: https://gitlab.com/OlMon/org-themes/-/raw/master/src/latexcss/latexcss.theme
+#+HTML_HEAD: <link rel="stylesheet" href="https://latex.now.sh/style.css">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/style.css" />
+#+OPTIONS: toc:nil
+
+#+begin_export html
+<div class="orgyeah-header">
+  <div class="topbar-menu-container">
+    <span class="topbar-menu"><a class="current" href="/">Home</a></span>
+    <span class="topbar-menu"><a class="current" href="/series/index.html">Series</a></span>
+  </div>
+</div>
+#+end_export

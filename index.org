@@ -1,0 +1,29 @@
+#+TITLE: Mattf's Blog
+#+DESCRIPTION: mattf.tk
+#+OPTIONS: num:nil ^:{}
+#+INCLUDE: "./header.org"
+
+* Featured
+[[file:series/wave_propagation/1.org][Wave Propagation Part 1]]
+
+* Links
+
+** Contact
+- You might find me on this [[https://mangle.ga/irc][irc]].
+- Or you can also [[mailto:matheusfillipeag@gmail.com][Mail me]].
+
+** Projects
+-  [[https://aur.archlinux.org/packages?K=mattf&SeB=m][AUR Packages]]
+-  [[https://github.com/matheusfillipe/][Github]]
+-  [[https://gitlab.com/matheusfillipeag][Gitlab]]
+-  [[https://github.com/matheusfillipe/dotfiles][Dotfiles]]
+-  [[https://github.com/matheusfillipe/ircbot][Regex IRC async Bot Framework]]
+
+** Telegram Bots
+- [[https://t.me/QuizTriviaBot][Trvia Quiz (multiple subjects using opentrivia API)]]
+- [[https://t.me/dogs_collection_bot][Marco, the dog bot]]
+- [[https://t.me/ircclientbot][Irc Client bot (A telegram->Irc bridge)]]
+
+
+
+#+INCLUDE: "./footer.org" :minlevel 1

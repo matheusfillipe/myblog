@@ -1,0 +1,15 @@
+#+TITLE: Series
+#+DESCRIPTION: Blog
+#+AUTHOR: Matheus Fillipe
+#+DATE: <2022-04-15 Fri>
+#+INCLUDE: "../header.org"
+#+TOC: headlines 4
+
+My plan is to have multiple series in different subjects.
+
+# LIST BEGIN
+- [[file:wave_propagation/index.org][Wave Propagation Part 1]]
+
+# LIST END
+
+#+INCLUDE: "../footer.org" :minlevel 1

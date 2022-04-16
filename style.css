@@ -1,0 +1,52 @@
+/* Light mode */
+:root {
+   --body-bg: #FFFFFF;
+   --body-color: #000000;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+   :root {
+       --body-bg: #000000;
+       --body-color: #FFFFFF;
+   }
+}
+
+.orgyeah-header {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    float:left;
+    width: 100%;
+    background-color: transparent;
+    overflow-y: hidden;
+    }
+
+.orgyeah-header img {
+    padding: 6px 0px;
+}
+.topbar-menu-container {
+    font-size:90%;
+    background-color: #a6a6a6;
+    width: 100%;
+    line-height: 36px;
+    border-top: 2px solid #4d4d4d;
+    border-bottom: 2px solid #4d4d4d;
+    padding-left: 40px;
+    }
+
+.topbar-menu a.current{
+    color: #201;
+    padding-bottom: 0px;
+    text-decoration: none;
+    border-bottom: 4px solid #1678ff;}
+
+.topbar-menu a {
+    color: #d7d7d7;
+    padding: 0px 10px 0px 10px;
+}
+
+body {
+    padding-top: 65px;
+    overflow:auto;
+}

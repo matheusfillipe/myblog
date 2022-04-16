@@ -1,0 +1,287 @@
+#+TITLE: Wave Propagation Part 1
+#+DESCRIPTION: In this series I am going to try to create a simplified model for logitudinal pressure waves propagation on fluids based on the interaction between its particles. Or main goal is to go step by step on the physics behind it, solving problems that gradually increase complexity, to have a theoretical preview of the relationship between the fluid's density and the wave's speed.
+#+AUTHOR: Matheus Fillipe
+#+DATE: <2022-04-15 Fri>
+#+INCLUDE: "../../header.org"
+#+TOC: headlines 4
+
+
+* Introduction
+In this series I am going to try to create a simplified model for longitudinal pressure waves propagation on fluids based on the interaction between its particles. Or main goal is to go step by step on the physics behind it, solving problems that gradually increase complexity, to have a theoretical preview of the relationship between the fluid's density and the wave's speed.
+
+** Disclaimer
+I am nothing but a +failed physicist+ physics enthusiast and the whole reason I am writing is a late attempt on trying keep the memories of some things I studied and don't really use as often as I would like to. Another reason is that I found out this cool thing called Emacs and Org mode that is making be want to go back to university again just because it is so nice to write on it!
+
+I am not an specialist on this subject or in any subject at all and this might be all wrong. It is one of those cases that it is more about the trip then about reaching the proper destiny. If you have any real interest about this subject or any of the subjects treated on this blog and need it for an important application, you arrived on the wrong place.
+
+Still it is not like this is all useless. You might be able to learn one thing or another and correct me, which I expect you to. Just don't expect this series to become source of any concrete scientific information or the models created here to be right. I am just as lost as you while creating this, which might be an advantage too. If I luckily end up with something interesting you have the registry of the full thought process. If I am not and this ends up being a frustrated crazy attempt, walking on circles where I just give up you will at least know exactly how not to think like when trying to solve a problem.
+
+So I am writing this considering that someone else will read even though I am not exactly sure if it would be worth it. You are more than advised that there is no warranty that I am going to reach any conclusion at all with this or I might as well just switch to another problem that I find more interesting and never come back to this again. After all this is all just an experiment. This is nothing but a man trying to see how far he can go without having to research all around and figure out that any idea or problem he comes up with by himself was already solved by someone else before and it is public knowledge.
+
+So I invite you to come and rediscover nature with me.
+
+** Motivation
+We want to create a simplified mathematical model for wave propagation on fluids, longitudinal pressure waves to be more specific. We are specially interested on figuring out the relationship between a fluid's density and the wave propagation speed. We will start from simple problems that we can solve and extend on complexity and on number of dimensions from there.
+
+Pressure waves propagate through the inter molecular repulsion forces, of electrostatic nature, that pull one by one in a chain effect. In real world fluids this is effect happens in some sort of 3D truss structure of interconnected particles, or a cloud, where the wave properly said starts with few particles receiving the initial pull and influencing multiple other neighbor particles and growing in a chain effect. Due to it's electrostatic we can consider classical Coulomb law with the force that decays with the inverse of the squared distance.
+
+However the whole 3D effect would be too complex to begin with and due to that we will approach this in the most simple case. My goal with this series is to first solve this problem for the simplest case which is only the interaction of two particles. Instead of electrostatic forces let's being with a linear force. Lets begin with two masses connected by a spring that obeys Hook's law and then later see how having different potentials (how $F(x)$ looks like) affects this little system.
+
+* Two masses connected by a spring
+Consider two particles with the same mass $m$ floating on space and connected by spring. Lets call them particle 1, on the left side, and particle 2 on the right side. At $t=0$ a third particle with the same mass collides with a speed $v_0$ on the left particle with a velocity vector that aligns perfectly with the other two particles transferring its full momentum to particle 1.
+
+*This is all an excuse to say that:*
+1. The spring starts on its still state, not compressed or stretched.
+2. Particle 1 has an initial velocity $v_0$.
+3. Both particles have the same mass.
+
+This might not be much of a trivial problem as it might seem at first sight. Our goal, to say that we fully solved this problem, is determining the functions of time $x_1(t)$ and $x_2(t)$, which represent the positions of each of the particles over time. Does something smells like system of differential equations?
+
+Before tackling this one lets remember how the classical Harmonic Oscillator works first.
+
+** The Harmonic Oscillator
+When a mass $m$ is attached to a spring with Hook's constant $k$, we can state by definition that the force applied to this mass after the spring is deflected by a distance $x$ is:
+
+$F = ma = -kx$
+
+Which is known as Hook's law, which is combined with Newton's second law there. This just means that the force applied to the object is proportional but with appositive direction of the spring's deflection. For instance if the spring is compressed, x is negative and then the force is positive, otherwise the spring is stretched, x is positive and the force is negative. So the forces varies linearly with x but it is always pointing contrary to it.
+
+On this problem the other side of the spring is attached to a "wall". That simply means that it is an immovable object. So you can see this is an specific cause or at least an approximation of the problem we are trying to solve, where instead of two particles with the same mass we have something more like one particle with mass $m$ and another with something millions of times higher than that, that ends up being the "immovable object", an object of infinite mass at least if compared to the particle's mass.
+
+Similarly to the problem described on the main section, to fully understand what is going on we need to determine $x(t)$, the position by time. We can write the acceleration as the second derivative of time of x:
+
+$m \frac {d^2x}{dt^2} = -kx$
+
+Which is the classical Differential equation of the Harmonic oscillator found on many problems including electronic circuits (RCL) besides this is a specific case of the wave equation which we might actually touch on later.
+
+Anyway solving this (which I don't really remember the exact formal steps to do) is just a matter of asking: "What function derived twice becomes itself?", or minus itself, or... Well $sin$ and $cos$ are good answers.
+
+$x(t) = A\ sin(\sqrt{\frac{k}{m}}\ t + t_1) + B\ cos(\sqrt{\frac{k}{m}}\ t + t_2)$
+
+What we just did there is a linear combination of the two solutions. In ODE's (Ordinary differential equations), you can add up any solutions together to have a new valid solution. $A$ and $B$ are both numerical constants that we can adjust to our boundary conditions. If you try to imagine plotting those functions you will realize that both these terms correspond to the amplitudes of each component.
+
+Another interesting fact is that you can add a phase difference, in this case represented by the constants $t_1$ and $t_2$. You can see that these terms can be there using chain's rule on the first derivative of $x(t)$ they will just disappear. Lets do it just for one of the solutions.
+
+$\frac {dx(t)} {dt} = A\ \frac {d} {d(\sqrt{\frac{k}{m}}\ t + t_1)} (sin(\sqrt{\frac{k}{m}}\ t + t_1)) \ \ \frac {d}{dt}(\sqrt{\frac{k}{m}}\ t + t_1)$
+
+$\frac {dx(t)} {dt} = - \sqrt{\frac{k}{m}} \ A \ cos(\sqrt{\frac{k}{m}}\ t + t_1)$
+
+And you can now easily realize that when you take the second derivative you will be back with $-\frac {k}{m}x$. Also notice that $\frac {dx(t)} {dt}$ is giving us the velocity of the particle at any instant.
+
+One important thing to notice is that the frequency of the oscillation is already determined by the properties of the spring and the mass. In another words the boundary conditions will not affect the frequency of the movement only the amplitude and the phase. Isn't that interesting?
+
+In case you are wondering what the heck is a boundary condition observe that when we formulated this problem we didn't talk about the particle having an initial velocity or position. Even if the spring were on its rest position, this isn't fundamental for throwing in the mechanics of this problem and solving it out, it would be still the same equation. That's where those constants come from, we can now adjust them according to whatever initial conditions we might have.
+
+In the case of the more general problem of the two masses we are trying to solve, one boundary condition is having particle one with a $v_0$ velocity on the beginning. So lets try to generalize on this simple problem saying that the single particle starts at a position $x_0$ and velocity $v_0$. Since this is only two variables let's restrict to the $sin$ solution component only, that has two constants for us to figure out. This means that for $t=0$ we have to make the constants obey the conditions:
+
+1. $x(0) = x_0$
+
+   $A\ sin(\sqrt{\frac{k}{m}}\ 0+ t_0) = x_0$
+
+   $A\ sin(t_0) = x_0 \rightarrow t_0 = asin(x_0/A)$
+
+   For example if $x_0 = 0$:
+
+   $t_0 = n \ \pi$
+
+   Where $n$ can be any integer number but we can simply use 0.
+
+2. $v(0) = v_0$
+
+    $\frac {dx(t)} {dt} = - \sqrt{\frac{k}{m}} \ A \ cos(\sqrt{\frac{k}{m}}\ t + t_1)$
+
+    $\frac {dx} {dt} (0) = - \sqrt{\frac{k}{m}} \ A \ cos(\sqrt{\frac{k}{m}}\ 0 + t_0) = v_0$
+
+    $-\sqrt{\frac{k}{m}} \ A \ cos(t_0) = v_0$
+
+    $A = -\frac{v_0}{cos(t_0)} \sqrt{\frac{m}{k}}$
+
+    for example if $t_0 = 0$ and $v_0 = 1$:
+
+    $A = -\sqrt{\frac{m}{k}}$
+
+So the phase difference depends only of the initial position while the amplitude depends both on the position ($t_0$ itself) and initial velocity. We can combine the expressions for $A$ and $t_0$. Given that:
+
+$cos(\theta) = \sqrt{1 - sin^2(\theta)}$
+
+$t_0 = asin(x_0/A)$
+
+$cos(t_0) = \sqrt{1 - \frac{x_0^2}{A^2}}$
+
+Using that back on the expression for A:
+
+$A = -\frac{v_0}{\sqrt{1 - \frac{x_0^2}{A^2}}} \sqrt{\frac{m}{k}}$
+
+$A^2 = \frac{v_0^2}{1 - \frac{x_0^2}{A^2}} \frac{m}{k}$
+
+$A^2 - x_0^2 = v_0^2 \frac{m}{k}$
+
+$A = \sqrt{v_0^2 \frac{m}{k} + x_0^2}$
+
+And
+
+$t_0 = asin(x_0/A)$
+
+The period of the movement is the amount of time that it will take for a complete oscillation. That is whenever  $\sqrt{\frac {k} {m}} t = 2 \pi$. Thus the period and frequency are:
+
+$T = \frac {2 \pi} {\sqrt{\frac{k}{m}}}$
+
+$f = \frac {1} {2 \pi} \sqrt{\frac{k}{m}}$
+
+And we can now say that we have fully solved the simple case of this mass + spring problem. One last thing though. You may have noticed that our general solution:
+$x(t) = A\ sin(\sqrt{\frac{k}{m}}\ t + t_1) + B\ cos(\sqrt{\frac{k}{m}}\ t + t_2)$
+
+is a bit too limited. By that I mean that adding a phase to the cosine or sin part, that can be any value adjusted by the boundary conditions, you can convert sine to cosine then that phase is $\pi/2$. Also with any value of amplitude and of phase we will have a valid solution for the differential equation, so we can say that the most general linear combination solution is:
+
+$x(t) = \sum_i^N A_i sin(\sqrt{\frac{k}{m}} \ t + t_i)$
+
+Which is a sum of $N$ components with specific amplitudes and phases each. On our case since we only have 2 boundary conditions having $N=1$ is enough.
+
+** Inertial Frame of Reference
+So now let's try to solve the two masses problem. One argument that once came to my mind is that we could just use the particle 2 as a reference, and solve the problem from its view. It took me a while to realize that this would be completely wrong of an approach due to this thing called Inertial frame of reference. Since both particles are oscillating on this problem, particle 2 has a non zero acceleration and you can't use it as the main frame from where you make your measures from.
+
+Rules of physics do not apply for non Inertial reference frames. How do you know if something is not a Inertial reference frame? Well if there is an inertial reference for which that one has non 0 acceleration then that is not inertial. Actually then this one will have a non 0 or varying acceleration for all other referential.
+
+So there isn't quite much that we can use from the harmonic oscillator problem. This proves that one particle will not see the other as if it was the wall on the Harmonic Oscillator problem, even though that will be a tendency if one of the masses tends to much bigger than the other. Still that is no the problem we want to solve since it makes more sense that the particles have about the same mass for a fluid.
+
+** The ODE System
+
+So what we are looking for is a system of differential equations that will represent both positions $x_1$ and $x_2$ over the time. The thing is, what is actually those two values telling about the spring's internal deformation? Well on this case lets call this deformation $D$, similar to $x$ on the last problem:
+
+$D = x_2 - x_1 - L$
+
+Where $L$ is the spring's rest length. We can make a change of variables here for the sake of simplification and call:
+
+$x^*_2 = x_2 - L$
+
+This doesn't change the problem at all, we are just offsetting the frame of reference in which we measure $x_2$. Solving the problem like this means that we have both particles at the same place, the spring's rest length is zero and the particles have this sort of attraction to come back at the same place. We can undo the change of variables later. I wont keep the $^*$ over $x_2$ because these things might adjust later with boundary conditions adjusting the constants anyway.
+
+So what we have now is:
+
+$D = x_2 - x_1$
+
+As $x_1$ increases the spring gets compressed, meaning negative $D$, and as $x_2$ increases the string gets stretched meaning positive $D$. The forces applied to each of the springs are the same but in opposed directions:
+
+ $F_1 = kD$
+
+ $F_2 = -kD$
+
+ Notice that: $F_1 + F_2 = 0$ which is exactly what we mean. This is simply Newton's third law! $F_1$ is the one without the negative sign because the spring being compressed means
+
+ This means, if the spring is compressed then $D$ is smaller than 0, $F_1$ is positive and $F_2$ negative. So we can write:
+
+ $\frac {d^2x_1}{dt^2} = \frac{k}{m} (x_2 - x_1)$
+
+ $\frac {d^2x_2}{dt^2} = -\frac{k}{m} (x_2 - x_1)$
+
+ Which is the system we've been looking for. To solve this let's begin by subtracting the latter by the first:
+
+ $\frac {d^2x_2}{dt^2} - \frac {d^2x_1}{dt^2} = -2\ \frac{k}{m} (x_2 - x_1)$
+
+ $\frac {d^2(x_2 - x_1)}{dt^2} = -2\ \frac{k}{m} (x_2 - x_1)$
+
+ Which is basically the Harmonic Oscillator equation that we already know the solution. In this case we will have:
+
+ $(x_2 - x_1) = A\ sin(\sqrt{2\ \frac{k}{m}}\ t + t_0)$
+
+ We can also add both equations to have:
+
+ $\frac {d^2x_1}{dt^2} + \frac {d^2x_2}{dt^2} = 0$
+
+ $\frac {d^2(x_1 + x_2)}{dt^2} = 0$
+
+ $(x_1 + x_2) = Vt + L_0$
+
+ Where $V$ and $L_0$ are integration constants. If we add and subtract both results we can finally solve for $x_1$ and $x_2$ individually:
+
+ $x_1(t) = \frac {1}{2} (Vt + L_0 - A\ sin(\sqrt{2\ \frac{k}{m}}\ t + t_0))$
+
+ $x_2(t) = \frac {1}{2} ( Vt + L_0 + A\ sin(\sqrt{2\ \frac{k}{m}}\ t + t_0) )$
+
+** Boundary Conditions
+So we have solved the mechanics for the physics problem but now to have a better hint about the analogue wave propagation we are trying to make it would be interesting to bring up the boundary conditions since we have 4 constants to figure out on this case: $V_0$, $V$, $A$ and $t_0$. On the beginning of this section we talked about a particle hitting the particle and another conditions that would translate as:
+
+1. Particle 1 has an initial velocity:
+
+   $\frac{dx_1}{dt} = v_0$
+
+2. Particle 2 is at rest initially:
+
+   $\frac{dx_2}{dt} = 0$
+
+3. $x_1(0) = 0$
+
+4. The spring is initially at rest:
+
+   $D=0$
+
+   $x_2 = L$
+
+
+For convenience lets make: $t_0 = \frac{\pi}{2}$ so that we can have cosine instead of sine. Both particle 1 and 2 are on the same phase anyway. The advantage of this is that:
+
+$\frac {dx_1}{dt} = \frac{1}{2}(v_0 - A\ \sqrt{2\ \frac{k}{m}}\ sin(\sqrt{2\ \frac{k}{m}}\ t))$
+
+We can also from now on ignore the $\frac{1}{2}$ that is multiplying by everything since we have the constants to adjust for on each term of the sum anyway. So for the first condition:
+
+$\frac {dx_1}{dt}(0) = V - A\ \sqrt{2\ \frac{k}{m}}\ sin(0) = V = v_0$
+
+Thus:
+
+$x_1(t) = v_0\ t  - A\ cos(\sqrt{2\ \frac{k}{m}}\ t)$
+
+And with this we already satisfy 3 as well. Something similar can be done for $x_2$ and the condition 2:
+
+$\frac {dx_2}{dt}(0) = v_0 + A\ \sqrt{2\ \frac{k}{m}}\ sin(0) = v_0 = 0$
+
+And that is an impossible condition to meet, so where are we wrong? Well the thing is, the actual full solution for:
+
+ $\frac {d^2(x_2 - x_1)}{dt^2} = -2\ \frac{k}{m} (x_2 - x_1)$
+
+is:
+
+$x_2 - x_1 = \sum_i^N A_i sin(\sqrt{\frac{k}{m}} \ t + t_i)$
+
+What this actually means is that there are multiple
+
+
+
+
+
+
+
+
+
+We can simply embed the $\frac {1}{2}$ inside $A$ in the future. Also to respect condition 4 we must do:
+
+$x_1(t) = v_0\ t  - \frac {1}{2} A\ (cos(\sqrt{2\ \frac{k}{m}}\ t) - 1)$
+
+Which is fine given that we will had that constant $L_0$ to use.
+
+Thus for this case we have the period:
+
+$T = \frac{1}{2\pi}\sqrt{\frac {2k} {m}}$
+
+The only thing we are left with is to figure out is the amplitude $A$. We know that $v_2(0)=0$ so:
+
+$\frac {dx_2}{dt}(0) = v_0 - A\ \sqrt{2\ \frac{k}{m}}\ sin(0) = v_0 !$
+
+Which is a problem since we want it to be 0. If we change the phase difference to be 0 again, meaning using sin instead of cosine:
+
+$\frac {dx_2}{dt}(0) = v_0 + A\ \sqrt{2\ \frac{k}{m}}\ cos(0) = 0$
+
+Now we can compute a valid $A$:
+
+$A\ \sqrt{2\ \frac{k}{m}}\ = -v_0$
+
+$A\ = -v_0 \sqrt{\frac{m}{2k}}$
+
+And finally we have the functions:
+
+$x_1(t) = v_0\ (t  + \sqrt{\frac{m}{2k}}\ (cos(\sqrt{2\ \frac{k}{m}}\ t) - 1))$
+
+$x_2(t) = v_0\ (t  - \sqrt{\frac{m}{2k}}\ sin(\sqrt{2\ \frac{k}{m}}\ t)) + L$
+
+
+
+#+INCLUDE: "../../footer.org" :minlevel 1
