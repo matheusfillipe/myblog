@@ -3,6 +3,10 @@
 <a href="https://app.netlify.com/sites/curious-squirrel-9f2b0c/deploys">
 <img alt="Netlify Status" src="https://api.netlify.com/api/v1/badges/2ebef6fa-e12c-44aa-8a1c-de92f784e802/deploy-status" />
 </a>
+
+<a href="https://circleci.com/gh/matheusfillipe/myblog">
+<img alt="CircleCI Build" src="https://circleci.com/gh/matheusfillipe/myblog.svg?style=shield" />
+</a>
 #+end_html    
 
 * My Blog!
