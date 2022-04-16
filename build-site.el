@@ -31,7 +31,7 @@
                                    :validate nil
                                    :auto-sitemap t
                                    :recursive t
-                                   :exclude "template.org"
+                                   :exclude "template.org\\|README.org"
                                    :publishing-function org-html-publish-to-html
                                    :headline-levels 4
                                    :auto-preamble t)))

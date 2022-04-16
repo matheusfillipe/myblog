@@ -1,3 +1,4 @@
 #+TITLE: Readme
+[[img:https://api.netlify.com/api/v1/badges/2ebef6fa-e12c-44aa-8a1c-de92f784e802/deploy-status][Netlify Status]]
 
 This is the source code for my personal blog at:
