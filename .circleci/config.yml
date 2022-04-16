@@ -10,7 +10,7 @@ jobs:
           yes | pacman -Sy emacs git nodejs npm || true
           npm install netlify-cli -g
           ./build.sh
-          netlify deploy --site curious-squirrel-9f2b0c --auth $NETLIFY_ACCESS_TOKEN --prod --dir=html
+          netlify deploy --site curious-squirrel-9f2b0c --auth $NETLIFY_ACCESS_TOKEN --prod --dir=html/
 
 workflows:
   build-workflow:
