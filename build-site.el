@@ -25,7 +25,7 @@
 
 (setq org-publish-project-alist '(("mattf.tk" :base-directory "./."
                                    :base-extension "org"
-                                   :publishing-directory "~/Projects/sciblog/html/"
+                                   :publishing-directory "./html"
                                    :with-creator t
                                    :with-timestamps nil
                                    :validate nil
