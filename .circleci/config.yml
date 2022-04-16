@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run: |
-          yes | pacman -Sy emacs
+          yes | pacman -Sy emacs git || true
           ./build.sh
 
 workflows:
