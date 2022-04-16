@@ -1,0 +1,19 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: archlinux
+    steps:
+      - checkout
+      - run: |
+          pacman -Syuu emacs
+          ./build.sh
+
+workflows:
+  build-workflow:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
