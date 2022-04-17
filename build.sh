@@ -15,9 +15,9 @@ gen_index() {
     if [[ "$entry" == "index.org" ]]; then
       continue
     fi
-    title=$(get_org_attr "$entry" "TITLE")
+    part_title=$(get_org_attr "$entry" "TITLE")
     description=$(get_org_attr "$entry" "DESCRIPTION")
-    escaped=$(printf '%s\n' "- [[file:$entry][$title]]       $description" | sed -e 's/[]\/$*.^[]/\\&/g')
+    escaped=$(printf '%s\n' "- [[file:$entry][$part_title]]       $description" | sed -e 's/[]\/$*.^[]/\\&/g')
     list+="$escaped\n\n"
   done
   sed -e '1h;2,$H;$!d;g' -i -e "s/\(# LIST BEGIN\s*\n\).*\(# LIST END\s*\n\)/\1$list\2/ig" index.org
@@ -50,6 +50,7 @@ gen_indexes
 mkdir -p html
 cp style.css html/
 cp script.js html/
+cp background.js html/
 cp -r assets html/
 emacs -Q --script build-site.el
 

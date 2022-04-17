@@ -1,17 +1,13 @@
 #+DESCRIPTION: Header
 #+OPTIONS: toc:nil
+#+begin_export html
+<br>
+<br>
+#+end_export
 
-** __~--------------------------------------------------------------~__
+** ﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏
 :PROPERTIES:
 :NOTOC:
 :UNNUMBERED:
 :END:
 
-These pages were generated with [[https://orgmode.org/][emacs org mode]].
-The source code for this whole blog can be found at [[https://github.com/matheusfillipe/myblog][this]] github repository. If you want to correct anything or ask anything [[https://docs.github.com/en/github-ae@latest/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests][PR's]] are welcome!
-
-#+begin_export html
-<a href="#top">Back to Top</a>
-<br>
-<br>
-#+end_export

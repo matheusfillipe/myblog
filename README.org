@@ -11,4 +11,6 @@
 
 * My Blog!
 
-This is the source code for my personal blog at:
+This is the source code for my personal blog that can be found at: https://blog.mattf.tk/
+
+Every commit is automatically compiled by circleci using a [[https://archlinux.org/][archlinux]] image and running the build.sh script that invokes emacs compiling the .org files into html. The compiled html is then automatically deployed to [[https://www.netlify.com/][netlify]]'s CDN.

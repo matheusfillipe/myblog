@@ -2,31 +2,33 @@
 #+HTML_HEAD: <link rel="stylesheet" href="https://latex.now.sh/style.css">
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/style.css" />
 #+HTML_HEAD: <script src="/script.js"></script>
-#+HTML_HEAD: <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+#+HTML_HEAD:       <link rel="stylesheet" type="text/css" href="/style.css" />
+#+HTML_HEAD:       <script async src="https://ga.jspm.io/npm:es-module-shims@1.5.4/dist/es-module-shims.js"></script>
+#+HTML_HEAD:       <script type="importmap">
+#+HTML_HEAD:       {
+#+HTML_HEAD:           "imports": {
+#+HTML_HEAD:               "three": "https://unpkg.com/three@0.139.2/build/three.module.js",
+#+HTML_HEAD:               "OrbitControls": "https://unpkg.com/three@0.139.2/examples/jsm/controls/OrbitControls.js"
+#+HTML_HEAD:           }
+#+HTML_HEAD:       }
+#+HTML_HEAD:       </script>
 
 #+OPTIONS: toc:nil
 
 #+begin_export html
-<script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@<version>/build/three.module.js"
-    }
-  }
-</script>
-
-<script type="module">
-
-  import * as THREE from 'three';
-
-  const scene = new THREE.Scene();
-
-</script>
-
 <div class="orgyeah-header">
   <div class="topbar-menu-container">
-    <span class="topbar-menu"><a class="current" href="/">Home</a></span>
-    <span class="topbar-menu"><a class="current" href="/series/index.html">Series</a></span>
+    <ul class="leftNav">
+        <span class="topbar-menu"><a class="current" href="/">Home</a></span>
+        <span class="topbar-menu"><a class="current" href="/series/coding/index.html">Coding</a></span>
+        <span class="topbar-menu"><a class="current" href="/series/index.html">All Series</a></span>
+    </ul>
+    <ul class="rightNav">
+        <span class="topbar-menu"><a href="https://www.instagram.com/pawns4love/"><img title="Check out my pets on instagram!" src="/assets/insta.png"></a></span>
+        <span class="topbar-menu"><a href="https://open.spotify.com/user/flylfylfight"><img title="Check out what I like to listen to" src="/assets/spotify.png"></a></span>
+        <span class="topbar-menu"><a href="https://www.youtube.com/channel/UC9v3ZuKniNaDvLrhffnTt9A"><img title="My automated videos channel" src="/assets/youtube.png"></a></span>
+        <span class="topbar-menu"><a href="https://github.com/matheusfillipe/myblog"><img title="View this blog repo's in github" src="/assets/github.png"></a></span>
+    </ul>
   </div>
 </div>
 <div class="parallax">
