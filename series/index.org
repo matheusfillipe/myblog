@@ -5,6 +5,8 @@
 #+INCLUDE: "../header.org"
 #+TOC: headlines 4
 
+* Series
+
 My plan is to have multiple series in different subjects.
 
 # LIST BEGIN

@@ -7,11 +7,18 @@ const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector("#bg")
 })
 
-renderer.setPixelRatio(window.devicePixelRatio)
-renderer.setSize(window.innerWidth, window.innerHeight)
+window.addEventListener( 'resize', onWindowResize, false );
+
+function onWindowResize(){
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setSize(window.innerWidth, window.innerHeight)
+}
+onWindowResize()
 
 camera.position.setZ(30)
-const initialPos = camera.position
+const initialPos = Object.assign({}, camera.position)
 
 
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100)
@@ -51,9 +58,9 @@ scene.background = spaceTexture;
 function scrollAnimate() {
   const t = document.body.getBoundingClientRect().top
   scene.background.offset.y = t * +0.00007
-  camera.position.z = t * -0.0001 + initialPos.z;
-  camera.position.x = t * -0.0002 + initialPos.x;
-  camera.position.y = t * -0.0002 + initialPos.y;
+  camera.position.z = t * 0.02 + initialPos.z;
+  camera.position.x = t * 0.02 + initialPos.x;
+  camera.position.y = t * 0.02 + initialPos.y;
 }
 
 document.body.onscroll = scrollAnimate;

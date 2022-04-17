@@ -34,6 +34,13 @@
                                    :exclude "template.org\\|README.org"
                                    :publishing-function org-html-publish-to-html
                                    :headline-levels 4
+                                   :html-postamble "<p class=\"title\"><a href=\"#top\">%t</a></p>
+                                        <p class=\"author\">Author: %a</p>
+                                        <p class=\"date\">Creation Date: %d</p>
+                                        <p>Modified: %C</p>
+                                        <p>View this page on <a id=\"githubref\" href=\"https://github.com/matheusfillipe/myblog/
+\">github</a></p>
+                                        <p class=\"creator\">%c</p>"
                                    :auto-preamble t)))
 
 (org-publish-all t)

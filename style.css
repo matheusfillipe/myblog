@@ -1,6 +1,6 @@
 :root {
   --dark-bg: rgba(15, 15, 15, 0.95);
-  --spacing: 300px;
+  --spacing: 200px;
 }
 
 body {
@@ -8,6 +8,7 @@ body {
     padding-top: var(--nav-height);
     overflow:auto;
     color: #d7dadc;
+    background: var(--dark-bg);
 }
 
 
@@ -19,7 +20,7 @@ body {
     width: 100%;
     overflow-y: hidden;
     height: var(--nav-height);
-    box-shadow: 0 0 4px rgba(0.2, 0.2, 0.2, 0.2);
+    box-shadow: 0 0 10px rgb(63, 136, 197);
     transition: transform 0.2s;
     z-index: 200;
 }
@@ -80,11 +81,27 @@ body {
 }
 
 a, a:visited {
-  color: #2F78b5;
+  color: #3f88c5;
 }
 
 a {
-  color: #3F88C5;
+  color: #008aff;
+}
+
+.title {
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #a20a29, 0 0 20px #a20a29, 0 0 25px #a20a29, 0 0 30px #a20a29, 0 0 35px #a20a29;
+  }
+  to {
+    text-shadow: 0 0 10px #fff, 0 0 15px #00508b, 0 0 20px #00508b, 0 0 25px #00508b, 0 0 30px #00508b, 0 0 35px #00508b, 0 0 40px #00508b;
+  }
 }
 
 canvas {
@@ -93,20 +110,70 @@ canvas {
   left: 0;
   z-index: -10;
 }
-
-.outline-2, #table-of-contents, #postamble {
+#postamble {
   padding: 0 15px 0 15px;
   border-radius: 15px 50px 30px 5px;
   background:black;
-  background:rgba(0,0,0,0.9);
-
-  /* filter:blur(4px); */
-  /* -o-filter:blur(4px); */
-  /* -ms-filter:blur(4px); */
-  /* -moz-filter:blur(4px); */
-  /* -webkit-filter:blur(4px); */
-  /* margin-bottom: var(--spacing); */
+  background:#1a1a1bf0;
 }
+
+main .outline-2, #table-of-contents {
+  padding: 0 15px 0 15px;
+  border-radius: 15px 50px 30px 5px;
+  background:black;
+  background:#1a1a1bf0;
+  margin-bottom: var(--spacing);
+}
+
+@supports ((-webkit-backdrop-filter: blur(4px)) or (backdrop-filter: blur(4px))) {
+  main .outline-2, #table-of-contents  {
+    background: #1a1a1bb0;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+}
+
 .MathJax span {
   color: cyan;
+}
+
+
+#goTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #3f88c5f0;
+  color: white;
+  cursor: pointer;
+  padding-top: 5px;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  transition: transform 0.2s;
+  z-index: 200;
+}
+
+.bottombnt--hidden {
+  transform: translateY(100px);
+}
+
+#goTopBtn:hover {
+  background-color: #5fa8d5f0;
+}
+
+a img, a svg
+{
+  border: none;
+  outline: none;
+}
+
+a.nobox:focus, a.nobox:active {
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
 }

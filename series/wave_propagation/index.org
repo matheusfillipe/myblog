@@ -5,6 +5,8 @@
 #+INCLUDE: "../../header.org"
 #+OPTIONS: num:nil ^:{}
 
+* Description
+
 Let's create some wave models!
 
 * Parts
