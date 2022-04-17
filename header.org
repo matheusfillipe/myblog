@@ -31,6 +31,6 @@
     </ul>
   </div>
 </div>
-<div class="parallax">
-</div>
+<canvas id="bg"></canvas>
+<main>
 #+end_export

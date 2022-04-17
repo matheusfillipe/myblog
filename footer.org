@@ -1,6 +1,8 @@
 #+DESCRIPTION: Header
 #+OPTIONS: toc:nil
+
 #+begin_export html
+</main>
 <br>
 <br>
 #+end_export
@@ -11,3 +13,7 @@
 :UNNUMBERED:
 :END:
 
+#+begin_export html
+<a href="#top">Back to Top</a>
+<script type="module" src="/background.js"></script>
+#+end_export
