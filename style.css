@@ -1,6 +1,6 @@
 :root {
   --dark-bg: rgba(15, 15, 15, 0.95);
-  --spacing: 200px;
+  --spacing: 10px;
 }
 
 body {
@@ -90,9 +90,9 @@ a {
 
 .title {
   text-align: center;
-  -webkit-animation: glow 1s ease-in-out infinite alternate;
-  -moz-animation: glow 1s ease-in-out infinite alternate;
-  animation: glow 1s ease-in-out infinite alternate;
+  /* -webkit-animation: glow 1s ease-in-out infinite alternate; */
+  /* -moz-animation: glow 1s ease-in-out infinite alternate; */
+  /* animation: glow 1s ease-in-out infinite alternate; */
 }
 
 @-webkit-keyframes glow {
@@ -176,4 +176,28 @@ a.nobox:focus, a.nobox:active {
   outline: 0;
   border: none;
   -moz-outline-style: none;
+}
+
+#disable3dlabel {
+  display: block;
+  /* position: fixed; */
+  /* top: 0; */
+  /* left: 0; */
+  font-size: 16px;
+  background-color: #1a1a1b;
+  color: #d7dadc;
+  z-index: 210;
+  /* border-radius: 0 8% 0 0; */
+  padding: 5px;
+  /* box-shadow: 0 0 20px rgb(63, 136, 197); */
+}
+
+#disable3d {
+  cursor: pointer;
+}
+
+h1, h2, h3, blockquote {
+  font-family: elevon, sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }

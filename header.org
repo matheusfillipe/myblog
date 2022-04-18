@@ -2,7 +2,6 @@
 #+HTML_HEAD: <link rel="stylesheet" href="https://latex.now.sh/style.css">
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/style.css" />
 #+HTML_HEAD: <script src="/script.js"></script>
-#+HTML_HEAD:       <link rel="stylesheet" type="text/css" href="/style.css" />
 #+HTML_HEAD:       <script async src="https://ga.jspm.io/npm:es-module-shims@1.5.4/dist/es-module-shims.js"></script>
 #+HTML_HEAD:       <script type="importmap">
 #+HTML_HEAD:       {
@@ -18,6 +17,7 @@
 #+begin_export html
 <div class="orgyeah-header">
   <div class="topbar-menu-container">
+    <label title="Disable 3d and glowing effects" id="disable3dlabel">SFX<input type="checkbox" id="disable3d"/></label>
     <ul class="leftNav">
         <span class="topbar-menu"><a class="current" href="/">Home</a></span>
         <span class="topbar-menu"><a class="current" href="/series/coding/index.html">Coding</a></span>

@@ -34,7 +34,9 @@
                                    :exclude "template.org\\|README.org"
                                    :publishing-function org-html-publish-to-html
                                    :headline-levels 4
-                                   :html-postamble "<p class=\"title\"><a href=\"#top\">%t</a></p>
+                                   :html-postamble "
+                                        <h2>﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏</h2>
+                                        <p class=\"title\"><a href=\"#top\">%t</a></p>
                                         <p class=\"author\">Author: %a</p>
                                         <p class=\"date\">Creation Date: %d</p>
                                         <p>Modified: %C</p>
