@@ -91,13 +91,37 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Terminal buttons
+
     const terminal = document.querySelector("#terminalwindow")
+
+    // Scroll inside terminal div
+    function scrollToView(element) {
+        var offset = element.offset().top;
+        var visible_area_start = $(window).scrollTop();
+        var visible_area_end = visible_area_start + window.innerHeight;
+
+        if (offset < visible_area_start || offset > visible_area_end) {
+            // Not in view so scroll to it
+            $('html,body').animate({ scrollTop: offset - window.innerHeight / 3 }, 300);
+            return false;
+        }
+        return true;
+    }
+
+    $('#terminal').bind('wheel', e => {
+        const oEvent = e.originalEvent
+        const delta = oEvent.deltaY || oEvent.wheelDelta
+        terminal.scrollBy(0, delta / 10)
+    })
+    // Terminal buttons
     const minimizebtn = document.querySelector("#terminimize")
 
     function showterm() {
-        const t = document.body.getBoundingClientRect().bottom
         terminal.classList.remove("terminal--hidden")
+        setTimeout(function() {
+            $('#terminal').terminal().focus()
+            scrollToView($("#terminal"))
+        }, 500);
     }
     minimizebtn.onclick = () => {
         terminal.classList.add("terminal--hidden")

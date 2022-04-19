@@ -1,4 +1,5 @@
 /**** style.css ***/
+/**** style.css ***/
 :root {
     --dark-bg: rgba(15, 15, 15, 0.95);
     --spacing: 10px;
@@ -282,8 +283,21 @@ h1, h2, h3, blockquote {
     --glow: 1;
 }
 
+@keyframes termFadeOut {
+    0% {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    100% {
+        visibility: hidden;
+        opacity: 0;
+    }
+}
+
 .terminal--hidden {
     transform: translateY(-1000px);
+    animation: termFadeOut 0.5s forwards 0.5s;
 }
 
 @media only screen and (max-width: 820px) {
