@@ -290,6 +290,9 @@ h1, h2, h3, blockquote {
     padding-left:  20px;
     padding-right: 20px;
   }
+  body {
+    padding: 0;
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -306,4 +309,10 @@ h1, h2, h3, blockquote {
     padding-left:  0;
     padding-right: 0;
  }
+ #terminalwindow {
+   display: none;
+ }
+  body {
+    padding: 0;
+  }
 }
