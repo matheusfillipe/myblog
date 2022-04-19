@@ -34,7 +34,7 @@ if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elain
 }
 
 var scene = null;
-
+var planets = []
 
 function load3dscene(full) {
   scene = new THREE.Scene();
@@ -43,7 +43,7 @@ function load3dscene(full) {
     canvas: document.querySelector("#bg")
   })
   let controls = null;
-  if (full){
+  if (full) {
     controls = new OrbitControls(camera, document.querySelector('html'))
   } else {
     controls = new OrbitControls(camera, renderer.domElement)
@@ -62,7 +62,6 @@ function load3dscene(full) {
   camera.position.setZ(10)
   const initialPos = Object.assign({}, camera.position)
 
-  let planets = []
   function addPlanet(size, name, rotation, update) {
     const planetTexture = new THREE.TextureLoader().load('/assets/' + name + ".jpg")
     const planet = new THREE.Mesh(
@@ -102,7 +101,7 @@ function load3dscene(full) {
   function addStar() {
     const geometry = new THREE.SphereGeometry(0.15, 24, 24)
     const color = starColors[Math.floor(Math.random() * starColors.length)]
-    const material = new THREE.MeshPhongMaterial({ color, emissive: color, emissiveIntensity: 20.0})
+    const material = new THREE.MeshPhongMaterial({ color, emissive: color, emissiveIntensity: 20.0 })
     const star = new THREE.Mesh(geometry, material)
 
     const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(500))
@@ -134,9 +133,9 @@ function load3dscene(full) {
     if (scene === null) {
       return
     }
-    setTimeout( function() {
-        requestAnimationFrame( animate );
-    }, 1000 / 30 );
+    setTimeout(function() {
+      requestAnimationFrame(animate);
+    }, 1000 / 30);
 
     renderer.render(scene, camera)
 
@@ -162,15 +161,15 @@ function disposeScene() {
   }
   scene.remove.apply(scene, scene.children);
   scene.clear()
-  setTimeout( function() {
+  setTimeout(function() {
     scene = null
     window.dispatchEvent(new Event('resize'));
-  }, 300 );
+  }, 300);
 }
 
 function reloadScene(...params) {
   disposeScene()
-  setTimeout ( function() {
+  setTimeout(function() {
     load3dscene(params)
   }, 1000)
 }
@@ -220,53 +219,162 @@ if ((isMobile && (!load3d || load3d !== "true")) || (load3d && load3d === "false
 
 
 // TERMINAL
-$('#terminal').terminal({
+
+//load sitemap for ls and cd commands
+
+document.addEventListener("DOMContentLoaded", function() {
+  const iframe = document.querySelector('#sitemapframe');
+  const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+  const mapul = iframeDocument.querySelector(".org-ul")
+
+  function parseUl(parent) {
+    return Array.prototype.slice.call(parent.children).map(function(elm) {
+      if (elm.tagName === "UL") {
+        return parseUl(elm)
+      } else if (elm.tagName === "LI") {
+        return { "name": elm.textContent.split("\n")[0], "children": parseUl(elm) }
+      } else if (elm.tagName === "A") {
+        return { "link": elm.href, "children": [] }
+      }
+    })
+  }
+
+  const sitemap = parseUl(mapul)
+  console.debug(sitemap)
+
+  let wd = []
+
+  function getcwd(i = 0, children = null) {
+    if (children === null) {
+      children = sitemap
+    }
+    if (wd.length < i) {
+      return children
+    }
+    let newChildren = null
+    for (const item of children) {
+      if (item.name !== wd[i]) {
+        continue
+      }
+      // debugger;
+      if (item.children && (item.children.length >= 1 || (item.children[0].length && item.children[0].length >= 1))) {
+        newChildren = item.children.length >= 1  ? item.children : item.children[0]
+        break
+      }
+    }
+    return getcwd(i + 1, newChildren)
+  }
+
+  $('#terminal').terminal({
     help: function() {
-        this.echo(`
-THE AVAILABLE COMMANDS ARE
-pwd: current directory
-ls: List directory
-cd: Move to a directory
-cat: cat
-star: star this project on github
-follow: follow me on github
-explore: Explore the 3d space (requires FX enabled)
-help: shows this help menu
-`);
+      this.echo(`
+  THE AVAILABLE COMMANDS ARE
+  pwd: current directory
+  ls: List directory
+  cd: Move to a directory
+  open: Open current directory in browser
+  cat: cat
+  star: star this project on github
+  follow: follow me on github
+  explore: Explore the 3d space (requires FX enabled)
+  torus: Replaces the planets with donuts
+  help: shows this help menu
+  `);
     },
-  pwd: function() {
-    const title = document.title
-    const path = window.location.pathname.toString()
-    this.echo($(`<p>${path}</p> <a href="${path}">${title}<a/>`));
+    torus: function() {
+      planets.forEach((p) => {
+        p.planet.geometry.dispose();
+        const geometry = new THREE.TorusGeometry(10, 3, 16, 100)
+        const material = new THREE.MeshStandardMaterial({color: 0xFF6347})
+        p.planet.geometry = geometry
+      })
     },
-  ls: function(path) {
-        this.echo($('<img src="https://placekitten.com/408/287">'));
+    pwd: function() {
+      const title = document.title
+      const path = window.location.pathname.toString()
+      this.echo($(`<p>${path} <a href="${path}">${title}<a/><p/>`));
+      if (wd) {
+        this.echo(`/${wd.join("/")}`)
+      }
     },
-  cd: function(path) {
-        this.echo();
+    ls: function() {
+      let names = "<p>"
+      let cwd = getcwd()
+      cwd.forEach((item) => {
+        let prepend = ""
+        let url = ""
+        if (item.children && (item.children.length <= 1 || item.children[0].length && item.children[0].length <= 1)) {
+          if (item.children[0].link) {
+            url = item.children[0].link
+          }
+        }
+        if (item.children && (item.children.length > 1 || item.children[0].length && item.children[0].length > 1)) {
+          prepend = " "
+        }
+        if (!url && !prepend) {
+          return
+        }
+
+        names += prepend
+        if (url) {
+          names += `<a href="${url}">`
+        }
+        names += item.name
+        if (url) {
+          names += "</a>"
+        }
+        names += "<br>"
+      })
+      names += "</p>"
+      this.echo($(names))
     },
-  explore: function() {
+    cd: function(path) {
+      if (path == "..") {
+        wd.pop()
+        return
+      }
+      let folders = []
+      sitemap.forEach((item) => {
+        if (item.children && (item.children.length > 1 || item.children[0].length && item.children[0].length > 1)) {
+          folders.push(item.name)
+        }
+      })
+
+      if (!folders.includes(path)) {
+        this.echo(`${path} is not a valid directory!`);
+        return
+      }
+      wd.push(path)
+    },
+    open: function(file) {
+      this.echo("Opening...")
+    },
+    explore: function() {
       document.querySelector("main").remove()
       document.querySelector("#postamble").remove()
       document.querySelector(".title").remove()
       document.querySelector("#disable3dlabel").remove()
-      reloadScene({path: true})
+      reloadScene({ path: true })
       this.echo("I've hidden he boring stuff that was written here\nYou might want to close this window for now or type 'help' to see new commands");
     },
-  cat: function() {
-        this.echo($('<img src="https://placekitten.com/408/287">'));
+    cat: function() {
+      this.echo($('<img src="https://placekitten.com/408/287">'));
     },
-  star: function () { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&repo=myblog&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>'))},
-  follow: function () {this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="230" height="30" title="GitHub"></iframe>'))},
-  why: function () {this.echo("Why not?")}
-}, {
-  greetings: `
-   ____ ___  ____ _/ /_/ /____  _________ ___  (_)___  ____ _/ /
-  / __ \`__ \\/ __ \`/ __/ __/ _ \\/ ___/ __ \`__ \\/ / __ \\/ __ \`/ /
- / / / / / / /_/ / /_/ /_/  __/ /  / / / / / / / / / / /_/ / /
-/_/ /_/ /_/\\__,_/\\__/\\__/\\___/_/  /_/ /_/ /_/_/_/ /_/\\__,_/_/
+    star: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&repo=myblog&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>')) },
+    follow: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="230" height="30" title="GitHub"></iframe>')) },
+    why: function() { this.echo("Why not?") }
+  }, {
+    greetings: `
+  ______                    _             __
+ /_  __/__  _________ ___  (_)___  ____ _/ /
+  / / / _ \\/ ___/ __ \`__ \\/ / __ \\/ __ \`/ /
+ / / /  __/ /  / / / / / / / / / / /_/ / /
+/_/  \\___/_/  /_/ /_/ /_/_/_/ /_/\\__,_/_/
 
-WELCOME TO THE TERMINAL
-Type 'help' to see available commands
-`
+
+  WELCOME TO THE TERMINAL
+  Type 'help' to see available commands
+  `,
+    enabled: false
+  });
 });
