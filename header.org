@@ -11,25 +11,33 @@
 #+HTML_HEAD:           }
 #+HTML_HEAD:       }
 #+HTML_HEAD:       </script>
+#+HTML_HEAD: <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+#+HTML_HEAD: <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js"></script>
+#+HTML_HEAD: <link rel="stylesheet" href="https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css"/>
+#+HTML_HEAD: <style type="text/css">body{ min-width:60%; }</style>
 
 #+OPTIONS: toc:nil
 
 #+begin_export html
 <div class="orgyeah-header">
-  <div class="topbar-menu-container">
-    <label title="Disable 3d and glowing effects" id="disable3dlabel">SFX<input type="checkbox" id="disable3d"/></label>
-    <ul class="leftNav">
-        <span class="topbar-menu"><a class="current" href="/">Home</a></span>
-        <span class="topbar-menu"><a class="current" href="/series/coding/index.html">Coding</a></span>
-        <span class="topbar-menu"><a class="current" href="/series/index.html">All Series</a></span>
-    </ul>
-    <ul class="rightNav">
-        <span class="topbar-menu"><a class="nobox" href="https://www.instagram.com/pawns4love/"><img title="Check out my pets on instagram!" src="/assets/insta.png"></a></span>
-        <span class="topbar-menu"><a class="nobox" href="https://open.spotify.com/user/flylfylfight"><img title="Check out what I like to listen to" src="/assets/spotify.png"></a></span>
-        <span class="topbar-menu"><a class="nobox" href="https://www.youtube.com/channel/UC9v3ZuKniNaDvLrhffnTt9A"><img title="My automated videos channel" src="/assets/youtube.png"></a></span>
-        <span class="topbar-menu"><a class="nobox" href="https://github.com/matheusfillipe/myblog"><img title="View this blog repo's in github" src="/assets/github.png"></a></span>
-    </ul>
-  </div>
+<div class="topbar-menu-container">
+<ul class="extraNav">
+    <span class="topbar-menu"><button id="showterminal" class="topbar-menu"> <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32" height="32" viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve"> <path id="XMLID_224_" d="M325.606,229.393l-150.004-150C172.79,76.58,168.974,75,164.996,75c-3.979,0-7.794,1.581-10.607,4.394 l-149.996,150c-5.858,5.858-5.858,15.355,0,21.213c5.857,5.857,15.355,5.858,21.213,0l139.39-139.393l139.397,139.393 C307.322,253.536,311.161,255,315,255c3.839,0,7.678-1.464,10.607-4.394C331.464,244.748,331.464,235.251,325.606,229.393z"/> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg> </button></span>
+    <span title="Disable 3d and glowing effects" id="disable3dlabel" class="topbar-menu title">FX<input type="checkbox" id="disable3d"/></span>
+</ul>
+<ul class="leftNav">
+    <span class="topbar-menu"><a class="current" href="/">Home</a></span>
+    <span class="topbar-menu"><a class="current" href="/series/coding/index.html">Coding</a></span>
+    <span class="topbar-menu"><a class="current" href="/series/index.html">All Series</a></span>
+</ul>
+<ul class="rightNav">
+    <span class="topbar-menu"><a class="nobox" href="https://www.instagram.com/pawns4love/"><img title="Check out my pets on instagram!" src="/assets/insta.png"></a></span>
+    <span class="topbar-menu"><a class="nobox" href="https://open.spotify.com/user/flylfylfight"><img title="Check out what I like to listen to" src="/assets/spotify.png"></a></span>
+    <span class="topbar-menu"><a class="nobox" href="https://www.youtube.com/channel/UC9v3ZuKniNaDvLrhffnTt9A"><img title="My automated videos channel" src="/assets/youtube.png"></a></span>
+    <span class="topbar-menu"><a class="nobox" href="https://github.com/matheusfillipe/myblog"><img title="View this blog repo's in github" src="/assets/github.png"></a></span>
+
+</ul>
+</div>
 </div>
 <canvas id="bg"></canvas>
 <main>

@@ -35,12 +35,19 @@ if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elain
 
 var scene = null;
 
-function load3dscene() {
+
+function load3dscene(full) {
   scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight);
-  const renderer = new THREE.WebGLRenderer({
+  var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight);
+  var renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector("#bg")
   })
+  let controls = null;
+  if (full){
+    controls = new OrbitControls(camera, document.querySelector('html'))
+  } else {
+    controls = new OrbitControls(camera, renderer.domElement)
+  }
 
   window.addEventListener('resize', onWindowResize, false);
 
@@ -55,7 +62,7 @@ function load3dscene() {
   camera.position.setZ(10)
   const initialPos = Object.assign({}, camera.position)
 
-  var planets = []
+  let planets = []
   function addPlanet(size, name, rotation, update) {
     const planetTexture = new THREE.TextureLoader().load('/assets/' + name + ".jpg")
     const planet = new THREE.Mesh(
@@ -90,7 +97,6 @@ function load3dscene() {
   const ambientLight = new THREE.AmbientLight(0xfffffff, 0.2)
   scene.add(ambientLight)
 
-  const controls = new OrbitControls(camera, renderer.domElement)
 
   const starColors = [0xffffff, 0xffaaff, 0xaaaaff, 0xffaaaa]
   function addStar() {
@@ -156,6 +162,17 @@ function disposeScene() {
   }
   scene.remove.apply(scene, scene.children);
   scene.clear()
+  setTimeout( function() {
+    scene = null
+    window.dispatchEvent(new Event('resize'));
+  }, 300 );
+}
+
+function reloadScene(...params) {
+  disposeScene()
+  setTimeout ( function() {
+    load3dscene(params)
+  }, 1000)
 }
 
 const toggler = document.querySelector("#disable3d")
@@ -200,3 +217,57 @@ if ((isMobile && (!load3d || load3d !== "true")) || (load3d && load3d === "false
 } else {
   enablefx()
 }
+
+
+// TERMINAL
+$('#terminal').terminal({
+    help: function() {
+        this.echo(`
+THE AVAILABLE COMMANDS ARE
+pwd: current directory
+ls: List directory
+cd: Move to a directory
+cat: cat
+star: star this project on github
+follow: follow me on github
+explore: Explore the 3d space (requires FX enabled)
+help: shows this help menu
+`);
+    },
+  pwd: function() {
+    const title = document.title
+    const path = window.location.pathname.toString()
+    this.echo($(`<a href="${path}">${title}<a/>`));
+    },
+  ls: function(path) {
+        this.echo($('<img src="https://placekitten.com/408/287">'));
+    },
+  cd: function(path) {
+        this.echo();
+    },
+  explore: function() {
+      document.querySelector("main").remove()
+      document.querySelector("#postamble").remove()
+      document.querySelector(".title").remove()
+      document.querySelector("#disable3dlabel").remove()
+      reloadScene({path: true})
+      this.echo("I've hidden he boring stuff that was written here\nYou might want to close this window for now or type 'help' to see new commands");
+    },
+  cat: function(...args) {
+        const options = $.terminal.parse_options(args);
+        this.echo($('<img src="https://placekitten.com/408/287">'));
+    },
+  star: function () { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&repo=myblog&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>'))},
+  follow: function () {this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="230" height="30" title="GitHub"></iframe>'))},
+  why: function () {this.echo("Why not?")}
+}, {
+  greetings: `
+   ____ ___  ____ _/ /_/ /____  _________ ___  (_)___  ____ _/ /
+  / __ \`__ \\/ __ \`/ __/ __/ _ \\/ ___/ __ \`__ \\/ / __ \\/ __ \`/ /
+ / / / / / / /_/ / /_/ /_/  __/ /  / / / / / / / / / / /_/ / /
+/_/ /_/ /_/\\__,_/\\__/\\__/\\___/_/  /_/ /_/ /_/_/_/ /_/\\__,_/_/
+
+WELCOME TO THE TERMINAL
+Type 'help' to see available commands
+`
+});

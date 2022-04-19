@@ -9,6 +9,7 @@ body {
     overflow:auto;
     color: #d7dadc;
     background: var(--dark-bg);
+    background-image: url('/assets/nebula.png')
 }
 
 
@@ -23,6 +24,7 @@ body {
     box-shadow: 0 0 10px rgb(63, 136, 197);
     transition: transform 0.2s;
     z-index: 200;
+    overflow-x: hidden;
 }
 
 .topbar-menu-container {
@@ -65,6 +67,10 @@ body {
 
 .orgyeah-header .topbar-menu-container .leftNav {
   margin-top: 12px;
+}
+
+.orgyeah-header .topbar-menu-container .extraNav {
+  display: flex;
 }
 
 .nav--hidden {
@@ -128,6 +134,11 @@ main .outline-2, #table-of-contents {
 @supports ((-webkit-backdrop-filter: blur(4px)) or (backdrop-filter: blur(4px))) {
   main .outline-2, #table-of-contents  {
     background: #1a1a1bb0;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+  #terminalwindow {
+    background: #151516b0;
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
   }
@@ -200,4 +211,99 @@ h1, h2, h3, blockquote {
   font-family: elevon, sans-serif;
   font-weight: 700;
   font-style: normal;
+}
+
+#terminalwindow {
+  position: absolute;
+  bottom: 20px;
+  left: 30px;
+  font-size: 18px;
+  border: none;
+  outline: blue;
+  border-radius: 20px;
+  width: 80vw;
+  height: 50vh;
+  transition: transform 0.2s;
+  z-index: 200;
+  overflow-x: hidden;
+  overflow-y: visible;
+  background:black;
+  background:#151516f0;
+  box-shadow: 0 0 20px rgb(63, 136, 197);
+  transition: transform 0.5s;
+}
+
+#terminaltitlebar {
+  height: 30px;
+  cursor: move;
+  z-index: 300;
+  background-color: #264a60;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+#terminaltitlebar svg, #showterminal svg {
+   rotate: 180deg;
+}
+
+#terminimize, #showterminal{
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+#showterminal svg {
+  -webkit-filter: invert(100%); /* safari 6.0 - 9.0 */
+          filter: invert(100%);
+
+}
+
+#showterminal {
+  padding-top: 10px;
+}
+
+#terminal-container {
+  overflow-y: visible;
+}
+
+.terminal {
+    --color: #00ff00;
+    --background: transparent;
+    --link-color: darkblue;
+    --animation: terminal-glow;
+    --glow: 1;
+}
+
+.terminal--hidden {
+  transform: translateY(-1000px);
+}
+@media only screen and (max-width: 720px) {
+  .orgyeah-header .topbar-menu-container .rightNav {
+    display: none;
+  }
+  .topbar-menu-container {
+    padding-left:  20px;
+    padding-right: 20px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+ .orgyeah-header .topbar-menu-container .extraNav {
+    display: none;
+  }
+ .orgyeah-header .topbar-menu-container .rightNav {
+    display: none;
+  }
+ .orgyeah-header .topbar-menu-container .leftNav {
+    padding-left: 5px;
+ }
+ .topbar-menu-container {
+    padding-left:  0;
+    padding-right: 0;
+ }
 }
