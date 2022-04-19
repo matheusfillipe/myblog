@@ -237,7 +237,7 @@ help: shows this help menu
   pwd: function() {
     const title = document.title
     const path = window.location.pathname.toString()
-    this.echo($(`<a href="${path}">${title}<a/>`));
+    this.echo($(`<p>${path}</p> <a href="${path}">${title}<a/>`));
     },
   ls: function(path) {
         this.echo($('<img src="https://placekitten.com/408/287">'));
@@ -253,8 +253,7 @@ help: shows this help menu
       reloadScene({path: true})
       this.echo("I've hidden he boring stuff that was written here\nYou might want to close this window for now or type 'help' to see new commands");
     },
-  cat: function(...args) {
-        const options = $.terminal.parse_options(args);
+  cat: function() {
         this.echo($('<img src="https://placekitten.com/408/287">'));
     },
   star: function () { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&repo=myblog&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>'))},

@@ -1,0 +1,46 @@
+#+TITLE: My CGI productions
+#+DESCRIPTION: The music I make
+#+AUTHOR: Matheus Fillipe
+#+DATE: <2022-04-19 Tue>
+#+INCLUDE: "../../header.org"
+#+OPTIONS: num:nil ^:{}
+
+* Description
+
+I also like to create some CG image and videos when I free time I'm mostly using blender. You can also see some of my images on my [[https://imgur.com/user/matheusfillipeag24/posts][imgur]].
+
+* Videos
+
+** First donut tutorial
+#+begin_export html
+<video width="100%" controls>
+  <source src="https://mattf.tk/files/donut.mp4" type="video/mp4">
+  Your browser does not support HTML video.
+</video>
+#+end_export
+
+** More donuts
+
+#+begin_export html
+<video width="100%" controls>
+  <source src="https://mattf.tk/files/donut_factory.mp4" type="video/mp4">
+  Your browser does not support HTML video.
+</video>
+#+end_export
+
+** Space puzzle
+
+#+begin_export html
+<video width="100%" controls>
+  <source src="https://mattf.tk/files/space_puzzle.mp4" type="video/mp4">
+  Your browser does not support HTML video.
+</video>
+#+end_export
+
+* Posts
+
+# LIST BEGIN
+
+# LIST END
+
+#+INCLUDE: "../../footer.org" :minlevel 1

@@ -1,0 +1,39 @@
+#+TITLE: My Music
+#+DESCRIPTION: The music I make
+#+AUTHOR: Matheus Fillipe
+#+DATE: <2022-04-19 Tue>
+#+INCLUDE: "../../header.org"
+#+OPTIONS: num:nil ^:{}
+
+* Description
+
+I also like to create some music when I free time. You can check out more on my [[https://soundcloud.com/matheus-fillipe-234449481][soundcloud]].
+
+* Listen
+
+#+begin_export html
+<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1252715812&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/matheus-fillipe-234449481" title="Matheus Fillipe" target="_blank" style="color: #cccccc; text-decoration: none;">Matheus Fillipe</a> · <a href="https://soundcloud.com/matheus-fillipe-234449481/confortably-numb-instrumental-cover" title="Confortably Numb Instrumental Cover" target="_blank" style="color: #cccccc; text-decoration: none;">Confortably Numb Instrumental Cover</a></div>
+#+end_export
+
+#+begin_export html
+<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1252719328&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/matheus-fillipe-234449481" title="Matheus Fillipe" target="_blank" style="color: #cccccc; text-decoration: none;">Matheus Fillipe</a> · <a href="https://soundcloud.com/matheus-fillipe-234449481/celtic-style-theme" title="Celtic Style Theme" target="_blank" style="color: #cccccc; text-decoration: none;">Celtic Style Theme</a></div>
+#+end_export
+
+#+begin_export html
+<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1252728673&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/matheus-fillipe-234449481" title="Matheus Fillipe" target="_blank" style="color: #cccccc; text-decoration: none;">Matheus Fillipe</a> · <a href="https://soundcloud.com/matheus-fillipe-234449481/arppegio-dream" title="Arppegio Dream" target="_blank" style="color: #cccccc; text-decoration: none;">Arppegio Dream</a></div>
+#+end_export
+
+#+begin_export html
+<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1252728199&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/matheus-fillipe-234449481" title="Matheus Fillipe" target="_blank" style="color: #cccccc; text-decoration: none;">Matheus Fillipe</a> · <a href="https://soundcloud.com/matheus-fillipe-234449481/intro" title="Intro" target="_blank" style="color: #cccccc; text-decoration: none;">Intro</a></div>
+#+end_export
+
+
+
+
+* Posts
+
+# LIST BEGIN
+
+# LIST END
+
+#+INCLUDE: "../../footer.org" :minlevel 1

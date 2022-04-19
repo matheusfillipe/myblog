@@ -29,6 +29,8 @@
     <span class="topbar-menu"><a class="current" href="/">Home</a></span>
     <span class="topbar-menu"><a class="current" href="/series/coding/index.html">Coding</a></span>
     <span class="topbar-menu"><a class="current" href="/series/index.html">All Series</a></span>
+    <span class="topbar-menu"><a class="current" href="/series/music/index.html">Music</a></span>
+    <span class="topbar-menu"><a class="current" href="/series/CGI/index.html">CGI</a></span>
 </ul>
 <ul class="rightNav">
     <span class="topbar-menu"><a class="nobox" href="https://www.instagram.com/pawns4love/"><img title="Check out my pets on instagram!" src="/assets/insta.png"></a></span>

@@ -31,7 +31,7 @@
                                    :validate nil
                                    :auto-sitemap t
                                    :recursive t
-                                   :exclude "template.org\\|README.org"
+                                   :exclude "template.org\\|README.org\\|sitemap.org"
                                    :publishing-function org-html-publish-to-html
                                    :headline-levels 4
                                    :html-postamble "
