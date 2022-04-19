@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const gitref = document.querySelector("#githubref");
     if (!window.location.pathname.endsWith(".html")) {
         const directory = window.location.pathname.split("/").slice(0, -1).join("/")
-        gitref.href = repourl + directory + "index.org"
+        gitref.href = repourl + directory + "/index.org"
     } else {
         gitref.href = repourl + window.location.pathname.replace(".html", ".org")
     }
