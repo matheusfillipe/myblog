@@ -221,25 +221,31 @@ if ((isMobile && (!load3d || load3d !== "true")) || (load3d && load3d === "false
 // TERMINAL
 
 //load sitemap for ls and cd commands
-
 document.addEventListener("DOMContentLoaded", async function() {
   let sitemap = await (await fetch("/sitemap.json")).json();
   sitemap = sitemap[0].contents;
 
-  let wd = ["."]
+  let wd = [".", ...window.location.pathname.toString().split("/").slice(0, -1).filter((p) => p)]
 
-  function getcwd(i = 1, cwd = null) {
+  function getDirObj(dirlist, i = 1, cwd = null) {
     cwd = cwd === null ? sitemap : cwd
+    if (i > dirlist.length) {
+      console.error(`dirlist is invalid: ${dirlist}`)
+      return cwd
+    }
     for (const node of cwd) {
-      if (node.name === wd[i] && node.type === "directory") {
-        return getcwd(i + 1, node.contents)
+      if (node.name === dirlist[i] && node.type === "directory") {
+        return getDirObj(dirlist, i + 1, node.contents)
       }
     }
     return cwd
   }
 
-  function getWdNodeType(type) {
-    let cwd = getcwd()
+  function getcwd() {
+    return getDirObj(wd)
+  }
+
+  function getNodeType(type, cwd) {
     const nodes = []
     cwd.forEach((node) => {
       if (node.type === type) {
@@ -249,11 +255,17 @@ document.addEventListener("DOMContentLoaded", async function() {
     return nodes
   }
 
+  function getWdNodeType(type) {
+    let cwd = getcwd()
+    return getNodeType(type, cwd)
+  }
+
   const commands = {
+    "search": () => { },
     "pwd": () => { },
     "ls": () => { },
     "cd": () => { return getWdNodeType("directory") },
-    "open": () => { return getWdNodeType("file")},
+    "open": () => { return getWdNodeType("file") },
     "ping": () => { },
     "apt": () => { },
     "pacman": () => { },
@@ -266,13 +278,32 @@ document.addEventListener("DOMContentLoaded", async function() {
     "why": () => { }
   }
 
+  var animation = false;
+  var prompt;
+  var string;
 
-  $('#terminal').terminal({
-    help: function() {
-      this.echo(`
+  function progress(percent, width) {
+    var size = Math.round(width * percent / 100);
+    var left = '', taken = '', i;
+    for (i = size; i--;) {
+      taken += '=';
+    }
+    if (taken.length > 0) {
+      taken = taken.replace(/=$/, '>');
+    }
+    for (i = width - size; i--;) {
+      left += ' ';
+    }
+    return '[' + taken + left + '] ' + percent + '%';
+  }
+  (function($) {
+    $('#terminal').terminal({
+      help: function() {
+        this.echo(`
   THE AVAILABLE COMMANDS ARE
   ----------------------------
 
+  search: Search string over the blog (Put it in between quotes)
   pwd: Print working directory
   ls: List directory
   cd: Move to a directory
@@ -284,62 +315,118 @@ document.addEventListener("DOMContentLoaded", async function() {
   torus: Replaces the planets with donuts (Reveal the truth)
   help: shows this help menu
   `);
-    },
-    pwd: function() {
-      const title = document.title
-      const path = window.location.pathname.toString()
-      const wds = "/" + wd.slice(1).join("/") + "/"
-      this.echo($(`<p>${path} <a href="${path}">${title}<a/><p/><p>${wds}</p>`));
-    },
-    ls: function() {
-      let names = "<p>"
-      const wds = "/" + wd.slice(1).join("/") + "/"
-      let folders = getWdNodeType("directory")
-      let files = getWdNodeType("file")
-      files.forEach((name) => {
-        const url = (wds + name).replace(/\/+/g, '/')
-        names += `<a href="${url}">${name}</a><br>`
-      })
-      folders.forEach((name) => {
-        names += ` ${name}<br>`
-      })
-      names += "</p>"
-      this.echo($(names))
-    },
-    cd: function(path) {
-      if (path == "..") {
-        if (wd.length > 1) wd.pop()
-        else this.echo("No upper directory!")
-        return
-      }
-      let folders = getWdNodeType("directory")
-      let files = getWdNodeType("file")
-      if (files.includes(path)) {
-        this.echo(`'${path}' is a webpage, you can open with with 'open'!`);
-        return
-      }
-      if (!folders.includes(path)) {
-        this.echo(`'${path}' is not a valid directory!`);
-        return
-      }
-      wd.push(path)
-    },
-    open: function(file) {
-      let files = getWdNodeType("file")
-      if (!files.includes(file)) {
-        this.echo(`'${file}' is not a valid webpage!`);
-        return
-      }
-      this.echo("Oppened in a new tab!")
-      const wds = "/" + wd.slice(1).join("/") + "/"
-      const url = (wds + file).replace(/\/+/g, '/')
-      window.open(url)
-    },
-    ping: function() {
-      this.echo("pong\n")
-    },
-    apt: function() {
-      this.echo(`
+      },
+      search: async function(query) {
+
+        async function loadPage(path) {
+          const page = await fetch(path)
+          const html = await page.text()
+          const doc = new DOMParser().parseFromString(html, "text/html")
+          return [doc.title, doc.querySelector("main").textContent]
+        }
+
+        function getDirs(smap) {
+          let dirs = smap.filter(p => p.type === "directory")
+          return dirs
+        }
+
+        function allFiles(dir = null, smap = null) {
+          smap = smap === null ? sitemap : smap
+          dir = dir === null ? ["."] : dir
+          let files = [...smap.filter(p => p.type === "file").map(p => ("/" + dir.slice(1).join("/") + "/" + p.name).replace(/\/+/g, '/'))]
+          for (const dobj of getDirs(smap)) {
+            let d = dobj.name
+            let ndir = [...dir, d]
+            let nmap = dobj.contents
+            files = [...files, ...allFiles(ndir, nmap)]
+          }
+          return files
+        }
+
+        this.echo(`Searching for:  '${query}'. CTRL+C to cancel`)
+
+        let i = 0;
+        let size = 50
+        let term = this;
+        const all = allFiles()
+        const len = all.length
+        prompt = this.get_prompt();
+        string = progress(0, size);
+        this.set_prompt(progress);
+        animation = true;
+
+        // TODO animation not displaying
+        for (const file of all) {
+          if (animation === false) {
+            return
+          }
+          string = progress(100 * i / len, size);
+          term.set_prompt(string);
+          let [title, text] = await loadPage(file)
+          if (text.toLocaleLowerCase().includes(query.toLocaleLowerCase())) {
+            term.echo($(`<a href="${file}">${title}<a/><br>`))
+          }
+          i++;
+        }
+        term.echo(progress(100, size) + ' [[b;green;]FINISHED]')
+          .set_prompt(prompt);
+        animation = false
+      },
+      pwd: function() {
+        const title = document.title
+        const path = window.location.pathname.toString()
+        const wds = "/" + wd.slice(1).join("/") + "/"
+        this.echo($(`<p>${path} <a href="${path}">${title}<a/><p/><p>${wds}</p>`));
+      },
+      ls: function() {
+        let names = "<p>"
+        const wds = "/" + wd.slice(1).join("/") + "/"
+        let folders = getWdNodeType("directory")
+        let files = getWdNodeType("file")
+        files.forEach((name) => {
+          const url = (wds + name).replace(/\/+/g, '/')
+          names += `<a href="${url}">${name}</a><br>`
+        })
+        folders.forEach((name) => {
+          names += ` ${name}<br>`
+        })
+        names += "</p>"
+        this.echo($(names))
+      },
+      cd: function(path) {
+        if (path == "..") {
+          if (wd.length > 1) wd.pop()
+          else this.echo("No upper directory!")
+          return
+        }
+        let folders = getWdNodeType("directory")
+        let files = getWdNodeType("file")
+        if (files.includes(path)) {
+          this.echo(`'${path}' is a webpage, you can open with with 'open'!`);
+          return
+        }
+        if (!folders.includes(path)) {
+          this.echo(`'${path}' is not a valid directory!`);
+          return
+        }
+        wd.push(path)
+      },
+      open: function(file) {
+        let files = getWdNodeType("file")
+        if (!files.includes(file)) {
+          this.echo(`'${file}' is not a valid webpage!`);
+          return
+        }
+        this.echo("Oppened in a new tab!")
+        const wds = "/" + wd.slice(1).join("/") + "/"
+        const url = (wds + file).replace(/\/+/g, '/')
+        window.open(url)
+      },
+      ping: function() {
+        this.echo("pong\n")
+      },
+      apt: function() {
+        this.echo(`
  ______
 < what >
  ------
@@ -350,9 +437,9 @@ document.addEventListener("DOMContentLoaded", async function() {
                 ||     ||
 
     `)
-    },
-    pacman: function() {
-      this.echo(`
+      },
+      pacman: function() {
+        this.echo(`
 ================================================.
      .-.   .-.     .--.                         |
     | OO| | OO|   / _.-' .-.   .-.  .-.   .''.  |
@@ -365,38 +452,38 @@ document.addEventListener("DOMContentLoaded", async function() {
 l42            |  '-'  |                |  '-'  |
 ==============='       '================'       |
     `)
-    },
-    gasconheart: function() {
-      this.echo("nc mangle.ga 8888")
-    },
-    explore: function() {
-      document.querySelector("main").remove()
-      document.querySelector("#postamble").remove()
-      document.querySelector(".title").remove()
-      document.querySelector("#disable3dlabel").remove()
-      reloadScene({ path: true })
-      this.echo("I've hidden he boring stuff that was written here\nYou might want to close this window for now or type 'help' to see new commands");
-    },
-    torus: function() {
-      planets.forEach((p) => {
-        if (p.planet.geometry.type === "TorusGeometry") {
-          return
-        }
-        const radius = p.planet.geometry.boundingSphere.radius
-        p.planet.geometry.dispose();
-        const geometry = new THREE.TorusGeometry(3 * radius, radius, 16, 100)
-        p.planet.geometry = geometry
-        p.rotation[2] = p.rotation[1] * 2
-      })
-    },
-    cat: function() {
-      this.echo($('<img src="https://placekitten.com/408/287">'));
-    },
-    star: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&repo=myblog&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>')) },
-    follow: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="230" height="30" title="GitHub"></iframe>')) },
-    why: function() { this.echo("Why not?") }
-  }, {
-    greetings: `
+      },
+      gasconheart: function() {
+        this.echo("nc mangle.ga 8888")
+      },
+      explore: function() {
+        document.querySelector("main").remove()
+        document.querySelector("#postamble").remove()
+        document.querySelector(".title").remove()
+        document.querySelector("#disable3dlabel").remove()
+        reloadScene({ path: true })
+        this.echo("I've hidden he boring stuff that was written here\nYou might want to close this window for now or type 'help' to see new commands");
+      },
+      torus: function() {
+        planets.forEach((p) => {
+          if (p.planet.geometry.type === "TorusGeometry") {
+            return
+          }
+          const radius = p.planet.geometry.boundingSphere.radius
+          p.planet.geometry.dispose();
+          const geometry = new THREE.TorusGeometry(3 * radius, radius, 16, 100)
+          p.planet.geometry = geometry
+          p.rotation[2] = p.rotation[1] * 2
+        })
+      },
+      cat: function() {
+        this.echo($('<img src="https://placekitten.com/408/287">'));
+      },
+      star: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&repo=myblog&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>')) },
+      follow: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="230" height="30" title="GitHub"></iframe>')) },
+      why: function() { this.echo("Why not?") }
+    }, {
+      greetings: `
   ______                    _             __
  /_  __/__  _________ ___  (_)___  ____ _/ /
   / / / _ \\/ ___/ __ \`__ \\/ / __ \\/ __ \`/ /
@@ -407,17 +494,106 @@ l42            |  '-'  |                |  '-'  |
   WELCOME TO THE TERMINAL
   Type 'help' to see available commands
   `,
-    enabled: false,
-    completion: function(string, callback) {
-      for (const cmd of Object.keys(commands)) {
-        const pattern = new RegExp("^" + cmd)
-        if (this.get_command().match(pattern)) {
-          const cmds = commands[cmd]();
-          return cmds
+      enabled: false,
+      completion: function(string, callback) {
+        for (const cmd of Object.keys(commands)) {
+          const pattern = new RegExp("^" + cmd)
+          if (this.get_command().match(pattern)) {
+            const cmds = commands[cmd]();
+            return cmds
+          }
+        }
+        const cmds = Array.from(Object.keys(commands));
+        return cmds
+      },
+      keydown: function(e, term) {
+        if (e.which === 68 && e.ctrlKey) { // CLTR+D
+          document.querySelector("#terminalwindow").classList.add("terminal--hidden")
+          return false;
+        }
+        if (animation) {
+          if (e.which == 67 && e.ctrlKey) { // CTRL+C
+            animation = false;
+            term.echo(string + ' [[b;red;]FAIL]')
+              .set_prompt(prompt);
+          }
+          return false;
         }
       }
-      const cmds = Array.from(Object.keys(commands));
-      return cmds
-    }
-  });
+    });
+    $('#terminal').terminal().echo(new $.terminal.FramesAnimation([
+      [
+        '  o    ',
+        '       ',
+        '       ',
+        '       '
+      ],
+      [
+        '       ',
+        '   o   ',
+        '       ',
+        '       '
+      ],
+      [
+        '       ',
+        '       ',
+        '    o  ',
+        '       '
+      ],
+      [
+        '       ',
+        '       ',
+        '       ',
+        '     o '
+      ],
+      [
+        '       ',
+        '       ',
+        '      o',
+        '       '
+      ],
+      [
+        '       ',
+        '     o ',
+        '       ',
+        '       '
+      ],
+      [
+        '    o  ',
+        '       ',
+        '       ',
+        '       '
+      ],
+      [
+        '       ',
+        '   o   ',
+        '       ',
+        '       '
+      ],
+      [
+        '       ',
+        '       ',
+        '  o    ',
+        '       '
+      ],
+      [
+        '       ',
+        '       ',
+        '       ',
+        ' o     '
+      ],
+      [
+        '       ',
+        '       ',
+        'o      ',
+        '       '
+      ],
+      [
+        '       ',
+        ' o     ',
+        '       ',
+        '       '
+      ]
+    ], 8));
+  })(jQuery.noConflict());
 });
