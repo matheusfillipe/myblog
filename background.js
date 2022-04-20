@@ -222,132 +222,152 @@ if ((isMobile && (!load3d || load3d !== "true")) || (load3d && load3d === "false
 
 //load sitemap for ls and cd commands
 
-document.addEventListener("DOMContentLoaded", function() {
-  const iframe = document.querySelector('#sitemapframe');
-  const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-  const mapul = iframeDocument.querySelector(".org-ul")
+document.addEventListener("DOMContentLoaded", async function() {
+  let sitemap = await (await fetch("/sitemap.json")).json();
+  sitemap = sitemap[0].contents;
 
-  function parseUl(parent) {
-    return Array.prototype.slice.call(parent.children).map(function(elm) {
-      if (elm.tagName === "UL") {
-        return parseUl(elm)
-      } else if (elm.tagName === "LI") {
-        return { "name": elm.textContent.split("\n")[0], "children": parseUl(elm) }
-      } else if (elm.tagName === "A") {
-        return { "link": elm.href, "children": [] }
+  let wd = ["."]
+
+  function getcwd(i = 1, cwd = null) {
+    cwd = cwd === null ? sitemap : cwd
+    for (const node of cwd) {
+      if (node.name === wd[i] && node.type === "directory") {
+        return getcwd(i + 1, node.contents)
+      }
+    }
+    return cwd
+  }
+
+  function getWdNodeType(type) {
+    let cwd = getcwd()
+    const nodes = []
+    cwd.forEach((node) => {
+      if (node.type === type) {
+        nodes.push(node.name)
       }
     })
+    return nodes
   }
 
-  const sitemap = parseUl(mapul)
-  console.debug(sitemap)
-
-  let wd = []
-
-  function getcwd(i = 0, children = null) {
-    if (children === null) {
-      children = sitemap
-    }
-    if (wd.length < i) {
-      return children
-    }
-    let newChildren = null
-    for (const item of children) {
-      if (item.name !== wd[i]) {
-        continue
-      }
-      // debugger;
-      if (item.children && (item.children.length >= 1 || (item.children[0].length && item.children[0].length >= 1))) {
-        newChildren = item.children.length >= 1  ? item.children : item.children[0]
-        break
-      }
-    }
-    return getcwd(i + 1, newChildren)
+  const commands = {
+    "pwd": () => { },
+    "ls": () => { },
+    "cd": () => { return getWdNodeType("directory") },
+    "open": () => { return getWdNodeType("file")},
+    "ping": () => { },
+    "apt": () => { },
+    "pacman": () => { },
+    "gasconheart": () => { },
+    "explore": () => { },
+    "torus": () => { },
+    "cat": () => { },
+    "star": () => { },
+    "follow": () => { },
+    "why": () => { }
   }
+
 
   $('#terminal').terminal({
     help: function() {
       this.echo(`
   THE AVAILABLE COMMANDS ARE
-  pwd: current directory
+  ----------------------------
+
+  pwd: Print working directory
   ls: List directory
   cd: Move to a directory
-  open: Open current directory in browser
+  open: Open a webpage from the current directory passed as argument
   cat: cat
   star: star this project on github
   follow: follow me on github
   explore: Explore the 3d space (requires FX enabled)
-  torus: Replaces the planets with donuts
+  torus: Replaces the planets with donuts (Reveal the truth)
   help: shows this help menu
   `);
-    },
-    torus: function() {
-      planets.forEach((p) => {
-        p.planet.geometry.dispose();
-        const geometry = new THREE.TorusGeometry(10, 3, 16, 100)
-        const material = new THREE.MeshStandardMaterial({color: 0xFF6347})
-        p.planet.geometry = geometry
-      })
     },
     pwd: function() {
       const title = document.title
       const path = window.location.pathname.toString()
-      this.echo($(`<p>${path} <a href="${path}">${title}<a/><p/>`));
-      if (wd) {
-        this.echo(`/${wd.join("/")}`)
-      }
+      const wds = "/" + wd.slice(1).join("/") + "/"
+      this.echo($(`<p>${path} <a href="${path}">${title}<a/><p/><p>${wds}</p>`));
     },
     ls: function() {
       let names = "<p>"
-      let cwd = getcwd()
-      cwd.forEach((item) => {
-        let prepend = ""
-        let url = ""
-        if (item.children && (item.children.length <= 1 || item.children[0].length && item.children[0].length <= 1)) {
-          if (item.children[0].link) {
-            url = item.children[0].link
-          }
-        }
-        if (item.children && (item.children.length > 1 || item.children[0].length && item.children[0].length > 1)) {
-          prepend = " "
-        }
-        if (!url && !prepend) {
-          return
-        }
-
-        names += prepend
-        if (url) {
-          names += `<a href="${url}">`
-        }
-        names += item.name
-        if (url) {
-          names += "</a>"
-        }
-        names += "<br>"
+      const wds = "/" + wd.slice(1).join("/") + "/"
+      let folders = getWdNodeType("directory")
+      let files = getWdNodeType("file")
+      files.forEach((name) => {
+        const url = (wds + name).replace(/\/+/g, '/')
+        names += `<a href="${url}">${name}</a><br>`
+      })
+      folders.forEach((name) => {
+        names += ` ${name}<br>`
       })
       names += "</p>"
       this.echo($(names))
     },
     cd: function(path) {
       if (path == "..") {
-        wd.pop()
+        if (wd.length > 1) wd.pop()
+        else this.echo("No upper directory!")
         return
       }
-      let folders = []
-      sitemap.forEach((item) => {
-        if (item.children && (item.children.length > 1 || item.children[0].length && item.children[0].length > 1)) {
-          folders.push(item.name)
-        }
-      })
-
+      let folders = getWdNodeType("directory")
+      let files = getWdNodeType("file")
+      if (files.includes(path)) {
+        this.echo(`'${path}' is a webpage, you can open with with 'open'!`);
+        return
+      }
       if (!folders.includes(path)) {
-        this.echo(`${path} is not a valid directory!`);
+        this.echo(`'${path}' is not a valid directory!`);
         return
       }
       wd.push(path)
     },
     open: function(file) {
-      this.echo("Opening...")
+      let files = getWdNodeType("file")
+      if (!files.includes(file)) {
+        this.echo(`'${file}' is not a valid webpage!`);
+        return
+      }
+      this.echo("Oppened in a new tab!")
+      const wds = "/" + wd.slice(1).join("/") + "/"
+      const url = (wds + file).replace(/\/+/g, '/')
+      window.open(url)
+    },
+    ping: function() {
+      this.echo("pong\n")
+    },
+    apt: function() {
+      this.echo(`
+ ______
+< what >
+ ------
+        \\   ^__^
+         \\  (oo)\\_______
+            (__)\\       )\\/\\
+                ||----w |
+                ||     ||
+
+    `)
+    },
+    pacman: function() {
+      this.echo(`
+================================================.
+     .-.   .-.     .--.                         |
+    | OO| | OO|   / _.-' .-.   .-.  .-.   .''.  |
+    |   | |   |   \\  '-. '-'   '-'  '-'   '..'  |
+    '^^^' '^^^'    '--'                         |
+===============.  .-.  .================.  .-.  |
+               | |   | |                |  '-'  |
+               | |   | |                |       |
+               | ':-:' |                |  .-.  |
+l42            |  '-'  |                |  '-'  |
+==============='       '================'       |
+    `)
+    },
+    gasconheart: function() {
+      this.echo("nc mangle.ga 8888")
     },
     explore: function() {
       document.querySelector("main").remove()
@@ -356,6 +376,18 @@ document.addEventListener("DOMContentLoaded", function() {
       document.querySelector("#disable3dlabel").remove()
       reloadScene({ path: true })
       this.echo("I've hidden he boring stuff that was written here\nYou might want to close this window for now or type 'help' to see new commands");
+    },
+    torus: function() {
+      planets.forEach((p) => {
+        if (p.planet.geometry.type === "TorusGeometry") {
+          return
+        }
+        const radius = p.planet.geometry.boundingSphere.radius
+        p.planet.geometry.dispose();
+        const geometry = new THREE.TorusGeometry(3 * radius, radius, 16, 100)
+        p.planet.geometry = geometry
+        p.rotation[2] = p.rotation[1] * 2
+      })
     },
     cat: function() {
       this.echo($('<img src="https://placekitten.com/408/287">'));
@@ -375,6 +407,17 @@ document.addEventListener("DOMContentLoaded", function() {
   WELCOME TO THE TERMINAL
   Type 'help' to see available commands
   `,
-    enabled: false
+    enabled: false,
+    completion: function(string, callback) {
+      for (const cmd of Object.keys(commands)) {
+        const pattern = new RegExp("^" + cmd)
+        if (this.get_command().match(pattern)) {
+          const cmds = commands[cmd]();
+          return cmds
+        }
+      }
+      const cmds = Array.from(Object.keys(commands));
+      return cmds
+    }
   });
 });

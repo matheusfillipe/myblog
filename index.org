@@ -6,9 +6,11 @@
 
 
 * WELCOME
-What is this? The aesthetics of the 90's internet with webgl? Don't worry, if the 3D background effects are killing your cpu you can disable them with the top left button.
+What is this? The aesthetics of the 90's internet with webgl? Don't worry, if the 3D background effects are killing your cpu you can disable them with the top left "FX" checkbox. There is also a terminal for hackers on that corner.
 
-This is my personal website/blog build with emacs org-mode. The fancy background was made with [[https://threejs.org/][threejs]]. I like to code in general, create music, 3D art and games. I also have a high interest in many areas of physics and math which I will also write about here.
+This is my personal website/blog build with emacs org-mode. The fancy background was made with [[https://threejs.org/][threejs]].
+
+I like to code in general, create music, 3D art and games. I also have a high interest in many areas of physics and math which I will also write about here.
 
 This whole site is built from a CI pipeline that invokes emacs on a archlinux container building the static content. The source code for this whole blog can be found at [[https://github.com/matheusfillipe/myblog][this]] github repository. If you want to correct anything or ask anything [[https://docs.github.com/en/github-ae@latest/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests][PR's]] are welcome!
 

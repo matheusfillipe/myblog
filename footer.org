@@ -19,6 +19,5 @@
     <div id="terminal"></div>
 </div>
 </div>
-<iframe width="0" height="0" id="sitemapframe" src="/sitemap.html"></iframe>
 <script type="module" src="/background.js"></script>
 #+end_export

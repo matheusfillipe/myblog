@@ -1,5 +1,4 @@
 /**** style.css ***/
-/**** style.css ***/
 :root {
     --dark-bg: rgba(15, 15, 15, 0.95);
     --spacing: 10px;
@@ -225,8 +224,10 @@ h1, h2, h3, blockquote {
     border: none;
     outline: blue;
     border-radius: 20px;
-    width: 80vw;
-    height: 50vh;
+    width: 70vw;
+    height: 70vh;
+    max-height: 720px;
+    max-width: 720px;
     transition: transform 0.2s;
     z-index: 200;
     overflow-x: hidden;
@@ -357,6 +358,6 @@ h1, h2, h3, blockquote {
     }
 }
 
-#sitemapframe {
-    display: none
+p {
+    font-family: 'Helvetica';
 }

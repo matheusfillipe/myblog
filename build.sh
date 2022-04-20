@@ -54,3 +54,10 @@ cp favicon.ico html/
 cp background.js html/
 cp -r assets html/
 emacs -Q --script build-site.el
+
+# Generate a proper sitemap
+echo "Generating json sitemap"
+cd html/
+tree -J -P "*.html" -I "footer.html" -I "header.html" -I "assets" -I "sitemap.html" > sitemap.json
+
+echo "All done!"
