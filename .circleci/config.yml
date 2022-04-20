@@ -8,8 +8,10 @@ jobs:
       - checkout
       - run: |
           yes | pacman -Syu || true
-          yes | pacman -Sy emacs git nodejs npm tree || true
+          yes | pacman -Sy emacs git nodejs npm tree wget || true
           npm install netlify-cli -g
+          wget https://github.com/tdewolff/minify/releases/download/v2.11.1/minify_linux_amd64.tar.gz
+          tar -xf minify_linux_amd64.tar.gz
           ./build.sh
           netlify deploy --site curious-squirrel-9f2b0c --auth $NETLIFY_ACCESS_TOKEN --prod --dir=html/
 

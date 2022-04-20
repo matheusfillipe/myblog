@@ -60,4 +60,10 @@ echo "Generating json sitemap"
 cd html/
 tree -J -P "*.html" -I "footer.html" -I "header.html" -I "assets" -I "sitemap.html" > sitemap.json
 
+echo "Minifying..."
+for f in html/*
+do
+  ./minify "$f" -o "$f"
+done
+
 echo "All done!"
