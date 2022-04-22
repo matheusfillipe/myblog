@@ -471,7 +471,7 @@ l42            |  '-'  |                |  '-'  |
           if (p.planet.geometry.type === "TorusGeometry") {
             return
           }
-          const radius = p.planet.geometry.boundingSphere.radius
+          const radius = p.radius
           p.planet.geometry.dispose();
           const geometry = new THREE.TorusGeometry(3 * radius, radius, 16, 100)
           p.planet.geometry = geometry
