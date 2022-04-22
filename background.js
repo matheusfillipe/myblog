@@ -71,7 +71,7 @@ function load3dscene(full) {
       })
     )
     scene.add(planet)
-    planets.push({ planet, rotation, update })
+    planets.push({ planet, rotation, update, radius: size})
     return planet
   }
 
@@ -272,6 +272,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     "gasconheart": () => { },
     "explore": () => { },
     "torus": () => { },
+    "sphere": () => { },
     "cat": () => { },
     "star": () => { },
     "follow": () => { },
@@ -313,6 +314,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   follow: follow me on github
   explore: Explore the 3d space (requires FX enabled)
   torus: Replaces the planets with donuts (Reveal the truth)
+  sphere: Comes back to NASA's fake spherical model of the planets
   help: shows this help menu
   `);
       },
@@ -474,6 +476,18 @@ l42            |  '-'  |                |  '-'  |
           const geometry = new THREE.TorusGeometry(3 * radius, radius, 16, 100)
           p.planet.geometry = geometry
           p.rotation[2] = p.rotation[1] * 2
+        })
+      },
+      sphere: function() {
+        planets.forEach((p) => {
+          if (p.planet.geometry.type === "SphereGeometry") {
+            return
+          }
+          const radius = p.radius
+          p.planet.geometry.dispose();
+          const geometry = new THREE.SphereGeometry(radius, 32, 32)
+          p.planet.geometry = geometry
+          p.rotation[2] = 0
         })
       },
       cat: function() {
