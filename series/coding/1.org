@@ -1,0 +1,17 @@
+#+TITLE: Definitive solution for emacs's org-mode html exporting latex tikz
+#+DESCRIPTION: My solution for tikz exporting to html latex tikz
+#+AUTHOR: Matheus Fillipe
+#+DATE: <2022-04-15 Fri>
+#+INCLUDE: "../../header.org"
+#+TOC: headlines 4
+
+
+* Introduction
+
+
+* References
+- https://tikzjax.com/
+- https://orgmode.org/manual/Advanced-Export-Configuration.html
+- https://gist.github.com/RyanGreenup/79a8eb780ff958267730c7e5845f1045
+
+#+INCLUDE: "../../footer.org" :minlevel 1
