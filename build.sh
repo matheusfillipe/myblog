@@ -46,7 +46,6 @@ gen_indexes() {
 
 gen_indexes
 
-
 rm -rf html
 mkdir -p html
 cp style.css html/
@@ -63,8 +62,10 @@ tree -J -P "*.html" -I "footer.html" -I "header.html" -I "assets" -I "sitemap.ht
 cd ..
 
 echo "Minifying..."
-for f in html/**/*
+shopt -s globstar nullglob dotglob
+for f in html/**/*.{css,html,js,json}
 do
+  echo "$f"
   ./minify "$f" -o "$f"
 done
 

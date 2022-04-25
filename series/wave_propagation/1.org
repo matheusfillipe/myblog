@@ -245,11 +245,23 @@ $x_2 - x_1 = \sum_i^N A_i sin(\sqrt{\frac{k}{m}} \ t + t_i)$
 What this means in the end is that mathematically we could choose infinite constants $A_i$ and $t_i$ we could choose.
 
 
+----------------------------------------------------------------------------------------------------------------------------------------------
 
 
-
-
-
+#+name: tikz Image
+#+header: :results file drawer
+#+header: :file /tmp/org_latex_image.png
+#+header: :imagemagick yes
+#+header: :headers '("\\usepackage{tikz}")
+#+HEADER: :fit yes :imoutoptions -geometry 400
+#+begin_src latex
+\begin{tikzpicture}
+\fill[yellow] (0,0) circle (3cm);
+\draw[->] (-3,0) -- (-2,0) arc[radius=0.5cm,start angle=-180,end angle=0] (-1,0) -- (1,0) arc[radius=0.5cm,start angle=180,end angle=0] (2,0) -- (3,0);
+\filldraw (-1.5,0) circle[radius=1mm];
+\filldraw (1.5,0) circle[radius=1mm];
+\end{tikzpicture}
+#+end_src
 
 
 We can simply embed the $\frac {1}{2}$ inside $A$ in the future. Also to respect condition 4 we must do:
