@@ -263,6 +263,11 @@ What this means in the end is that mathematically we could choose infinite const
 \end{tikzpicture}
 #+end_src
 
+#+RESULTS: tikz Image
+:results:
+[[file:/tmp/org_latex_image.png]]
+:end:
+
 
 We can simply embed the $\frac {1}{2}$ inside $A$ in the future. Also to respect condition 4 we must do:
 
