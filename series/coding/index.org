@@ -12,6 +12,8 @@ Posts about coding.
 
 # LIST BEGIN
 
+- [[file:1.org][Definitive solution for emacs's org-mode html exporting latex tikz]]       My solution for tikz exporting to html latex tikz
+
 # LIST END
 
 #+INCLUDE: "../../footer.org" :minlevel 1

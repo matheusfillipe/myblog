@@ -50,6 +50,7 @@ rm -rf html
 mkdir -p html
 cp style.css html/
 cp script.js html/
+cp comments.js html/
 cp favicon.ico html/
 cp background.js html/
 cp -r assets html/

@@ -12,6 +12,8 @@ Let's create some wave models!
 * Parts
 
 # LIST BEGIN
+- [[file:1.org][Definitive solution for emacs's org-mode html exporting latex tikz]]       My solution for tikz exporting to html latex tikz
+
 - [[file:1.org][Wave Propagation Part 1]]       In this series I am going to try to create a simplified model for logitudinal pressure waves propagation on fluids based on the interaction between its particles. Or main goal is to go step by step on the physics behind it, solving problems that gradually increase complexity, to have a theoretical preview of the relationship between the fluid's density and the wave's speed.
 
 # LIST END

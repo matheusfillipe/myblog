@@ -127,7 +127,7 @@ canvas {
     background: #1a1a1bf0;
 }
 
-main .outline-2, #table-of-contents {
+main .outline-2, #table-of-contents, #comments {
     padding: 0 15px 0 15px;
     border-radius: 15px 50px 30px 5px;
     background: black;
@@ -136,7 +136,7 @@ main .outline-2, #table-of-contents {
 }
 
 @supports ((-webkit-backdrop-filter: blur(4px)) or (backdrop-filter: blur(4px))) {
-    main .outline-2, #table-of-contents {
+    main .outline-2, #table-of-contents, #comments {
         background: #1a1a1bb0;
         -webkit-backdrop-filter: blur(4px);
         backdrop-filter: blur(4px);
@@ -353,11 +353,45 @@ h1, h2, h3, blockquote {
         border-radius: 0;
     }
 
-    main .outline-2, #table-of-contents {
+    main .outline-2, #table-of-contents, #comments {
         border-radius: 0;
     }
 }
 
 p {
     font-family: 'Helvetica';
+}
+
+#comments {
+    color-scheme: dark;
+    margin: 10px;
+}
+
+#new-comment-form {
+    padding: 5px;
+}
+
+#comment-list {
+    padding: 5px;
+    list-style: none;
+}
+
+#comment-box, #post {
+    border: none;
+    border-radius: 5px;
+    boder-color: #3c81ba;
+    margin: 10px 0 6px 0;
+}
+
+#comments-section {
+    margin-top: 10%;
+}
+
+#post-comment {
+    float: right;
+    margin-right: 5%;
+}
+
+#post:hover{
+    background-color: deeppink;
 }

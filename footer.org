@@ -20,4 +20,21 @@
 </div>
 </div>
 <script type="module" src="/background.js"></script>
+
+
+<div id="comments">
+    <h2>Comments</h2>
+    <form id="new-comment-form">
+        <label for="username">Post a new comment</label><br>
+        <input type="text" id="comment-name" placeholder="Your name" minlength="4" maxlength="48" required>
+        <textarea id="comment-box" placeholder="Your comment here" minlength="10" maxlength="512" rows="5" style="resize: none;" required></textarea>
+        <button type="submit" id="post-comment">Post</button>
+    </form>
+    <div id="comments-section">
+        <h4 id="nocomment">Be the first to comment!</h4>
+        <ul id="comment-list">
+        </ul>
+    </div>
+</div>
+<script type="module" src="/comments.js"></script>
 #+end_export
