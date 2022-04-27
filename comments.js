@@ -124,6 +124,7 @@ const setupComments = () => {
   });
 
   document.body.addEventListener('keydown', function(e) {
+    if (e.repeat) return;
     if (!(e.key === 'Enter' && (e.metaKey || e.ctrlKey))) return;
     const target = e.target
     if (target.form) {

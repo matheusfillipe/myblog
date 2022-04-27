@@ -191,8 +191,13 @@ if ((isMobile && (!load3d || load3d !== "true")) || (load3d && load3d === "false
 // TERMINAL
 
 //load sitemap for ls and cd commands
+let hasLoadedContent = false;
+
 document.addEventListener("DOMContentLoaded", async function() {
-  let sitemap = await (await fetch("/sitemap.json")).json();
+  if (hasLoadedContent) return;
+  hasLoadedContent = true
+
+  let sitemap = await(await fetch("/sitemap.json")).json();
   sitemap = sitemap[0].contents;
 
   let wd = [".", ...window.location.pathname.toString().split("/").slice(0, -1).filter((p) => p)]
@@ -435,6 +440,8 @@ l42            |  '-'  |                |  '-'  |
         document.querySelector("#postamble").remove()
         document.querySelector(".title").remove()
         document.querySelector("#disable3dlabel").remove()
+        document.querySelector("#bgcover").remove()
+        document.querySelector("#comments").remove()
         reloadScene({ path: true })
         this.echo("I've hidden he boring stuff that was written here\nYou might want to close this window for now or type 'help' to see new commands");
       },

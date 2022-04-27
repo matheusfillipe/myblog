@@ -1,14 +1,33 @@
-(require 'ox)
+;; Set the package installation directory so that packages aren't stored in the
+;; ~/.emacs.d/elpa path.
+(require 'package)
+(setq package-user-dir (expand-file-name "./.packages"))
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
+
+;; Initialize the package system
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
+
+;; Install dependencies
+(package-install 'htmlize)
 (require 'ox-publish)
 
 ;; Org Publish
-(setq org-publish-use-timestamps-flag nil)
-(setq org-export-time-stamp-file nil)
-(setq org-export-with-broken-links t)
-(setq org-export-with-date t)
-(setq org-html-validation-link nil)
-(setq org-export-html-validation-link nil)
+(setq org-publish-use-timestamps-flag nil
+      org-export-time-stamp-file nil
+      org-export-with-broken-links t
+      org-export-with-date t
+      org-html-validation-link nil
+      org-html-head-include-scripts nil
+      org-html-head-include-default-style nil
+      org-html-doctype "html5"
+      org-export-html-validation-link nil)
 
+(setq org-src-fontify-natively t)
+(setq org-html-htmlize-output-type 'css)
+(setq org-html-htmlize-font-prefix "org-")
 
 (defun tikzjax-convert (backend)
   "Convert a latex org src block with tikz headers into a tizkjax html export block."
@@ -88,6 +107,7 @@
                                    :exclude "template.org\\|README.org\\|sitemap.org"
                                    :publishing-function org-html-publish-to-html
                                    :headline-levels 4
+                                   :htmlized-source t
                                    :html-postamble
                                    "
                                         <h2>﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏</h2>

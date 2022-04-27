@@ -49,6 +49,7 @@ gen_indexes
 rm -rf html
 mkdir -p html
 cp style.css html/
+cp code.css html/
 cp script.js html/
 cp comments.js html/
 cp utils.js html/
@@ -67,7 +68,7 @@ echo "Minifying..."
 shopt -s globstar nullglob dotglob
 for f in html/**/*.{css,html,js,json}
 do
-  # ./minify "$f" -o "$f"
+  ./minify "$f" -o "$f"
 done
 
 echo "All done!"

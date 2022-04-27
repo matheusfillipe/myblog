@@ -36,6 +36,8 @@ I also like to create some music when I free time. You can check out more on my 
 
 - [[file:1.org][Definitive solution for emacs's org-mode html exporting latex tikz]]       My solution for tikz exporting to html latex tikz
 
+- [[file:2.org][Adding a comment section to this blog with google firebase]]       Adding a comment section to this blog with google firebase
+
 # LIST END
 
 #+INCLUDE: "../../footer.org" :minlevel 1

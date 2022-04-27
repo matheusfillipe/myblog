@@ -1,6 +1,11 @@
 const repourl = "https://github.com/matheusfillipe/myblog/blob/master/"
 
+let hasLoadedContent = false;
+
 document.addEventListener("DOMContentLoaded", function() {
+    if (hasLoadedContent) return;
+    hasLoadedContent = true
+
     // Mark current page
     const navElements = document.querySelectorAll(".topbar-menu a.current")
     navElements.forEach((a) => {
@@ -127,12 +132,21 @@ document.addEventListener("DOMContentLoaded", function() {
             terminal.classList.add("terminal--hidden")
         }
         const showterminal = document.querySelector("#showterminal")
-        showterminal.onclick = () => {
+        const termtoggle = () => {
+            if (!document.readyState === 'complete') return;
             if (terminal.classList.contains("terminal--hidden")) {
                 showterm()
                 return
             }
             terminal.classList.add("terminal--hidden")
         }
+        showterminal.onclick = termtoggle
+
+        document.body.addEventListener('keydown', function(e) {
+            if (e.repeat) return;
+            if (!(e.key === '1' && (e.metaKey || e.ctrlKey))) return;
+            termtoggle()
+            console.log("11111")
+        });
     })(jQuery.noConflict());
 });
