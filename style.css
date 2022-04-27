@@ -365,6 +365,7 @@ p {
 #comments {
     color-scheme: dark;
     margin: 10px;
+    display: none;
 }
 
 #new-comment-form {
@@ -390,8 +391,40 @@ p {
 #post-comment {
     float: right;
     margin-right: 5%;
+    border-radius: 20%;
 }
 
-#post:hover{
-    background-color: deeppink;
+#post-comment:hover{
+    background-color: #a20a29;
+}
+
+
+div.comment {
+    background-color: #212121;
+    border-radius: 15px;
+    margin-top: 20px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+
+div.comment span {
+    color: #5ea6e1;
+}
+
+div.comment p {
+    text-align: center;
+    text-justify: inter-word;
+    margin: 5px 12px;
+    background: #373636;
+    border: #3c81ba;
+    border-width: 2px;
+    border-radius: 5px;
+    font-size: small;
+    border-style: solid;
+}
+
+div.comment timestamp {
+    float: right;
+    padding-right: 50%;
+    font-size: small;
 }

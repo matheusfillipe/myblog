@@ -51,6 +51,7 @@ mkdir -p html
 cp style.css html/
 cp script.js html/
 cp comments.js html/
+cp utils.js html/
 cp favicon.ico html/
 cp background.js html/
 cp -r assets html/
@@ -66,8 +67,7 @@ echo "Minifying..."
 shopt -s globstar nullglob dotglob
 for f in html/**/*.{css,html,js,json}
 do
-  echo "$f"
-  ./minify "$f" -o "$f"
+  # ./minify "$f" -o "$f"
 done
 
 echo "All done!"

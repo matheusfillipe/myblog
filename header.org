@@ -2,6 +2,7 @@
 #+HTML_HEAD: <link rel="stylesheet" href="https://latex.now.sh/style.css">
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/style.css" />
 #+HTML_HEAD: <script src="/script.js"></script>
+#+HTML_HEAD: <script type="module" src="/utils.js"></script>
 #+HTML_HEAD:       <script async src="https://ga.jspm.io/npm:es-module-shims@1.5.4/dist/es-module-shims.js"></script>
 #+HTML_HEAD:       <script type="importmap">
 #+HTML_HEAD:       {

@@ -1,0 +1,135 @@
+##+TITLE: Adding a comment section to this blog with google firebase
+#+DESCRIPTION: Adding a comment section to this blog with google firebase
+#+AUTHOR: Matheus Fillipe
+#+DATE: <2022-04-15 Fri>
+#+INCLUDE: "../../header.org"
+#+TOC: headlines 4
+
+
+* Points
+
+- Firebase realtime database doesn't seem to be very configurable reguarding spam prevention, ddos, etc, at first sight at least.
+- It has authentication built in, which I didn't want to use.
+- Firestore has more methods while the realtime database is simpler and more suitable for small projects. For example I had to give up on having a proof of work ddos prevention because I can't compute a hash on the realtime database rules. There is a very limited scripting you can do there.
+
+
+
+* Code
+
+#+TITLE: Html
+#+begin_src html
+<div id="comments">
+    <h2>Comments</h2>
+    <form id="new-comment-form">
+        <label for="username">Post a new comment</label><br>
+        <input type="text" id="comment-name" placeholder="Your name" minlength="4" maxlength="48" required>
+        <textarea id="comment-box" placeholder="Your comment here" minlength="10" maxlength="512" rows="5" style="resize: none;" required></textarea>
+        <button type="submit" id="post-comment">Post</button>
+    </form>
+    <div id="comments-section">
+        <h4 id="nocomment">Be the first to comment!</h4>
+        <ul id="comment-list">
+        </ul>
+    </div>
+</div>
+<script type="module" src="/comments.js"></script>
+#+end_src
+
+#+TITLE: CSS
+#+begin_src css
+#comments {
+    color-scheme: dark;
+    margin: 10px;
+    display: none;
+}
+
+#new-comment-form {
+    padding: 5px;
+}
+
+#comment-list {
+    padding: 5px;
+    list-style: none;
+}
+
+#comment-box, #post {
+    border: none;
+    border-radius: 5px;
+    boder-color: #3c81ba;
+    margin: 10px 0 6px 0;
+}
+
+#comments-section {
+    margin-top: 10%;
+}
+
+#post-comment {
+    float: right;
+    margin-right: 5%;
+    border-radius: 20%;
+}
+
+#post-comment:hover{
+    background-color: #a20a29;
+}
+
+
+div.comment {
+    background-color: #212121;
+    border-radius: 15px;
+    margin-top: 20px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+
+div.comment span {
+    color: #5ea6e1;
+}
+
+div.comment p {
+    text-align: center;
+    text-justify: inter-word;
+    margin: 5px 12px;
+    background: #373636;
+    border: #3c81ba;
+    border-width: 2px;
+    border-radius: 5px;
+    font-size: small;
+    border-style: solid;
+}
+
+div.comment timestamp {
+    float: right;
+    padding-right: 50%;
+    font-size: small;
+}
+#+end_src
+
+#+begin_src js
+
+#+end_src
+
+#+TITLE: Realtime database rules:
+#+begin_src json
+{
+  "rules": {
+    "$category": {
+      ".write": false,
+        ".read": true,
+        "$postid": {
+          ".read": true,
+          ".write": "!data.exists()",
+          ".validate": "$category.matches(/^\\d+-\\w+$/)",
+          "name": {".validate": "newData.isString() && newData.val().length <= 48 && newData.val().length >= 4"},
+          "text": {".validate": "newData.isString() && newData.val().length <= 512 && newData.val().length >= 10"},
+          "time": {".validate": "newData.isNumber() && newData.val() <= now && newData.val() >= now + 60"},
+          "$other": {".validate":  false }
+        }
+      }
+	}
+}
+#+end_src
+
+
+
+#+INCLUDE: "../../footer.org" :minlevel 1
