@@ -13,4 +13,6 @@
 
 This is the source code for my personal blog that can be found at: https://blog.mattf.tk/
 
+This is probably the most bloated emacs org-publish blog ever made so get ready!!!
+
 Every commit is automatically compiled by circleci using a [[https://archlinux.org/][archlinux]] image and running the build.sh script that invokes emacs compiling the .org files into html. The compiled html is then automatically deployed to [[https://www.netlify.com/][netlify]]'s CDN.
