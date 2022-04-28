@@ -2,7 +2,12 @@
 #+OPTIONS: toc:nil
 
 #+begin_export html
+<div id="prevnext">
+<a href="#" class="previous">&laquo; Previous post</a>
+<a href="#" class="next">Next post &raquo;</a>
+</div>
 </main>
+
 <br>
 <br>
 <button id="goTopBtn" title="Go to top"><a class="nobox" href="#top">

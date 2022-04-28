@@ -600,5 +600,35 @@ l42            |  '-'  |                |  '-'  |
       ]
     ], 8));
   })(jQuery.noConflict());
+
   window["myterminal-loaded"] = true;
+
+
+  // Add bottom navigation (next previous post)
+  (async () => {
+    const isOnPost = !(window.location.pathname.endsWith("index.html") || !window.location.pathname.endsWith(".html"))
+    if (!isOnPost) return;
+
+    let sitemap = await (await fetch("/sitemap.json")).json();
+    sitemap = sitemap[0].contents;
+    let files = getWdNodeType("file")
+    let pages = files.filter((name) => name !== "index.html" && typeof (name) === 'string')
+      .sort((a, b) => {
+        return a.replace(".html", "") - b.replace(".html", "")
+      })
+    const nextbtn = document.querySelector(".next")
+    const prevbtn = document.querySelector(".previous")
+    const current_name = window.location.pathname.split("/").slice(-1)[0]
+    const current_index = pages.indexOf(current_name)
+
+    if (current_index > 0) {
+      prevbtn.style.display = "inline-block"
+      prevbtn.href = "./" + pages[current_index - 1]
+    }
+    if (current_index < (pages.length - 1)) {
+      nextbtn.style.display = "inline-block"
+      nextbtn.href = "./" + pages[current_index + 1]
+    }
+  })()
+
 });

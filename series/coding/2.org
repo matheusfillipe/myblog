@@ -276,7 +276,7 @@ Then some type checking is applied and it is ensured that the timestamp is not f
 
 - Firebase realtime database doesn't seem to be very configurable regarding spam prevention, ddos, etc, at first sight at least.
 - It has authentication built in, which I didn't want to use.
-- So... there is this weird bug if you leave the browser's developers tools open the firebase client wont authenticate.
+- So... there is this weird bug if you leave the browser's developers tools open the firebase client wont authenticate. Is that a bug or some sort very bad "anti hacking" thing they try :P
 - Firestore has more methods while the realtime database is simpler and more suitable for small projects. For example I had to give up on having a proof of work ddos prevention because I can't compute a hash on the realtime database rules. There is a very limited scripting you can do there.
 
 You can check bellow my first tests of the this feature.
