@@ -14,7 +14,7 @@
 (package-install 'htmlize)
 (require 'ox-publish)
 
-;; Org Publish
+;; Org Publish Config
 (setq org-publish-use-timestamps-flag nil
       org-export-time-stamp-file nil
       org-export-with-broken-links t
@@ -110,14 +110,22 @@
                                    :htmlized-source t
                                    :html-postamble
                                    "
-                                        <h2>﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏</h2>
+                                        <h2>﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏</h2>
                                         <p class=\"title\"><a href=\"#top\">%t</a></p>
                                         <p class=\"author\">Author: %a</p>
                                         <p class=\"date\">Creation Date: %d</p>
                                         <p>Modified: %C</p>
                                         <p>View this page on <a id=\"githubref\" href=\"https://github.com/matheusfillipe/myblog/
 \">github</a></p>
-                                        <p class=\"creator\">%c</p>"
+                                        <p class=\"creator\">%c</p>
+
+                                        <ul class=\"rightNav\">
+                                        <span class=\"topbar-menu\"><a class=\"nobox\" href=\"https://www.instagram.com/pawns4love/\"><img title=\"Check out my pets on instagram!\" src=\"/assets/insta.png\"></a></span>
+                                        <span class=\"topbar-menu\"><a class=\"nobox\" href=\"https://open.spotify.com/user/flylfylfight\"><img title=\"Check out what I like to listen to\" src=\"/assets/spotify.png\"></a></span>
+                                        <span class=\"topbar-menu\"><a class=\"nobox\" href=\"https://www.youtube.com/channel/UC9v3ZuKniNaDvLrhffnTt9A\"><img title=\"My automated videos channel\" src=\"/assets/youtube.png\"></a></span>
+                                        <span class=\"topbar-menu\"><a class=\"nobox\" href=\"https://github.com/matheusfillipe/myblog\"><img title=\"View this blog repo's in github\" src=\"/assets/github.png\"></a></span>
+                                        </ul> "
+
                                    :auto-preamble t)))
 
 (org-publish-all t)

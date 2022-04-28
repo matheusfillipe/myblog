@@ -1,4 +1,4 @@
-#+SETUPFILE: https://gitlab.com/OlMon/org-themes/-/raw/master/src/latexcss/latexcss.theme
+# #+SETUPFILE: https://gitlab.com/OlMon/org-themes/-/raw/master/src/latexcss/latexcss.theme
 #+HTML_HEAD: <link rel="stylesheet" href="https://latex.now.sh/style.css">
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/style.css" />
 #+HTML_HEAD: <link href="/code.css" rel="stylesheet">
@@ -17,7 +17,7 @@
 #+HTML_HEAD: <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js"></script>
 #+HTML_HEAD: <link rel="stylesheet" href="https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css"/>
 #+HTML_HEAD: <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/animation.js"></script>
-#+HTML_HEAD: <style type="text/css">body{ min-width:60%; }</style>
+#+HTML_HEAD: <style type="text/css">body{ min-width: 70vw; }</style>
 
 #+OPTIONS: toc:nil
 

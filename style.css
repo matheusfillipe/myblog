@@ -10,7 +10,8 @@ body {
     overflow: auto;
     color: #d7dadc;
     background: var(--dark-bg);
-    background-image: url('/assets/nebula.png')
+    background-image: url('/assets/nebula.png');
+    background-size: 80%;
 }
 
 .orgyeah-header {
@@ -131,9 +132,25 @@ canvas {
 
 #postamble {
     padding: 0 15px 0 15px;
-    border-radius: 15px 50px 30px 5px;
+    border-radius: 15px 50px 0px 0px;
     background: black;
     background: #1a1a1bf0;
+    width: 95vw;
+    left: 0;
+    margin: 2.5vw;
+    position: absolute;
+}
+
+#postamble h2 {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+#postamble .rightNav {
+    float: right;
+    margin-right: 20%;
+    display: none;
 }
 
 main .outline-2, #table-of-contents, #comments {
@@ -406,9 +423,8 @@ p {
 }
 
 #post-comment:hover{
-    background-color: #a20a29;
+    background-color: #3b80b9;
 }
-
 
 div.comment {
     background-color: #212121;
@@ -438,4 +454,48 @@ div.comment timestamp {
     float: right;
     padding-right: 50%;
     font-size: small;
+}
+
+.btn-srccpy {
+    float: right;
+    position: absolute;
+    right: 8%;
+    margin-top: 10px;
+    border-radius: 20%;
+    background-color: darkblue;
+    color: white;
+    border-color: #75747a;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.btn-srccpy:after {
+  content: "";
+  background: #51b1ff;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px!important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s
+}
+
+.btn-srccpy:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s
+}
+
+.btn-srccpy:hover{
+    background-color: #3b80b9;
+}
+
+.btn-scrcpy-pressed {
+    background-color: #3b80b9;
 }

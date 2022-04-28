@@ -181,10 +181,16 @@ toggler.onclick = toggle3d
 
 // on page load
 var load3d = getCookie('load3d');
-if ((isMobile && (!load3d || load3d !== "true")) || (load3d && load3d === "false")) {
+// if ((isMobile && (!load3d || load3d !== "true")) || (load3d && load3d === "false")) {
+if ((!load3d || load3d !== "true") || (load3d && load3d === "false")) {
   toggler.checked = false
 } else {
   enablefx()
+}
+
+if (isMobile) {
+  document.querySelector(".extraNav").style.display = "none"
+  document.querySelector("#postamble .rightNav").style.display = "block"
 }
 
 
@@ -197,7 +203,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   if (hasLoadedContent) return;
   hasLoadedContent = true
 
-  let sitemap = await(await fetch("/sitemap.json")).json();
+  let sitemap = await (await fetch("/sitemap.json")).json();
   sitemap = sitemap[0].contents;
 
   let wd = [".", ...window.location.pathname.toString().split("/").slice(0, -1).filter((p) => p)]

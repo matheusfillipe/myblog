@@ -146,7 +146,23 @@ document.addEventListener("DOMContentLoaded", function() {
             if (e.repeat) return;
             if (!(e.key === '1' && (e.metaKey || e.ctrlKey))) return;
             termtoggle()
-            console.log("11111")
         });
     })(jQuery.noConflict());
+
+    // Add clipboard button to code tags using clipboard.js
+    document.querySelectorAll(".org-src-container").forEach(x => {
+        let btn = document.createElement("button");
+        btn.innerText = "Copy"
+        btn.classList.add("btn-srccpy");
+        btn.onclick = () => {
+            navigator.clipboard.writeText(x.querySelector("pre").innerText)
+            btn.innerText = "Copied!"
+            btn.classList.add("btn-scrcpy-pressed")
+            setTimeout(() => {
+                btn.innerText = "Copy"
+                btn.classList.remove("btn-scrcpy-pressed")
+            }, 2000)
+        };
+        x.prepend(btn);
+    });
 });

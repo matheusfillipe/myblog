@@ -1,4 +1,4 @@
-#+TITLE: Adding a comment section to this blog with google firebase
+#+TITLE: Adding a comment box with google firebase
 #+DESCRIPTION: Adding a comment section to this blog with google firebase
 #+AUTHOR: Matheus Fillipe
 #+DATE: <2022-04-15 Fri>
@@ -7,7 +7,7 @@
 
 
 * Why
-I never played enough with firebase and felt like a good opportunity.
+I never played enough with firebase and felt like a good opportunity. The final result is far from perfect, without optimizations for loading too many comments, spam prevention and dynamically loading.
 
 * What have I learned
 

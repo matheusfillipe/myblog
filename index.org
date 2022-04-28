@@ -1,14 +1,12 @@
 #+TITLE: Mattf's Homepage
-#+AUTHOR: Mattf
+#+AUTHOR: Matheus Fillipe
 #+DESCRIPTION: mattf.tk
 #+OPTIONS: num:nil ^:{}
 #+INCLUDE: "./header.org"
 
 
 * WELCOME
-What is this? The aesthetics of the 90's internet with webgl? Don't worry, if the 3D background effects are killing your cpu you can disable them with the top left "FX" checkbox. There is also a terminal for hackers on that corner.
-
-This is my personal website/blog build with emacs org-mode. The fancy background was made with [[https://threejs.org/][threejs]].
+This is my personal homepage/blog build with emacs org-mode. Don't forget to check out the terminal and the fancy 3D mode on the left corner. This fancy background was made with [[https://threejs.org/][threejs]].
 
 I like to code in general, create music, 3D art and games. I also have a high interest in many areas of physics and math which I will also write about here.
 
