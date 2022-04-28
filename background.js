@@ -600,4 +600,5 @@ l42            |  '-'  |                |  '-'  |
       ]
     ], 8));
   })(jQuery.noConflict());
+  window["myterminal-loaded"] = true;
 });

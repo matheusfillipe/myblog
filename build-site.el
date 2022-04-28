@@ -108,23 +108,28 @@
                                    :publishing-function org-html-publish-to-html
                                    :headline-levels 4
                                    :htmlized-source t
-                                   :html-postamble
-                                   "
+                                   :html-postamble "
                                         <h2>﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏</h2>
                                         <p class=\"title\"><a href=\"#top\">%t</a></p>
                                         <p class=\"author\">Author: %a</p>
+                                        <div class=\"postamble-left\">
                                         <p class=\"date\">Creation Date: %d</p>
                                         <p>Modified: %C</p>
+                                        </div>
+                                        <div class=\"postamble-right\">
                                         <p>View this page on <a id=\"githubref\" href=\"https://github.com/matheusfillipe/myblog/
 \">github</a></p>
                                         <p class=\"creator\">%c</p>
+                                        </div>
+
+
 
                                         <ul class=\"rightNav\">
                                         <span class=\"topbar-menu\"><a class=\"nobox\" href=\"https://www.instagram.com/pawns4love/\"><img title=\"Check out my pets on instagram!\" src=\"/assets/insta.png\"></a></span>
                                         <span class=\"topbar-menu\"><a class=\"nobox\" href=\"https://open.spotify.com/user/flylfylfight\"><img title=\"Check out what I like to listen to\" src=\"/assets/spotify.png\"></a></span>
                                         <span class=\"topbar-menu\"><a class=\"nobox\" href=\"https://www.youtube.com/channel/UC9v3ZuKniNaDvLrhffnTt9A\"><img title=\"My automated videos channel\" src=\"/assets/youtube.png\"></a></span>
                                         <span class=\"topbar-menu\"><a class=\"nobox\" href=\"https://github.com/matheusfillipe/myblog\"><img title=\"View this blog repo's in github\" src=\"/assets/github.png\"></a></span>
-                                        </ul> "
+                                        </ul>"
 
                                    :auto-preamble t)))
 

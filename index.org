@@ -1,5 +1,6 @@
 #+TITLE: Mattf's Homepage
 #+AUTHOR: Matheus Fillipe
+#+DATE: <2022-04-28 Thu>
 #+DESCRIPTION: mattf.tk
 #+OPTIONS: num:nil ^:{}
 #+INCLUDE: "./header.org"
@@ -14,7 +15,10 @@ This whole site is built from a CI pipeline that invokes emacs on a archlinux co
 
 
 * Featured Posts
-[[file:series/wave_propagation/1.org][Wave Propagation Part 1]]
+- [[file:series/wave_propagation/1.org][Wave Propagation Part 1]]
+- [[file:series/coding/1.org][Getting Tikz exports with org mode]]
+- [[file:series/coding/2.org][Comments with firebase]]
+
 
 
 * Links

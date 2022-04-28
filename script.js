@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         const showterminal = document.querySelector("#showterminal")
         const termtoggle = () => {
-            if (!document.readyState === 'complete') return;
+            if (!(document.readyState === 'complete') || !(window["myterminal-loaded"])) return;
             if (terminal.classList.contains("terminal--hidden")) {
                 showterm()
                 return

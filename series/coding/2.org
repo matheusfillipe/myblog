@@ -9,16 +9,18 @@
 * Why
 I never played enough with firebase and felt like a good opportunity. The final result is far from perfect, without optimizations for loading too many comments, spam prevention and dynamically loading.
 
-* What have I learned
+* What have I learned/noticed
 
-- Firebase realtime database doesn't seem to be very configurable reguarding spam prevention, ddos, etc, at first sight at least.
+- Firebase realtime database doesn't seem to be very configurable regarding spam prevention, ddos, etc, at first sight at least.
 - It has authentication built in, which I didn't want to use.
+- So... there is this weird bug if you leave the browser's developers tools open the firebase client wont authenticate.
 - Firestore has more methods while the realtime database is simpler and more suitable for small projects. For example I had to give up on having a proof of work ddos prevention because I can't compute a hash on the realtime database rules. There is a very limited scripting you can do there.
 
 
 
 * Code
-
+** Html
+Nothing really special here.
 #+NAME: Html
 #+BEGIN_SRC html
 <div id="comments">
@@ -38,6 +40,8 @@ I never played enough with firebase and felt like a good opportunity. The final 
 <script type="module" src="/comments.js"></script>
 #+END_SRC
 
+** Css
+This could be improved, hire a designer?
 #+NAME: CSS
 #+begin_src css
 #comments {
@@ -110,24 +114,18 @@ div.comment timestamp {
 }
 #+end_src
 
+** Javascript
+Now here the magic happens. Ignore the cookie stuff. We initialize a firebase realtime database client as firebase will recommend us itself, choosing the cdn route.
+
 #+NAME: Javascript
 #+begin_src js
 // Import the functions you need from the SDKs you need
-import { setCookie, getCookie, isOnPost } from '/utils.js'
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
 import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
 
 const setupComments = () => {
   if (!isOnPost) {
     return
-  }
-
-  // Fill in username if ever commented
-  const username = getCookie('username')
-  if (username) {
-    document.getElementById("comment-name").value = username
-    const uname = document.getElementById("comment-name");
-    uname.disabled = true
   }
 
   const firebaseConfig = {
@@ -255,6 +253,7 @@ setupComments();
 
 #+end_src
 
+** Firebase rules
 #+NAME: Realtime database rules:
 #+begin_src json
 {
