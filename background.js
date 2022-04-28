@@ -612,7 +612,7 @@ l42            |  '-'  |                |  '-'  |
     let sitemap = await (await fetch("/sitemap.json")).json();
     sitemap = sitemap[0].contents;
     let files = getWdNodeType("file")
-    let pages = files.filter((name) => name !== "index.html" && typeof (name) === 'string')
+    let pages = files.filter((name) => name !== "index.html" && typeof (name) === 'string' && name.endsWith(".html"))
       .sort((a, b) => {
         return a.replace(".html", "") - b.replace(".html", "")
       })
