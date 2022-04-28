@@ -8,10 +8,168 @@
 
 * Introduction
 
+[[https://www.overleaf.com/learn/latex/TikZ_package][TikZ]] is an latex package that lets you draw basic math shapes including lines, dots, curves, circles, rectangles etc. I found the need for it right on my first attempt of writing a math article here: [[file:~/Projects/sciblog/series/wave_propagation/1.org][the wave model pt1]]
+
+TikZ example:
+#+begin_src latex
+\begin{tikzpicture}
+
+\draw (-2,0) -- (2,0);
+\filldraw [gray] (0,0) circle (2pt);
+\draw (-2,-2) .. controls (0,0) .. (2,-2);
+\draw (-2,2) .. controls (-1,0) and (1,0) .. (2,2);
+
+\end{tikzpicture}
+#+end_src
+
+*RESULT:*
+#+name: tikz Image
+#+header: :results file drawer
+#+header: :file /tmp/org_latex_image.png
+#+header: :imagemagick yes
+#+header: :headers '("\\usepackage{tikz}")
+#+HEADER: :fit yes :imoutoptions -geometry 400
+#+begin_src latex
+\begin{tikzpicture}
+
+\draw (-2,0) -- (2,0);
+\filldraw [gray] (0,0) circle (2pt);
+\draw (-2,-2) .. controls (0,0) .. (2,-2);
+\draw (-2,2) .. controls (-1,0) and (1,0) .. (2,2);
+
+\end{tikzpicture}
+#+end_src
+
+#+RESULTS: tikz Image
+:results:
+[[file:/tmp/org_latex_image.png]]
+:end:
+
+After hours of googling and trying gigantic blocks of elisp, exporting things to svg or png images and trying to automatically generate ~<img>~ tags for them on the exported html I couldn't find something that made me happy.
+
+I actually didn't want to have to host those images, this is a full static website, the latex formulas are rendered with MathJax and that gave me the idea that something similar should exist for tikz. It is just a latex library after all. The less file I have to host the better it is.
+
+So I found this: https://github.com/kisonecat/tikzjax. Basically you just wrap latex code within ~<script type="text/tikz"></script>~ and it gets rendered into a svg! This is done by using a build of tex into webassembly. This means this svg is generated on the fly in your browser, costing your cpu time instead of my storage ;).
+
+With the code bellow I was able to automatically convert the latex source blocks into the html export to use tikzjax automatically using org-publish hooks.
+
+
+* Code
+
+** Org snippet  (Yas)
+
+#+begin_src org
+    # -*- mode: snippet -*-
+    # name: tikz image for html export
+    # key: tikz
+    # --
+    #+name: tikz Image
+    #+header: :results file drawer
+    #+header: :file /tmp/org_latex_image.png
+    #+header: :imagemagick yes
+    #+header: :headers '("\\\\usepackage{tikz}")
+    #+HEADER: :fit yes :imoutoptions -geometry 400
+    #+begin_src latex
+    \begin{tikzpicture}
+    \fill[yellow] (0,0) circle (3cm);
+    \end{tikzpicture}
+    ,#+end_src
+#+end_src
+
+** init.el
+
+This is still good to have so that you can ~C-c C-c~ on the block and see the image on the org result. The result will be removed automatically by the next code.
+
+#+begin_src emacs-lisp
+
+(add-to-list 'org-latex-packages-alist
+             '("" "tikz" t))
+(add-to-list 'org-latex-packages-alist
+             '("" "tikz-cd" t))
+
+#+end_src
+
+** org-publish elisp hook
+
+Loop through source code blocks and if it is a ~latex~ src with the ~\usepackage{tikz}~ header then it must be converted into an image. This is done by changing it from a src block to a ~html_export~ one with the tikzjax script tags around the original latex code.
+
+Finally this is passed to ~org-export-before-parsing-hook~ which will run for every org file ~org-publish~ converts.
+
+#+begin_src emacs-lisp
+(defun tikzjax-convert (backend)
+  "Convert a latex org src block with tikz headers into a tizkjax html export block."
+  (setq is-tikz nil)
+  ;; Loop over src blocks and stops when there is no left
+  (while (condition-case nil (org-babel-next-src-block)
+           (error
+            nil))
+
+    ;; Extract relevant info from the org src block
+    (setq src-info (org-babel-get-src-block-info))
+    (let ((type (nth 0 src-info))
+          (code (nth 1 src-info))
+          (headers (seq-filter
+                    (lambda (str)
+                      (not (string= str ":headers")))
+                    (assoc :headers (nth 2 src-info)))))
+
+      ;; Check if it is a latex block with tikz on the headers
+      (if (and (string= type "latex")
+               (seq-contains-p headers "\\usepackage{tikz}" ))
+          ;; Clean it up, change it to a html export and wrap it with the script tags
+          (progn
+            (setq is-tikz t)
+            (org-babel-remove-result)
+            (beginning-of-line)
+            (kill-line)
+            (insert "#+begin_export html")
+            (end-of-line)
+            (newline-and-indent)
+            (insert "<div class=\"tikzjax\"><script type=\"text/tikz\">")
+            (search-forward-regexp "^\s*#\\+end_src\s*$")
+            (beginning-of-line)
+            (kill-line)
+            (insert "#+end_export")
+            (forward-line -1)
+            (end-of-line)
+            (newline-and-indent)
+            (insert "</script></div>")))))
+  ;; In the end, if it is a tikz src block add the proper html headers for tikzjax on this org file
+  (if is-tikz (progn
+                ;; Here im just trying to add it after all #+ on the beginning of the file
+                (goto-char (point-min))
+                (end-of-line)
+                (newline-and-indent)
+                ;; Insert tikzjax headers
+                (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"https://tikzjax.com/v1/fonts.css\">")
+                (end-of-line)
+                (newline-and-indent)
+                (insert "#+HTML_HEAD: <script src=\"https://tikzjax.com/v1/tikzjax.js\"></script>"))))
+
+
+(add-hook 'org-export-before-parsing-hook #'tikzjax-convert)
+#+end_src
+
+** CSS
+
+Centralize horizontally, some bad color choices as usual.
+
+#+begin_src css
+.tikzjax {
+    background-color: beige;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #3c81ba;
+    display: flex;
+    justify-content: center;
+}
+#+end_src
+
 
 * References
 - https://tikzjax.com/
 - https://orgmode.org/manual/Advanced-Export-Configuration.html
 - https://gist.github.com/RyanGreenup/79a8eb780ff958267730c7e5845f1045
+
 
 #+INCLUDE: "../../footer.org" :minlevel 1

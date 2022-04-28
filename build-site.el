@@ -58,7 +58,7 @@
             (insert "#+begin_export html")
             (end-of-line)
             (newline-and-indent)
-            (insert "<script type=\"text/tikz\">")
+            (insert "<div class=\"tikzjax\"><script type=\"text/tikz\">")
             (search-forward-regexp "^\s*#\\+end_src\s*$")
             (beginning-of-line)
             (kill-line)
@@ -66,13 +66,14 @@
             (forward-line -1)
             (end-of-line)
             (newline-and-indent)
-            (insert "</script>")))))
+            (insert "</script></div>")))))
   ;; In the end, if it is a tikz src block add the proper html headers for tikzjax on this org file
   (if is-tikz (progn
                 ;; Here im just trying to add it after all #+ on the beginning of the file
                 (goto-char (point-min))
                 (end-of-line)
                 (newline-and-indent)
+                ;; Add tikzjax headers to page
                 (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"https://tikzjax.com/v1/fonts.css\">")
                 (end-of-line)
                 (newline-and-indent)

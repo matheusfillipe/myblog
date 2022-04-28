@@ -9,13 +9,7 @@
 * Why
 I never played enough with firebase and felt like a good opportunity. The final result is far from perfect, without optimizations for loading too many comments, spam prevention and dynamically loading.
 
-* What have I learned/noticed
-
-- Firebase realtime database doesn't seem to be very configurable regarding spam prevention, ddos, etc, at first sight at least.
-- It has authentication built in, which I didn't want to use.
-- So... there is this weird bug if you leave the browser's developers tools open the firebase client wont authenticate.
-- Firestore has more methods while the realtime database is simpler and more suitable for small projects. For example I had to give up on having a proof of work ddos prevention because I can't compute a hash on the realtime database rules. There is a very limited scripting you can do there.
-
+I had the idea after watching this single episode of an incomplete series on youtube: https://www.youtube.com/watch?v=mt-qdD30bO4
 
 
 * Code
@@ -41,7 +35,7 @@ Nothing really special here.
 #+END_SRC
 
 ** Css
-This could be improved, hire a designer?
+This could be improved, hire a designer? I wont.
 #+NAME: CSS
 #+begin_src css
 #comments {
@@ -254,6 +248,9 @@ setupComments();
 #+end_src
 
 ** Firebase rules
+Basically only allow adding new content inside a ~/cat_id/post_id/~, not updating or deleting allowed. The data must contain the fields ~name~, ~text~ and ~time~.
+
+Then some type checking is applied and it is ensured that the timestamp is not from the future or older than 15 seconds.
 #+NAME: Realtime database rules:
 #+begin_src json
 {
@@ -274,6 +271,15 @@ setupComments();
 	}
 }
 #+end_src
+
+* What have I learned/noticed
+
+- Firebase realtime database doesn't seem to be very configurable regarding spam prevention, ddos, etc, at first sight at least.
+- It has authentication built in, which I didn't want to use.
+- So... there is this weird bug if you leave the browser's developers tools open the firebase client wont authenticate.
+- Firestore has more methods while the realtime database is simpler and more suitable for small projects. For example I had to give up on having a proof of work ddos prevention because I can't compute a hash on the realtime database rules. There is a very limited scripting you can do there.
+
+You can check bellow my first tests of the this feature.
 
 
 
