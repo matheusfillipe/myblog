@@ -559,19 +559,14 @@ div.comment timestamp {
     color: black;
     text-decoration: none;
     display: none;
+    padding: 5px;
     border-radius: 8px;
     border-style: solid;
-    border-width: 2px;
-    border-color: #3e80ba;
-    padding: 5px;
+    border-width: 1px;
+    border-color: #1e609a;
 }
 
 .previous a:visited, .next a:visited {
-    color: black;
-}
-
-.previous a:hover, .next a:hover {
-    background-color: #ddd;
     color: black;
 }
 
@@ -581,4 +576,12 @@ div.comment timestamp {
 
 .next {
     float: right;
+}
+
+.previous:hover, .next:hover {
+    background-color: #333;
+    border-radius: 12px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #3e80ba;
 }

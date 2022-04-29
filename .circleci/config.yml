@@ -12,7 +12,7 @@ jobs:
           npm install netlify-cli -g
           wget https://github.com/tdewolff/minify/releases/download/v2.11.1/minify_linux_amd64.tar.gz
           tar -xf minify_linux_amd64.tar.gz
-          sed 's/^minify=.*/minify=1/' build.sh
+          sed -i 's/^minify=.*/minify=1/' build.sh
           ./build.sh
           netlify deploy --site curious-squirrel-9f2b0c --auth $NETLIFY_ACCESS_TOKEN --prod --dir=html/
 

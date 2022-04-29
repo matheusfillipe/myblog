@@ -13,13 +13,13 @@
 #+HTML_HEAD:           }
 #+HTML_HEAD:       }
 #+HTML_HEAD:       </script>
-#+HTML_HEAD: <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-#+HTML_HEAD: <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js"></script>
+#+HTML_HEAD: <script defer src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+#+HTML_HEAD: <script defer src="https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js"></script>
 #+HTML_HEAD: <link rel="stylesheet" href="https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css"/>
-#+HTML_HEAD: <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/animation.js"></script>
+#+HTML_HEAD: <script defer src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/animation.js"></script>
+#+HTML_HEAD: <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/jspython-interpreter/dist/jspython-interpreter.min.js"></script>
+#+HTML_HEAD: <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@jcubic/lips@beta/dist/lips.min.js"></script>
 #+HTML_HEAD: <style type="text/css">body{ min-width: 70vw; }</style>
-#+HTML_HEAD: <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jspython-interpreter/dist/jspython-interpreter.min.js"></script>
-
 
 #+OPTIONS: toc:nil
 
