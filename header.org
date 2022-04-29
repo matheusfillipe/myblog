@@ -18,7 +18,6 @@
 #+HTML_HEAD: <link rel="stylesheet" href="https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css"/>
 #+HTML_HEAD: <script defer src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/animation.js"></script>
 #+HTML_HEAD: <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/jspython-interpreter/dist/jspython-interpreter.min.js"></script>
-#+HTML_HEAD: <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@jcubic/lips@beta/dist/lips.min.js"></script>
 #+HTML_HEAD: <style type="text/css">body{ min-width: 70vw; }</style>
 
 #+OPTIONS: toc:nil

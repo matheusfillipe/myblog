@@ -585,3 +585,7 @@ div.comment timestamp {
     border-width: 2px;
     border-color: #3e80ba;
 }
+
+.shell-wrapper .terminal.lips {
+    background: black;
+}
