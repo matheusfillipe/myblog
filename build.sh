@@ -64,11 +64,11 @@ cd html/
 tree -J -P "*.html" -I "footer.html" -I "header.html" -I "assets" -I "sitemap.html" > sitemap.json
 cd ..
 
-echo "Minifying..."
-shopt -s globstar nullglob dotglob
-for f in html/**/*.{css,html,js,json}
-do
-  ./minify "$f" -o "$f"
-done
+# echo "Minifying..."
+# shopt -s globstar nullglob dotglob
+# for f in html/**/*.{css,html,js,json}
+# do
+#   ./minify "$f" -o "$f"
+# done
 
-echo "All done!"
+# echo "All done!"

@@ -258,6 +258,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     "star": () => { },
     "follow": () => { },
     "cookieclean": () => { },
+    "python": () => { },
     "why": () => { }
   }
 
@@ -280,6 +281,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     return '[' + taken + left + '] ' + percent + '%';
   }
 
+  const pyIinterpreter = window.jspython.jsPython();
 
   (async function($) {
     $('#terminal').terminal({
@@ -300,6 +302,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   torus: Replaces the planets with donuts (Reveal the truth)
   sphere: Comes back to NASA's fake spherical model of the planets
   cookieclean: Removes the cookies you have from this website.
+  python: Launch python shell!
   help: shows this help menu
   `);
       },
@@ -487,6 +490,24 @@ l42            |  '-'  |                |  '-'  |
       },
       star: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&repo=myblog&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>')) },
       follow: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="230" height="30" title="GitHub"></iframe>')) },
+      python: function() {
+        this.terminal().push(function(cmd, term) {
+          if (cmd == 'help') {
+            term.echo($(`<p>This is a python shell using <a href="https://www.jspython.dev">jspython<a></p>`));
+          } else if (cmd == 'exit') {
+            term.pop();
+          } else {
+            console.debug(cmd)
+            pyIinterpreter
+              .evaluate(cmd)
+              .then(res => this.echo(res))
+              .catch((e) => this.echo("[[gb;red;]" + e + "]"));
+          }
+        }, {
+          prompt: 'python> ',
+          name: 'python'
+        });
+      },
       why: function() { this.echo("Why not?") }
     }, {
       greetings: `
