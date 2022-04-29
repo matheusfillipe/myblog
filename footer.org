@@ -3,8 +3,8 @@
 
 #+begin_export html
 <div id="prevnext">
-<a href="#" class="previous">&laquo; Previous post</a>
-<a href="#" class="next">Next post &raquo;</a>
+<a style="color: #fff;" href="#" class="previous">&laquo; Previous post</a>
+<a style="color: #fff;" href="#" class="next">Next post &raquo;</a>
 </div>
 </main>
 

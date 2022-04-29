@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    (function($) {
+    (async function($) {
         const terminal = document.querySelector("#terminalwindow")
 
         // Scroll inside terminal div
@@ -165,4 +165,14 @@ document.addEventListener("DOMContentLoaded", function() {
         };
         x.prepend(btn);
     });
+
+    // Setup src block copy buttons fade in and out on src div hover
+    (() => {
+        document.querySelectorAll(".org-src-container").forEach(div => {
+            const btn = div.querySelector(".btn-srccpy")
+            div.addEventListener("mouseenter", () => btn.classList.add("btn--show"))
+            div.addEventListener("mouseleave", () => btn.classList.remove("btn--show"))
+        })
+    })()
+
 });

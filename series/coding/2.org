@@ -252,7 +252,7 @@ Basically only allow adding new content inside a ~/cat_id/post_id/~, not updatin
 
 Then some type checking is applied and it is ensured that the timestamp is not from the future or older than 15 seconds.
 #+NAME: Realtime database rules:
-#+begin_src json
+#+begin_src js
 {
   "rules": {
     "$category": {
@@ -268,7 +268,7 @@ Then some type checking is applied and it is ensured that the timestamp is not f
           "$other": {".validate":  false }
         }
       }
-	}
+   }
 }
 #+end_src
 

@@ -279,7 +279,9 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
     return '[' + taken + left + '] ' + percent + '%';
   }
-  (function($) {
+
+
+  (async function($) {
     $('#terminal').terminal({
       help: function() {
         this.echo(`

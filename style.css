@@ -2,6 +2,7 @@
 :root {
     --dark-bg: rgba(15, 15, 15, 0.95);
     --spacing: 10px;
+    overflow-x: hidden;
 }
 
 body {
@@ -451,6 +452,25 @@ div.comment timestamp {
     text-decoration: none;
     overflow: hidden;
     cursor: pointer;
+    /* display: none; */
+    visibility: hidden;
+    opacity: 0;
+}
+
+.btn--show {
+    animation: btnFadeIn 0.2s forwards 0.2s;
+}
+
+@keyframes btnFadeIn {
+    0% {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    100% {
+        visibility: visible;
+        opacity: 1;
+    }
 }
 
 .btn-srccpy:after {
@@ -539,7 +559,11 @@ div.comment timestamp {
     color: black;
     text-decoration: none;
     display: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #3e80ba;
+    padding: 5px;
 }
 
 .previous a:visited, .next a:visited {

@@ -33,9 +33,7 @@ const setupComments = () => {
   // Get a reference to the database service
   const database = getDatabase(app);
 
-  // Page path
-  const path = window.location.pathname.toString().split("/").slice(0, -1).join("/")
-
+  // Simple Hash implementation
   String.prototype.hash = function() {
     var hash = 0;
     for (var i = 0; i < this.length; i++) {
@@ -46,11 +44,16 @@ const setupComments = () => {
     return Math.abs(hash).toString();
   }
 
+  // Page path
+  const path = window.location.pathname.toString()
+  const fullpath = path.hash() + "-" + path.split("/").slice(-1).join().replace(".html", "")
+
+
   // DB functions
   async function postComment(name, text) {
     const time = Date.now()
-    const fullpath = path.hash() + "-" + path.split("/").slice(-1) + "/" + name.hash() + time
-    set(ref(database, fullpath), {
+    const getpath = fullpath + "/" + name.hash() + time
+    set(ref(database, getpath), {
       name,
       text,
       time: time,
@@ -62,7 +65,6 @@ const setupComments = () => {
   }
 
   // Fill with comments
-  const fullpath = path.hash() + "-" + path.split("/").slice(-1)
   get(child(ref(database), fullpath)).then((snapshot) => {
     if (snapshot.exists()) {
       const comments = snapshot.val();
