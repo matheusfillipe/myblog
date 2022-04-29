@@ -259,6 +259,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     "follow": () => { },
     "cookieclean": () => { },
     "python": () => { },
+    "js": () => { },
     "why": () => { }
   }
 
@@ -282,6 +283,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   }
 
   const pyIinterpreter = window.jspython.jsPython();
+  var pyscript = "";
 
   (async function($) {
     $('#terminal').terminal({
@@ -303,6 +305,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   sphere: Comes back to NASA's fake spherical model of the planets
   cookieclean: Removes the cookies you have from this website.
   python: Launch python shell!
+  js: Launch javascript interpreter
   help: shows this help menu
   `);
       },
@@ -490,22 +493,50 @@ l42            |  '-'  |                |  '-'  |
       },
       star: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&repo=myblog&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>')) },
       follow: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="230" height="30" title="GitHub"></iframe>')) },
+
+      js: function() {
+        this.push(function(cmd, term) {
+          try {
+            if (cmd == 'exit') {
+              term.pop();
+              return;
+            }
+            var result = window.eval(cmd);
+            if (result != undefined) {
+              term.echo(String(result));
+            }
+          } catch (e) {
+            term.echo("[[gb;red;]" + e + "]")
+          }
+
+        }, {
+          prompt: 'js> ',
+          name: 'js',
+          completion: () => ["exit"]
+        });
+      },
       python: function() {
         this.terminal().push(function(cmd, term) {
           if (cmd == 'help') {
             term.echo($(`<p>This is a python shell using <a href="https://www.jspython.dev">jspython<a></p>`));
           } else if (cmd == 'exit') {
+            pyscript = "";
             term.pop();
+          } else if (!cmd) {
+            return
           } else {
-            console.debug(cmd)
             pyIinterpreter
-              .evaluate(cmd)
-              .then(res => this.echo(res))
+              .evaluate(pyscript + cmd)
+              .then(res => {
+                this.echo(res)
+                pyscript += cmd + "\n"
+              })
               .catch((e) => this.echo("[[gb;red;]" + e + "]"));
           }
         }, {
           prompt: 'python> ',
-          name: 'python'
+          name: 'python',
+          completion: () => ["exit"]
         });
       },
       why: function() { this.echo("Why not?") }

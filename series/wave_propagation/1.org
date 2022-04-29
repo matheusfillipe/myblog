@@ -253,7 +253,7 @@ What this means in the end is that mathematically we could choose infinite const
 #+header: :file /tmp/org_latex_image.png
 #+header: :imagemagick yes
 #+header: :headers '("\\usepackage{tikz}")
-#+HEADER: :fit yes :imoutoptions -geometry 400
+#+HEADER: :fit yes :imoutoptions -geometry 600
 #+begin_src latex
 \begin{tikzpicture}
 \fill[yellow] (0,0) circle (3cm);

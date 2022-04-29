@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+minify=
+
 get_org_attr(){
   file="$1"
   attr="$2"
@@ -64,11 +66,14 @@ cd html/
 tree -J -P "*.html" -I "footer.html" -I "header.html" -I "assets" -I "sitemap.html" > sitemap.json
 cd ..
 
-echo "Minifying..."
-shopt -s globstar nullglob dotglob
-for f in html/**/*.{css,html,js,json}
-do
-  ./minify "$f" -o "$f"
-done
+if [ $minify ]
+then
+  echo "Minifying..."
+  shopt -s globstar nullglob dotglob
+  for f in html/**/*.{css,html,js,json}
+  do
+    ./minify "$f" -o "$f"
+  done
+fi
 
 echo "All done!"
