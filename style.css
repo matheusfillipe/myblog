@@ -587,5 +587,5 @@ div.comment timestamp {
 }
 
 .shell-wrapper .terminal.lips {
-    background: black;
+    background: var(--dark-bg);
 }
