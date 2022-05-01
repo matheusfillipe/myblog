@@ -113,9 +113,9 @@ Finally this is passed to ~org-export-before-parsing-hook~ which will run for ev
                       (not (string= str ":headers")))
                     (assoc :headers (nth 2 src-info)))))
 
-      ;; Check if it is a latex block with tikz on the headers
-      (if (and (string= type "latex")
-               (seq-contains-p headers "\\usepackage{tikz}" ))
+     ;; Check if it is a latex block with tikz on the headers
+     (if (and headers (string= type "latex")
+            (string-match-p (regexp-quote "\\usepackage{tikz}") (car headers)))
           ;; Clean it up, change it to a html export and wrap it with the script tags
           (progn
             (setq is-tikz t)
@@ -164,6 +164,61 @@ Centralize horizontally, some bad color choices as usual.
     justify-content: center;
 }
 #+end_src
+
+* Import latex libraries
+
+One problem you will face with this approach though is that you cannot import tex libraries with it as described on this [[https://github.com/kisonecat/tikzjax/issues/2][issue]]. Thankfully [[https://github.com/3geek14][3geek14]] pointed out the nice fork of that has this feature: https://github.com/drgrice1/tikzjax. Problem is, no nice cnd to use so we will have to build it ourselves if we want to use latex libs.
+
+Start cloning both repos:
+
+#+begin_src shell
+git clone https://github.com/drgrice1/web2js.git
+git clone https://github.com/drgrice1/tikzjax.git
+#+end_src
+
+** Building web2js
+
+#+begin_src shell
+sudo npm -g i wasm-opt  # install webassembler compiler if you havent
+cd web2js
+git checkout ww-modifications
+npm install
+npm run build
+npm run generate-wasm
+wasm-opt --asyncify --pass-arg=asyncify-ignore-indirect --pass-arg=asyncify-imports@library.reset -O4 out.wasm -o tex.wasm
+node initex.js
+#+end_src
+
+If you get this error:
+#+begin_src
+Defining UNIX/DOS style filename parser.
+
+catcodes, registers, parameters,
+LaTeX2e <2021-11-15> patch level 1
+! LaTeX Error: LaTeX requires the e-TeX primitives and additional
+               functionality available in the engines:
+               - pdfTeX v1.40
+               - XeTeX v0.99992
+               - LuaTeX v0.95
+               - e-(u)pTeX mid-2012
+               or later.
+<argument> ...-2012\MessageBreak or later}
+                                          \batchmode \read -1 to \res...
+l.1117   }
+
+?
+This is e-TeX, Version 3.14159265-2.6 (INITEX)
+**Sorry, I can't find that format; will try PLAIN.
+I can't find the PLAIN format file!
+#+end_src
+
+** Building tikzjax
+
+#+begin_src shell
+cd tikzjax
+git checkout ww-modifications
+#+end_src
+
 
 
 * References

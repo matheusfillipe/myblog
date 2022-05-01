@@ -47,8 +47,8 @@
                     (assoc :headers (nth 2 src-info)))))
 
       ;; Check if it is a latex block with tikz on the headers
-      (if (and (string= type "latex")
-               (seq-contains-p headers "\\usepackage{tikz}" ))
+      (if (and headers (string= type "latex")
+               (string-match-p (regexp-quote "\\usepackage{tikz}") (car headers)))
           ;; Clean it up, change it to a html export and wrap it with the script tags
           (progn
             (setq is-tikz t)
