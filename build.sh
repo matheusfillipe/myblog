@@ -10,9 +10,11 @@ get_org_attr(){
   echo "$output"
 }
 
+# Fill LIST BEGIN/END for series
 gen_index() {
   cd "$(dirname "$1")" || exit
   readarray -d '' entries < <(printf '%s\0' *.org | sort -zV)
+  list=()
   for entry in "${entries[@]}"; do
     if [[ "$entry" == "index.org" ]]; then
       continue
@@ -26,6 +28,7 @@ gen_index() {
   cd ..
 }
 
+# Fill LIST BEGIN/END for ALL
 gen_indexes() {
   cd series/ || exit
   series_list=""
@@ -46,9 +49,32 @@ gen_indexes() {
   cd ..
 }
 
+# Get last 6 published posts and display on /index.html list
+gen_featured() {
+  count=6
+  files=$(
+    find series/ -name "*.org" ! -name "index.*" | while read f
+    do
+      echo "$(git log --format="%at" --reverse "$f" | head -n1) $f"
+    done | sort -n | tail -n$count | sed 's/^[[:digit:]]\+ //'
+  )
+  IFS=$'\n' read -r -d '' -a orglist <<< "$files"
+
+  featured_list=""
+  for entry in ${orglist[@]}
+  do
+    description=$(get_org_attr "$entry" "DESCRIPTION")
+    escaped=$(printf '%s\n' "- [[file:$entry][$part_title]]       $description" | sed -e 's/[]\/$*.^[]/\\&/g')
+    featured_list+="$escaped\n\n"
+  done
+  sed -e '1h;2,$H;$!d;g' -i -e "s/\(# LIST FEATURED BEGIN\s*\n\).*\(# LIST FEATURED END\s*\n\)/\1$featured_list\2/ig" index.org
+}
+
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd "$SCRIPT_DIR"
 
+gen_featured
+exit
 gen_indexes
 
 rm -rf html

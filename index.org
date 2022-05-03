@@ -15,9 +15,14 @@ This whole site is build from a CI pipeline that invokes emacs on a archlinux co
 
 
 * Featured Posts
-- [[file:series/wave_propagation/1.org][Wave Propagation Part 1]]
-- [[file:series/coding/1.org][Getting Tikz exports with org mode]]
-- [[file:series/coding/2.org][Comments with firebase]]
+# LIST FEATURED BEGIN
+- [[file:series/wave_propagation/1.org][]]       In this series I am going to try to create a simplified model for logitudinal pressure waves propagation on fluids based on the interaction between its particles. Or main goal is to go step by step on the physics behind it, solving problems that gradually increase complexity, to have a theoretical preview of the relationship between the fluid's density and the wave's speed.
+
+- [[file:series/coding/1.org][]]       My solution for tikz exporting to html latex tikz
+
+- [[file:series/coding/2.org][]]       Adding a comment section to this blog with google firebase
+
+# LIST FEATURED END
 
 
 

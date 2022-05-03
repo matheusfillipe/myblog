@@ -74,10 +74,10 @@
                 (end-of-line)
                 (newline-and-indent)
                 ;; Add tikzjax headers to page
-                (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"https://tikzjax.com/v1/fonts.css\">")
+                (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=/tikzjax/fonts.css\">")
                 (end-of-line)
                 (newline-and-indent)
-                (insert "#+HTML_HEAD: <script src=\"https://tikzjax.com/v1/tikzjax.js\"></script>"))))
+                (insert "#+HTML_HEAD: <script src=\"/tikzjax/tikzjax.js\"></script>"))))
 
 
 (add-hook 'org-export-before-parsing-hook #'tikzjax-convert)

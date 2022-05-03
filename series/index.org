@@ -2,8 +2,8 @@
 #+DESCRIPTION: Blog
 #+AUTHOR: Matheus Fillipe
 #+DATE: <2022-04-15 Fri>
+#+OPTIONS: num:nil ^:{}
 #+INCLUDE: "../header.org"
-#+TOC: headlines 4
 
 * Series
 

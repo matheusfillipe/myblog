@@ -550,6 +550,10 @@ div.comment timestamp {
     justify-content: center;
 }
 
+.tikzjax svg {
+    transform: rotate(180deg);
+}
+
 #prevnext {
     margin-top: 40px;
 }
