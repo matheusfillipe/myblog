@@ -201,29 +201,6 @@ wasm-opt --asyncify --pass-arg=asyncify-ignore-indirect --pass-arg=asyncify-impo
 node initex.js
 #+end_src
 
-If you get this error:
-#+begin_src
-Defining UNIX/DOS style filename parser.
-
-catcodes, registers, parameters,
-LaTeX2e <2021-11-15> patch level 1
-! LaTeX Error: LaTeX requires the e-TeX primitives and additional
-               functionality available in the engines:
-               - pdfTeX v1.40
-               - XeTeX v0.99992
-               - LuaTeX v0.95
-               - e-(u)pTeX mid-2012
-               or later.
-<argument> ...-2012\MessageBreak or later}
-                                          \batchmode \read -1 to \res...
-l.1117   }
-
-?
-This is e-TeX, Version 3.14159265-2.6 (INITEX)
-**Sorry, I can't find that format; will try PLAIN.
-I can't find the PLAIN format file!
-#+end_src
-
 ** Building tikzjax
 
 #+begin_src shell

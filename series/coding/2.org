@@ -9,7 +9,7 @@
 * Why
 I never played enough with firebase and felt like a good opportunity. The final result is far from perfect, without optimizations for loading too many comments, spam prevention and dynamically loading.
 
-I had the idea after watching this single episode of an incomplete series on youtube: https://www.youtube.com/watch?v=mt-qdD30bO4
+I had the idea after watching this [[https://www.youtube.com/watch?v=mt-qdD30bO4][unfinished series]] on youtube.
 
 
 * Code

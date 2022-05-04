@@ -1,6 +1,7 @@
 /**** style.css ***/
 :root {
     --dark-bg: rgba(15, 15, 15, 0.95);
+    --blue: #3c81ba;
     --spacing: 10px;
     overflow-x: hidden;
 }
@@ -38,8 +39,8 @@ h1:first-child {
     background-color: #1a1a1b;
     width: 100%;
     line-height: 36px;
-    border-top: 2px solid #4d4d4d;
-    border-bottom: 2px solid #4d4d4d;
+    /* border-top: 2px solid #4d4d4d; */
+    /* border-bottom: 2px solid #4d4d4d; */
     padding-left: 40px;
     padding-right: 40px;
     display: flex;
@@ -201,21 +202,81 @@ a.nobox:focus, a.nobox:active {
 }
 
 #disable3dlabel {
-    display: block;
-  /* position: fixed; */
-  /* top: 0; */
-  /* left: 0; */
-    font-size: 16px;
-    background-color: #1a1a1b;
-    color: #d7dadc;
-    z-index: 210;
-  /* border-radius: 0 8% 0 0; */
-    padding: 5px;
-  /* box-shadow: 0 0 20px rgb(63, 136, 197); */
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 #disable3d {
     cursor: pointer;
+}
+
+.disable3d-child {
+    width: 100%;
+    height: 50%;
+}
+
+ /* The switch - the box around the slider */
+.switch {
+  position: absolute;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #aaa;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #ddd;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--blue);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--blue);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 17px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 
 h1, h2, h3, blockquote {
@@ -388,7 +449,7 @@ p {
 #comment-box, #post {
     border: none;
     border-radius: 5px;
-    boder-color: #3c81ba;
+    boder-color: var(--blue);
     margin: 10px 0 6px 0;
 }
 
@@ -425,7 +486,7 @@ div.comment p {
     text-justify: inter-word;
     margin: 5px 12px;
     background: #373636;
-    border: #3c81ba;
+    border: var(--blue);
     border-width: 2px;
     border-radius: 5px;
     font-size: small;
@@ -545,7 +606,7 @@ div.comment timestamp {
     background-color: beige;
     border-style: solid;
     border-width: 3px;
-    border-color: #3c81ba;
+    border-color: var(--blue);
     display: flex;
     justify-content: center;
 }

@@ -64,7 +64,9 @@ gen_featured() {
   for entry in ${orglist[@]}
   do
     description=$(get_org_attr "$entry" "DESCRIPTION")
-    escaped=$(printf '%s\n' "- [[file:$entry][$part_title]]       $description" | sed -e 's/[]\/$*.^[]/\\&/g')
+    part_title=$(get_org_attr "$entry" "TITLE")
+    escaped=$(printf '%s\n' "- [[file:$entry][$part_title]]" | sed -e 's/[]\/$*.^[]/\\&/g')
+    # escaped=$(printf '%s\n' "- [[file:$entry][$part_title]]       $description" | sed -e 's/[]\/$*.^[]/\\&/g')
     featured_list+="$escaped\n\n"
   done
   sed -e '1h;2,$H;$!d;g' -i -e "s/\(# LIST FEATURED BEGIN\s*\n\).*\(# LIST FEATURED END\s*\n\)/\1$featured_list\2/ig" index.org
@@ -73,11 +75,11 @@ gen_featured() {
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd "$SCRIPT_DIR"
 
+rm -rf html
+
 gen_featured
-exit
 gen_indexes
 
-rm -rf html
 mkdir -p html
 cp style.css html/
 cp code.css html/
