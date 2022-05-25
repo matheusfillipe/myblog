@@ -84,7 +84,7 @@ export class WsIrcClient {
           this._onjoin(channel)
 
         } else if (type === "NICK") {
-          new_nick = data.split(":")[2]
+          const new_nick = m.data.split(":")[2]
           this._onnickchange(new_nick)
 
         } else if (type === "PART") {
@@ -123,7 +123,7 @@ export class WsIrcClient {
   send(nick_or_channel, message) {
     this.quote(`PRIVMSG ${nick_or_channel} :${message}`)
   }
-  nick(new_nick) {
+  set_nick(new_nick) {
     this.quote(`nick ${new_nick}`)
   }
   join(channel) {
@@ -148,7 +148,7 @@ export class WsIrcClient {
     this.quote(`NAMES ${channel}`)
   }
   close() {
-    this.quit("bye")
+    this.quit(window.location.toString())
     this.ws.close()
   }
 }

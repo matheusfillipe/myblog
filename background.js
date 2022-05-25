@@ -557,7 +557,8 @@ l42            |  '-'  |                |  '-'  |
         term.echo("Connecting to irc...")
         term.echo()
 
-        let irc_channel = "#romanian"
+        let irc_channel = "#bots"
+        let irc_in_channels = new Set()
 
         let irc_client = new WsIrcClient({
           server: "irc.dot.org.es",
@@ -566,21 +567,28 @@ l42            |  '-'  |                |  '-'  |
           // debug: true
         })
           .onmessage(function (channel, from, message) {
-            term.echo(`${channel} - ${from}: ${message}`)
+            term.echo("[[gb;blue;]" + `${channel} -> ${from}: ] ${message}`)
           })
           .onconnect(function () {
-            term.echo($(`<p>Welcome to irc.dot.org.es!</p>`));
+            term.echo($(`<p>Welcome to <a href="https://irc.dot.org.es">irc.dot.org.es</a>!</p>`));
             this.join(irc_channel)
           })
           .onjoin(function (channel) {
             term.echo(`Joined ${channel}`)
             irc_channel = channel
+            term.set_prompt(`${irc_channel}> `)
+            irc_in_channels.add(irc_channel)
           })
           .onpart(function (channel) {
             term.echo(`Leaving ${channel}`)
+            irc_in_channels.delete(channel)
+            if (irc_channel === channel) {
+              irc_channel = Array.from(irc_in_channels)[0]
+              term.set_prompt(`${irc_channel}> `)
+            }
           })
           .onnames(function (channel, names) {
-            term.echo(channel + " - Names: " + names.join(" "))
+            term.echo("[[gb;blue;]" + channel + " -] Names: " + names.join(" "))
           })
           .onnickinuse(function () {
             term.echo("[[gb;red;]" + "That nickname is already in use!" + "]")
@@ -591,14 +599,16 @@ l42            |  '-'  |                |  '-'  |
           .connect()
 
 
-        let irc_commands = ["/quote", "/send", "/nick", "/join", "/part", "/mode", "/kick", "/topic", "/names"]
+        let irc_commands = ["/quote", "/send", "/part", "/mode", "/kick", "/topic", "/names"]
         this.terminal().push(function (cmd, term) {
 
           if (cmd.trim().length == 0) return;
+          if (irc_channel === undefined) term.echo("[[gb;red;]You are not in any channel. Type /join #romanian]");
 
           if (!cmd.startsWith("/")) {
             irc_client.send(irc_channel, cmd)
-            term.echo(`${irc_channel} - YOU: ${cmd}`)
+            // term.echo("[[gb;orange;]" + `${irc_channel} - YOU:] ${cmd}`)
+            return
 
           } else if (irc_commands.includes(cmd.split(" ")[0])) {
             let m_name = cmd.split(" ")[0].slice(1)
@@ -614,37 +624,69 @@ l42            |  '-'  |                |  '-'  |
             if (user_args.length > method.length) {
               let last = []
               for (const arg of user_args) {
-                if (user_args.length < method.length) {
+                if (args.length < method.length - 1) {
                   args.push(arg)
                 } else {
                   last.push(arg)
                 }
-                args.push(last.join(" "))
               }
+              console.log(args)
+              args.push(last.join(" "))
             } else {
               args = user_args
             }
 
             method.bind(irc_client)(...args)
+            return
+          }
 
-          } else if (cmd == '/help') {
-            term.echo($(`<p>Welcome to irc.dot.org.es!</p>`));
-            term.echo("THIS IS A SIMPLE WEB TERMINAL IRC CLIENT")
-            term.echo()
-            term.echo("            COMMANDS:  ")
-            for (const command of irc_commands) {
-              term.echo(command)
-            }
+          switch (cmd.split(/\s+/)[0]) {
 
-          } else if (cmd == '/quit') {
-            console.log("Closing irc...")
-            irc_client.close()
-            term.pop();
+            case "/nick":
+              if (cmd.split(/\s+/).length < 2) {
+                term.echo("[[gb;red;]" + "Pass your desired nickname as an argument" + "]")
+                return
+              }
+              irc_client.set_nick(cmd.split(/\s+/)[1])
+              break
+
+            case "/join":
+              if (cmd.split(/\s+/).length < 2) {
+                term.echo("[[gb;red;]" + "Pass your desired nickname as an argument" + "]")
+                return
+              }
+              let channel = cmd.split(/\s+/)[1]
+              if (irc_in_channels.has(channel)) {
+                irc_channel = channel
+                term.set_prompt(`${irc_channel}> `)
+              } else {
+                irc_client.join(channel)
+              }
+              break
+
+            case '/help':
+              term.echo($(`<p>Welcome to irc.dot.org.es!</p>`));
+              term.echo("THIS IS A SIMPLE WEB TERMINAL IRC CLIENT")
+              term.echo()
+              term.echo("            COMMANDS:  ")
+              for (const command of irc_commands + ["/nick", "/join", "/quit"]) {
+                term.echo(command)
+              }
+              break
+
+            case '/quit':
+              console.log("Closing irc...")
+              irc_client.close()
+              term.pop();
+              break
+
+            default:
+              term.echo(' [[b;red;]Invalid command!]')
           }
         }, {
           prompt: `${irc_channel}> `,
           name: 'irc',
-          completion: () => ["/quit", "/help", ...irc_commands]
+          completion: () => ["/quit", "/help", "/nick", "/join", ...irc_commands]
         });
       },
       why: function () { this.echo("Why not?") }
