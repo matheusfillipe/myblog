@@ -669,7 +669,7 @@ l42            |  '-'  |                |  '-'  |
               term.echo("THIS IS A SIMPLE WEB TERMINAL IRC CLIENT")
               term.echo()
               term.echo("            COMMANDS:  ")
-              for (const command of irc_commands + ["/nick", "/join", "/quit"]) {
+              for (const command of [...irc_commands, "/nick", "/join", "/quit"]) {
                 term.echo(command)
               }
               break
