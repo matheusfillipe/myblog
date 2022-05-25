@@ -557,7 +557,7 @@ l42            |  '-'  |                |  '-'  |
         term.echo("Connecting to irc...")
         term.echo()
 
-        let irc_channel = "#bots"
+        let irc_channel = "#romanian"
         let irc_in_channels = new Set()
 
         let irc_client = new WsIrcClient({
