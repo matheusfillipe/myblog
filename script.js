@@ -131,7 +131,9 @@ document.addEventListener("DOMContentLoaded", function() {
         minimizebtn.onclick = () => {
             terminal.classList.add("terminal--hidden")
         }
+
         const showterminal = document.querySelector("#showterminal")
+
         const termtoggle = () => {
             if (!(document.readyState === 'complete') || !(window["myterminal-loaded"])) return;
             if (terminal.classList.contains("terminal--hidden")) {
@@ -139,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return
             }
             terminal.classList.add("terminal--hidden")
+            document.activeElement.blur();
         }
         showterminal.onclick = termtoggle
 

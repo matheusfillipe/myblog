@@ -86,8 +86,9 @@ cp code.css html/
 cp script.js html/
 cp comments.js html/
 cp utils.js html/
-cp favicon.ico html/
 cp background.js html/
+cp irc.js html/
+cp favicon.ico html/
 cp -r assets html/
 emacs -Q --script build-site.el
 

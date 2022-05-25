@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'OrbitControls';
 import { setCookie, getCookie, eraseCookie, isMobile } from '/utils.js'
+import { WsIrcClient, getParams } from '/irc.js'
 
 var scene = null;
 var planets = []
@@ -103,7 +104,7 @@ function load3dscene(full) {
     if (scene === null) {
       return
     }
-    setTimeout(function() {
+    setTimeout(function () {
       requestAnimationFrame(animate);
     }, 1000 / 30);
 
@@ -131,7 +132,7 @@ function disposeScene() {
   }
   scene.remove.apply(scene, scene.children);
   scene.clear()
-  setTimeout(function() {
+  setTimeout(function () {
     scene = null
     window.dispatchEvent(new Event('resize'));
   }, 300);
@@ -139,7 +140,7 @@ function disposeScene() {
 
 function reloadScene(...params) {
   disposeScene()
-  setTimeout(function() {
+  setTimeout(function () {
     load3dscene(params)
   }, 1000)
 }
@@ -199,7 +200,7 @@ if (isMobile) {
 //load sitemap for ls and cd commands
 let hasLoadedContent = false;
 
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
   if (hasLoadedContent) return;
   hasLoadedContent = true
 
@@ -259,6 +260,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     "follow": () => { },
     "cookieclean": () => { },
     "python": () => { },
+    "irc": () => { },
     "lisp": () => { },
     "js": () => { },
     "why": () => { }
@@ -286,9 +288,9 @@ document.addEventListener("DOMContentLoaded", async function() {
   const pyIinterpreter = window.jspython.jsPython();
   var pyscript = "";
 
-  (async function($) {
+  (async function ($) {
     $('#terminal').terminal({
-      help: function() {
+      help: function () {
         this.echo(`
   THE AVAILABLE COMMANDS ARE
   ----------------------------
@@ -308,10 +310,11 @@ document.addEventListener("DOMContentLoaded", async function() {
   python: Launch python shell!
   js: Launch javascript interpreter
   lisp: Launch lisp interpreter
+  irc: Chat on our irc!
   help: shows this help menu
   `);
       },
-      search: async function(query) {
+      search: async function (query) {
 
         async function loadPage(path) {
           const page = await fetch(path)
@@ -367,13 +370,13 @@ document.addEventListener("DOMContentLoaded", async function() {
           .set_prompt(prompt);
         animation = false
       },
-      pwd: function() {
+      pwd: function () {
         const title = document.title
         const path = window.location.pathname.toString()
         const wds = "/" + wd.slice(1).join("/") + "/"
         this.echo($(`<p>${path} <a href="${path}">${title}<a/><p/><p>${wds}</p>`));
       },
-      ls: function() {
+      ls: function () {
         let names = "<p>"
         const wds = "/" + wd.slice(1).join("/") + "/"
         let folders = getWdNodeType("directory")
@@ -388,7 +391,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         names += "</p>"
         this.echo($(names))
       },
-      cd: function(path) {
+      cd: function (path) {
         if (path == "..") {
           if (wd.length > 1) wd.pop()
           else this.echo("No upper directory!")
@@ -406,7 +409,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
         wd.push(path)
       },
-      open: function(file) {
+      open: function (file) {
         let files = getWdNodeType("file")
         if (!files.includes(file)) {
           this.echo(`'${file}' is not a valid webpage!`);
@@ -417,10 +420,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         const url = (wds + file).replace(/\/+/g, '/')
         window.open(url)
       },
-      ping: function() {
+      ping: function () {
         this.echo("pong\n")
       },
-      apt: function() {
+      apt: function () {
         this.echo(`
  ______
 < what >
@@ -433,7 +436,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     `)
       },
-      pacman: function() {
+      pacman: function () {
         this.echo(`
 ================================================.
      .-.   .-.     .--.                         |
@@ -448,10 +451,10 @@ l42            |  '-'  |                |  '-'  |
 ==============='       '================'       |
     `)
       },
-      gasconheart: function() {
+      gasconheart: function () {
         this.echo("nc mangle.ga 8888")
       },
-      explore: function() {
+      explore: function () {
         document.querySelector("main").remove()
         document.querySelector("#postamble").remove()
         document.querySelector(".title").remove()
@@ -461,7 +464,7 @@ l42            |  '-'  |                |  '-'  |
         reloadScene({ path: true })
         this.echo("I've hidden he boring stuff that was written here\nYou might want to close this window for now or type 'help' to see new commands");
       },
-      torus: function() {
+      torus: function () {
         planets.forEach((p) => {
           if (p.planet.geometry.type === "TorusGeometry") {
             return
@@ -473,7 +476,7 @@ l42            |  '-'  |                |  '-'  |
           p.rotation[2] = p.rotation[1] * 2
         })
       },
-      sphere: function() {
+      sphere: function () {
         planets.forEach((p) => {
           if (p.planet.geometry.type === "SphereGeometry") {
             return
@@ -485,19 +488,19 @@ l42            |  '-'  |                |  '-'  |
           p.rotation[2] = 0
         })
       },
-      cookieclean: function() {
+      cookieclean: function () {
         eraseCookie("load3d")
         eraseCookie("username")
         document.getElementById("comment-name").value = ""
       },
-      cat: function() {
+      cat: function () {
         this.echo($('<img src="https://placekitten.com/408/287">'));
       },
-      star: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&repo=myblog&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>')) },
-      follow: function() { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="230" height="30" title="GitHub"></iframe>')) },
+      star: function () { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&repo=myblog&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>')) },
+      follow: function () { this.echo($('<iframe src="https://ghbtns.com/github-btn.html?user=matheusfillipe&type=follow&count=true&size=large" frameborder="0" scrolling="0" width="230" height="30" title="GitHub"></iframe>')) },
 
-      js: function() {
-        this.push(function(cmd, term) {
+      js: function () {
+        this.push(function (cmd, term) {
           try {
             if (cmd == 'exit') {
               term.pop();
@@ -517,16 +520,16 @@ l42            |  '-'  |                |  '-'  |
           completion: () => ["exit"]
         });
       },
-      lisp: function() {
+      lisp: function () {
         this.echo("Loading LIPS REPL....");
         setTimeout(() => {
           document.querySelector("#terminalwindow").classList.add("terminal--hidden")
         }, 2000);
-        (function(next) {    /**     * This is bookmarklet that will create terminal with LIPS REPL     *     * Copyright (C) Jakub T. Jankiewicz <https://jcubic.pl/me>     * Released under MIT license     */    var orig_jQuery; var dolar; if (window.jQuery) { if (window.$ === window.jQuery) { dolar = true; } orig_jQuery = window.jQuery.noConflict(true); } function attr(elem, key, value) { elem.setAttribute(document.createAttribute(key, value)); } var script = (function() { var head = document.getElementsByTagName('head')[0]; return function(src) { var script = document.createElement('script'); script.setAttribute('src', src); script.setAttribute('type', 'text/javascript'); head.appendChild(script); return script; }; })(); script('https://cdn.jsdelivr.net/npm/jquery'); (function delay(time) { if (typeof jQuery == 'undefined') { setTimeout(delay, time); } else { next(jQuery, function() { if (orig_jQuery) { window.jQuery = orig_jQuery; if (dolar) { window.$ = window.jQuery; } } }); } })(500); })(async function($, next) { async function hash(branch) { try { var url = `https://api.github.com/repos/jcubic/lips/commits?sha=${branch}`; var res = await fetch(url); var data = await res.json(); return data[0].sha; } catch (e) { return branch; } } const REF = await hash('master'); function init() { var t = $('.terminal.lips'); if (t.length) { t.each(function() { $(this).terminal().destroy().remove(); }); } $.terminal.defaults.linksNoReferrer = true; $.terminal.defaults.formatters = $.terminal.defaults.formatters.filter((x) => { return x.name !== 'syntax_scheme'; }); $.terminal.syntax("scheme"); $('.shell-wrapper').remove(); var wrapper = $('<div>').addClass('shell-wrapper').appendTo('body'); var container = $('<div>').addClass('shell-container').appendTo(wrapper); var mask = $('<div class="shell-mask"/>').appendTo(wrapper); var nav = $('<nav/>').appendTo(container); var pos; $(document).off('mousemove'); var height; $('nav').off('mousedown').mousedown(function(e) { height = container.height(); pos = e.clientY; wrapper.addClass('drag'); return false; }); $(document).off('.terminal').on('mousemove.terminal', function(e) { if (pos) { container.height(height + (pos - e.clientY)); } }).on('mouseup.terminal', function() { pos = null; wrapper.removeClass('drag'); }); $('<span class="shell-destroy">[x]</span>').click(function() { term.destroy(); wrapper.remove(); }).appendTo(nav); var term = terminal({ selector: $('<div class="lips">').appendTo(container), name: 'lips', lips }); if (typeof lips.env.get('write', { throwError: false }) === 'undefined') { var path = `https://cdn.jsdelivr.net/gh/jcubic/lips@${REF}/`; term.exec(['(let ((e lips.env.__parent__))', '(load "' + path + 'dist/std.xcb" e))'].join('\n'), true); } function format_baner(banner) { return banner.replace(/^[\s\S]+(LIPS.*\nCopy.*\n)[\s\S]*/, '$1').replace(/(Jakub T. Jankiewicz)/, '[[!;;;;https://jcubic.pl/me]$1]'); } term.echo(format_baner(lips.banner), { formatters: false }); next(); } ['https://cdn.jsdelivr.net/gh/jcubic/jquery.terminal/css/jquery.terminal.min.css', 'https://cdn.jsdelivr.net/gh/jcubic/lips@devel/lib/css/terminal.css', 'https://cdn.jsdelivr.net/gh/jcubic/terminal-prism/css/prism-coy.css'].forEach(function(url) { if (!$('link[href="' + url + '"]').length) { var link = $('<link href="' + url + '" rel="stylesheet"/>'); var head = $('head'); if (head.length) { link.appendTo(head); } else { link.appendTo('body'); } } }); if (typeof $.terminal !== 'undefined') { init(); } else { var scripts = ['https://cdn.jsdelivr.net/npm/prismjs/prism.js', ['https://cdn.jsdelivr.net/combine/npm/jquery.terminal', 'npm/jquery.terminal/js/prism.js', 'npm/prismjs/components/prism-scheme.min.js', `gh/jcubic/lips@${REF}/lib/js/terminal.js`, `gh/jcubic/lips@${REF}/lib/js/prism.js`, 'npm/js-polyfills/keyboard.js'].join(','), 'https://cdn.jsdelivr.net/npm/browserfs@1.x.x/dist/browserfs.min.js']; (function recur() { var script = scripts.shift(); if (!script) { if (window.lips) { init(); } else { $.getScript(`https://cdn.jsdelivr.net/gh/jcubic/lips@${REF}/dist/lips.min.js`, init); } } else if (script.match(/prism.js$/) && typeof Prism !== 'undefined') { recur(); } else { $.getScript(script, recur); } })(); } });
+        (function (next) {    /**     * This is bookmarklet that will create terminal with LIPS REPL     *     * Copyright (C) Jakub T. Jankiewicz <https://jcubic.pl/me>     * Released under MIT license     */    var orig_jQuery; var dolar; if (window.jQuery) { if (window.$ === window.jQuery) { dolar = true; } orig_jQuery = window.jQuery.noConflict(true); } function attr(elem, key, value) { elem.setAttribute(document.createAttribute(key, value)); } var script = (function () { var head = document.getElementsByTagName('head')[0]; return function (src) { var script = document.createElement('script'); script.setAttribute('src', src); script.setAttribute('type', 'text/javascript'); head.appendChild(script); return script; }; })(); script('https://cdn.jsdelivr.net/npm/jquery'); (function delay(time) { if (typeof jQuery == 'undefined') { setTimeout(delay, time); } else { next(jQuery, function () { if (orig_jQuery) { window.jQuery = orig_jQuery; if (dolar) { window.$ = window.jQuery; } } }); } })(500); })(async function ($, next) { async function hash(branch) { try { var url = `https://api.github.com/repos/jcubic/lips/commits?sha=${branch}`; var res = await fetch(url); var data = await res.json(); return data[0].sha; } catch (e) { return branch; } } const REF = await hash('master'); function init() { var t = $('.terminal.lips'); if (t.length) { t.each(function () { $(this).terminal().destroy().remove(); }); } $.terminal.defaults.linksNoReferrer = true; $.terminal.defaults.formatters = $.terminal.defaults.formatters.filter((x) => { return x.name !== 'syntax_scheme'; }); $.terminal.syntax("scheme"); $('.shell-wrapper').remove(); var wrapper = $('<div>').addClass('shell-wrapper').appendTo('body'); var container = $('<div>').addClass('shell-container').appendTo(wrapper); var mask = $('<div class="shell-mask"/>').appendTo(wrapper); var nav = $('<nav/>').appendTo(container); var pos; $(document).off('mousemove'); var height; $('nav').off('mousedown').mousedown(function (e) { height = container.height(); pos = e.clientY; wrapper.addClass('drag'); return false; }); $(document).off('.terminal').on('mousemove.terminal', function (e) { if (pos) { container.height(height + (pos - e.clientY)); } }).on('mouseup.terminal', function () { pos = null; wrapper.removeClass('drag'); }); $('<span class="shell-destroy">[x]</span>').click(function () { term.destroy(); wrapper.remove(); }).appendTo(nav); var term = terminal({ selector: $('<div class="lips">').appendTo(container), name: 'lips', lips }); if (typeof lips.env.get('write', { throwError: false }) === 'undefined') { var path = `https://cdn.jsdelivr.net/gh/jcubic/lips@${REF}/`; term.exec(['(let ((e lips.env.__parent__))', '(load "' + path + 'dist/std.xcb" e))'].join('\n'), true); } function format_baner(banner) { return banner.replace(/^[\s\S]+(LIPS.*\nCopy.*\n)[\s\S]*/, '$1').replace(/(Jakub T. Jankiewicz)/, '[[!;;;;https://jcubic.pl/me]$1]'); } term.echo(format_baner(lips.banner), { formatters: false }); next(); } ['https://cdn.jsdelivr.net/gh/jcubic/jquery.terminal/css/jquery.terminal.min.css', 'https://cdn.jsdelivr.net/gh/jcubic/lips@devel/lib/css/terminal.css', 'https://cdn.jsdelivr.net/gh/jcubic/terminal-prism/css/prism-coy.css'].forEach(function (url) { if (!$('link[href="' + url + '"]').length) { var link = $('<link href="' + url + '" rel="stylesheet"/>'); var head = $('head'); if (head.length) { link.appendTo(head); } else { link.appendTo('body'); } } }); if (typeof $.terminal !== 'undefined') { init(); } else { var scripts = ['https://cdn.jsdelivr.net/npm/prismjs/prism.js', ['https://cdn.jsdelivr.net/combine/npm/jquery.terminal', 'npm/jquery.terminal/js/prism.js', 'npm/prismjs/components/prism-scheme.min.js', `gh/jcubic/lips@${REF}/lib/js/terminal.js`, `gh/jcubic/lips@${REF}/lib/js/prism.js`, 'npm/js-polyfills/keyboard.js'].join(','), 'https://cdn.jsdelivr.net/npm/browserfs@1.x.x/dist/browserfs.min.js']; (function recur() { var script = scripts.shift(); if (!script) { if (window.lips) { init(); } else { $.getScript(`https://cdn.jsdelivr.net/gh/jcubic/lips@${REF}/dist/lips.min.js`, init); } } else if (script.match(/prism.js$/) && typeof Prism !== 'undefined') { recur(); } else { $.getScript(script, recur); } })(); } });
 
       },
-      python: function() {
-        this.terminal().push(function(cmd, term) {
+      python: function () {
+        this.terminal().push(function (cmd, term) {
           if (cmd == 'help') {
             term.echo($(`<p>This is a python shell using <a href="https://www.jspython.dev">jspython<a></p>`));
           } else if (cmd == 'exit') {
@@ -549,7 +552,102 @@ l42            |  '-'  |                |  '-'  |
           completion: () => ["exit"]
         });
       },
-      why: function() { this.echo("Why not?") }
+      irc: function () {
+        let term = this.terminal()
+        term.echo("Connecting to irc...")
+        term.echo()
+
+        let irc_channel = "#romanian"
+
+        let irc_client = new WsIrcClient({
+          server: "irc.dot.org.es",
+          port: 7669,
+          is_ssl: true,
+          // debug: true
+        })
+          .onmessage(function (channel, from, message) {
+            term.echo(`${channel} - ${from}: ${message}`)
+          })
+          .onconnect(function () {
+            term.echo($(`<p>Welcome to irc.dot.org.es!</p>`));
+            this.join(irc_channel)
+          })
+          .onjoin(function (channel) {
+            term.echo(`Joined ${channel}`)
+            irc_channel = channel
+          })
+          .onpart(function (channel) {
+            term.echo(`Leaving ${channel}`)
+          })
+          .onnames(function (channel, names) {
+            term.echo(channel + " - Names: " + names.join(" "))
+          })
+          .onnickinuse(function () {
+            term.echo("[[gb;red;]" + "That nickname is already in use!" + "]")
+          })
+          .onnickchange(function (nick) {
+            term.echo(`You are now know as: ${nick}`)
+          })
+          .connect()
+
+
+        let irc_commands = ["/quote", "/send", "/nick", "/join", "/part", "/mode", "/kick", "/topic", "/names"]
+        this.terminal().push(function (cmd, term) {
+
+          if (cmd.trim().length == 0) return;
+
+          if (!cmd.startsWith("/")) {
+            irc_client.send(irc_channel, cmd)
+            term.echo(`${irc_channel} - YOU: ${cmd}`)
+
+          } else if (irc_commands.includes(cmd.split(" ")[0])) {
+            let m_name = cmd.split(" ")[0].slice(1)
+            let method = irc_client[m_name]
+            let user_args = cmd.split(/\s+/).slice(1)
+            let arg_names = getParams(method)
+            if (user_args.length < method.length) {
+              term.echo("[[gb;red;]" + `This command takes at least ${method.length} arguments: ${arg_names.join(", ")}` + "]")
+              return
+            }
+
+            let args = []
+            if (user_args.length > method.length) {
+              let last = []
+              for (const arg of user_args) {
+                if (user_args.length < method.length) {
+                  args.push(arg)
+                } else {
+                  last.push(arg)
+                }
+                args.push(last.join(" "))
+              }
+            } else {
+              args = user_args
+            }
+
+            method.bind(irc_client)(...args)
+
+          } else if (cmd == '/help') {
+            term.echo($(`<p>Welcome to irc.dot.org.es!</p>`));
+            term.echo("THIS IS A SIMPLE WEB TERMINAL IRC CLIENT")
+            term.echo()
+            term.echo("            COMMANDS:  ")
+            for (const command of irc_commands) {
+              term.echo(command)
+            }
+
+          } else if (cmd == '/quit') {
+            console.log("Closing irc...")
+            irc_client.close()
+            term.pop();
+          }
+        }, {
+          prompt: `${irc_channel}> `,
+          name: 'irc',
+          completion: () => ["/quit", "/help", ...irc_commands]
+        });
+      },
+      why: function () { this.echo("Why not?") }
     }, {
       greetings: `
   ______                    _             __
@@ -563,7 +661,7 @@ l42            |  '-'  |                |  '-'  |
   Type 'help' to see available commands
   `,
       enabled: false,
-      completion: function(string, callback) {
+      completion: function (string, callback) {
         for (const cmd of Object.keys(commands)) {
           const pattern = new RegExp("^" + cmd)
           if (this.get_command().match(pattern)) {
@@ -574,9 +672,10 @@ l42            |  '-'  |                |  '-'  |
         const cmds = Array.from(Object.keys(commands));
         return cmds
       },
-      keydown: function(e, term) {
+      keydown: function (e, term) {
         if (e.which === 68 && e.ctrlKey) { // CLTR+D
           document.querySelector("#terminalwindow").classList.add("terminal--hidden")
+          document.activeElement.blur();
           return false;
         }
         if (animation) {
