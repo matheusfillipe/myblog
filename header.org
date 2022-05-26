@@ -3,8 +3,8 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/style.css" />
 #+HTML_HEAD: <link href="/code.css" rel="stylesheet">
 #+HTML_HEAD: <script src="/script.js"></script>
+#+HTML_HEAD: <script src="https://cdn.jsdelivr.net/gh/matheusfillipe/irc.js@0.0.1/irc.min.js"></script>
 #+HTML_HEAD: <script type="module" src="/utils.js"></script>
-#+HTML_HEAD: <script type="module" src="/irc.js"></script>
 #+HTML_HEAD:       <script async src="https://ga.jspm.io/npm:es-module-shims@1.5.4/dist/es-module-shims.js"></script>
 #+HTML_HEAD:       <script type="importmap">
 #+HTML_HEAD:       {
