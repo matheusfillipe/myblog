@@ -22,7 +22,7 @@ This whole site is build from a CI pipeline that invokes emacs on a archlinux co
 
 - [[file:series/coding/2.org][Adding a comment box with google firebase]]
 
-- [[file:series/coding/3.org][Wave Propagation Part 1]]
+- [[file:series/coding/3.org][IRC Sonic pi repl]]
 
 # LIST FEATURED END
 
