@@ -9,10 +9,212 @@
 #+INCLUDE: "../../footer.org" :minlevel 1
 
 * Setting up sonic pi on a VPS
+
+** Basic setup
 Set up on a arm64 (aarch64) oracle vps (that you can get for free and it's pretty cool!) using an arch linux container.
 
 #+begin_src shell
-yay -S sonic-pi jack2 sonic-pi-tool darkice pulseaudio alsa alsa-tools alsa-plugins jack-example-tools
+yay -S sonic-pi jack2 sonic-pi-tool darkice pulseaudio pulseaudio-jack alsa alsa-tools alsa-plugins jack-example-tools
 #+end_src
 
-Darkice is for live streaming to the icecast server.
+On ubuntu the packages have similar names. I know jack is jackd2, sonic-pi-tool has to be installed manually from https://github.com/emlyn/sonic-pi-tool/ (it is just a single python file with some pypi dependencies and we only use to launch sonic-pi from cli). Darkice is for live streaming to the icecast server and is available on ubuntu repos. The rest might not be a problem.
+
+You might also need the snd-dummy modules:
+
+#+begin_src shell
+modprobe snd-dummy
+#+end_src
+
+When you have all set up properly ~aplay -L~ should return a list like:
+
+#+begin_src shell
+default
+    Playback/recording through the PulseAudio sound server
+null
+    Discard all samples (playback) or generate zero samples (capture)
+samplerate
+    Rate Converter Plugin Using Samplerate Library
+speexrate
+    Rate Converter Plugin Using Speex Resampler
+jack
+    JACK Audio Connection Kit
+oss
+    Open Sound System
+pulse
+    PulseAudio Sound Server
+upmix
+    Plugin for channel upmix (4,6,8)
+vdownmix
+    Plugin for channel downmix (stereo) with a simple spacialization
+dummy
+#+end_src
+
+Also ~ls /dev/snd/~ should be like:
+
+#+begin_src shell
+$ ls /dev/snd/
+by-path  controlC0  controlC2  pcmC0D0c  pcmC0D0p  pcmC2D0c  pcmC2D0p  pcmC2D1c  pcmC2D1p  seq  timer
+#+end_src
+
+If you are going to use pulseaudio edit ~/etc/puse/default.pa~ adding:
+
+#+begin_src shell
+load-module module-null-sink sink_name=0
+load-module module-jackdbus-detect channels=2
+#+end_src
+
+If you plan to use a ubuntu vps for this also install the qt platform plugin xcb to launch sonic pi:
+#+begin_src shell
+apt install libxinerama1 libxcb-util1
+#+end_src
+
+You have to run ~sonic-pi~ at least once before being able to launch it with ~sonic-pi-tool start-server~. Or maybe just manually create the log file that python script wants if you get the error ~FileNotFoundError: [Errno 2] No such file or directory: '/home/mattf/.sonic-pi/log/server-output.log'~:
+#+begin_src shell
+mkdir -p /home/mattf/.sonic-pi/log/
+touch /home/mattf/.sonic-pi/log/server-output.log
+#+end_src
+
+Remember that jack must be always running in order for sonic-pi to work.
+
+
+** Lxd container setup
+
+ If you are setting this up on a lxd container, besides of doing all above also inside the container, you will need some modifications to make realtime scheduling works. It is easier if it is a privileged container. You can edit the config with ~sudo EDITOR=nvim lxc config edit arch~. Here is mine
+
+#+begin_src yaml
+architecture: aarch64
+config:
+  image.architecture: arm64
+  image.description: Archlinux current arm64 (20220325_14:16)
+  image.os: Archlinux
+  image.release: current
+  image.requirements.secureboot: "false"
+  image.serial: "20220325_14:16"
+  image.type: squashfs
+  image.variant: default
+  limits.kernel.nofile: "200000"
+  raw.lxc: |-
+    lxc.mount.entry = /dev/fuse dev/fuse none bind,create=file,optional
+    lxc.mount.auto=cgroup:rw
+    lxc.cgroup.devices.allow = c 116:* rwm
+    lxc.mount.entry = /dev/snd dev/snd none bind,optional,create=dir
+  security.nesting: "true"
+  security.privileged: "true"
+
+
+
+    (...)
+
+ #+end_src
+
+ The ~raw.lxc~ part is the relevant part. On arch it is necessary to install ~alsa-plugins~ in order for ~aplay -L~ show any output.
+
+** Confirming things work
+
+You might try to launch jack now, either with qjackctl or with ~jack -d dummy~, then launch sonic-pi. If you run into an error like: ~No such file or directory - jack_connect~ you are probably missing ~jack-example-tools~ as described here: https://github.com/sonic-pi-net/sonic-pi/issues/2994
+
+The archwiki might also help in case of other problems https://wiki.archlinux.org/title/PulseAudio/Troubleshooting https://wiki.archlinux.org/title/JACK_Audio_Connection_Kit.
+
+The way set it up on archlinux was using pulseaudio and jack on top, but you might not need them both in fact, just jack is required for sonic pi and a broadcasting software like darkice can use jack even though i haven't tested that. I just found it more comfortable to have both.
+
+If sonic-pi launched great! If not, maybe try the lxd approach, I couldn't really get this working on ubuntu as well ;).
+
+* Broadcasting sonic pi
+
+Considering you already have a shoutcast or icecast2 server to stream, here is the setup I've done for streaming audio from sonic-pi.
+
+At first I logged into a graphical environment into the container to set things up using ~pavucontrol~ and ~qjackctl~. It is possible to set this up from the tty using tools like ~pacmd~ and whatever you can use for jack but if you can afford it, doing from the GUI is far much easier and faster in this case.
+
+So my goal is to use darkice to stream sonic-pi's audio to an icecast2 instance. I can use commands like ~sonic-pi-tool run-file song.rb~ or ~sonic-pi-tool evan "play :c5"~ to test the stream. Darkice will be capturing the audio output from sonic pi and streaming it. So first create a darkice config like:
+
+#+begin_src shell
+[general]
+duration        = 0
+bufferSecs      = 5
+reconnect       = yes
+realtime        = yes
+rtprio          = 3
+
+[input]
+device          = pulse # Maybe you just use jack?
+sampleRate      = 44100
+bitsPerSample   = 16
+channel         = 2
+
+[icecast2-0]
+bitrateMode     = cbr
+format          = vorbis
+bitrate         = 128
+server          = radio.dot.org.es
+port            = 8000
+password        = passwordherehahaha
+mountPoint      = playground.ogg
+name            = Sonic Pi
+description     = Sonic Pi REPL
+url             = https://radio.dot.org.es
+genre           = radio
+public          = yes
+#+end_src
+
+Again you might want to change the input device to jack if you don't want to use pulseaudio. In my cause I opted to use pulseaudio to also stream from other tools that aren't compatible with jack.
+
+Another thing to notice! This is a vorbis encoded stream. This means that silence results in no flux of data being transmitted, which the majority of players and browsers don't know how to handle it. To circumvent this I will be using a comfort noise generated with:
+
+#+begin_src shell
+sox -c1 -n result.wav synth 10 sin 25000 vol 1
+#+end_src
+
+And you can play it in loop with something like:
+
+#+begin_src shell
+mpv -loop result.wav
+#+end_src
+
+This should be inaudible but for some reason there is a perceptible noise on the stream still. I haven't found a way to fix that but if you adjust the volumes correctly it will become unnoticeable. It just has to be enough so that there is no silence on the stream and the players weirdly start playing some random cache or simply don't know what to do (because they think the server stopped streaming).
+
+You could also simply stream in another format that doesn't have this problem, but maybe it would have bigger latency then?
+
+** Start broadcasting
+
+Launch pulseaudio if you are using it:
+
+#+begin_src shell
+pulseaudio --start
+#+end_src
+
+Then the jack daemon:
+
+#+begin_src shell
+jackd -d dummy
+#+end_src
+
+Play the comfort noise:
+
+#+begin_src shell
+mpv -loop result.wav
+#+end_src
+
+Start broadcasting:
+
+#+begin_src shell
+darkice -c darkice.conf
+#+end_src
+
+And play something!
+
+#+begin_src ruby
+live_loop :bass do
+  play :c2
+  sleep 0.5
+  play :c2
+  sleep 0.5
+  play :e2
+  sleep 0.5
+  play :f2
+  sleep 0.5
+end
+#+end_src
+
+#+begin_src shell
+sonic-pi-tool run-file song.rb
+#+end_src
