@@ -29,6 +29,18 @@
 (setq org-html-htmlize-output-type 'css)
 (setq org-html-htmlize-font-prefix "org-")
 
+(defun match-tikz-packages (headers)
+  (let ((str (car headers)))
+    (when (string-match "\\usetikzlibrary{\\(.*?\\)}" str)
+      (when (match-string 1 str)
+        (match-string 1 str)))))
+
+(defun match-tex-packages (headers)
+  (let ((str (car headers)))
+    (when (string-match "\\usepackage{\\(.*?\\)}" str)
+      (when (match-string 1 str)
+        (match-string 1 str)))))
+
 (defun tikzjax-convert (backend)
   "Convert a latex org src block with tikz headers into a tizkjax html export block."
   (setq is-tikz nil)
@@ -48,7 +60,7 @@
 
       ;; Check if it is a latex block with tikz on the headers
       (if (and headers (string= type "latex")
-               (string-match-p (regexp-quote "\\usepackage{tikz}") (car headers)))
+               (member "tikz" (split-string (match-tex-packages headers) ",")))
           ;; Clean it up, change it to a html export and wrap it with the script tags
           (progn
             (setq is-tikz t)
@@ -58,7 +70,12 @@
             (insert "#+begin_export html")
             (end-of-line)
             (newline-and-indent)
-            (insert "<div class=\"tikzjax\"><script type=\"text/tikz\">")
+            (insert "<div class=\"tikzjax\">")
+            (print (format "---> packages=|%s|" (seq-filter (lambda (x) (not (string= x "tikz"))) (split-string (match-tex-packages headers) ","))))
+            ;; TODO add data-tex-package='{"pgfplots":"","custom-package":"option=special"}'>
+            (if (match-tikz-packages headers)
+                (insert (format "<script type=\"text/tikz\" data-tikz-libraries=\"%s\">" (match-tikz-packages headers)))
+              (insert "<script type=\"text/tikz\">"))
             (search-forward-regexp "^\s*#\\+end_src\s*$")
             (beginning-of-line)
             (kill-line)
@@ -74,10 +91,10 @@
                 (end-of-line)
                 (newline-and-indent)
                 ;; Add tikzjax headers to page
-                (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=/tikzjax/fonts.css\">")
+                (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=https://tikzjax.pages.dev/fonts.css\">")
                 (end-of-line)
                 (newline-and-indent)
-                (insert "#+HTML_HEAD: <script src=\"/tikzjax/tikzjax.js\"></script>"))))
+                (insert "#+HTML_HEAD: <script src=\"https://tikzjax.pages.dev/tikzjax.js\"></script>"))))
 
 
 (add-hook 'org-export-before-parsing-hook #'tikzjax-convert)
