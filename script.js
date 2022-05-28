@@ -2,7 +2,7 @@ const repourl = "https://github.com/matheusfillipe/myblog/blob/master/"
 
 let hasLoadedContent = false;
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     if (hasLoadedContent) return;
     hasLoadedContent = true
 
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    (async function($) {
+    (async function ($) {
         const terminal = document.querySelector("#terminalwindow")
 
         // Scroll inside terminal div
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         function showterm() {
             terminal.classList.remove("terminal--hidden")
-            setTimeout(function() {
+            setTimeout(function () {
                 $('#terminal').terminal().focus()
                 scrollToView($("#terminal"))
             }, 500);
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         showterminal.onclick = termtoggle
 
-        document.body.addEventListener('keydown', function(e) {
+        document.body.addEventListener('keydown', function (e) {
             if (e.repeat) return;
             if (!(e.key === '1' && (e.metaKey || e.ctrlKey))) return;
             termtoggle()
@@ -178,4 +178,19 @@ document.addEventListener("DOMContentLoaded", function() {
         })
     })()
 
+    // Post process tikzjax (centralize workaround)
+    document.addEventListener('tikzjax-load-finished', function (e) {
+        let svg = e.target;
+        let g = svg.childNodes[0]
+
+        g.transform.baseVal.getItem(0).setTranslate(0, 0)
+        let gbox = g.getBoundingClientRect()
+        let sbox = svg.getBoundingClientRect()
+
+        g.transform.baseVal.getItem(0).setTranslate(1, 1)
+        let gbox_by_1 = g.getBoundingClientRect()
+        let scale = { x:  gbox.x - gbox_by_1.x, y: gbox.y - gbox_by_1.y }
+
+        g.transform.baseVal.getItem(0).setTranslate((gbox.x - sbox.x) / scale.x, (gbox.y - sbox.y) / scale.y)
+    });
 });

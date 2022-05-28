@@ -322,6 +322,4 @@ $x_1(t) = v_0\ (t  + \sqrt{\frac{m}{2k}}\ (cos(\sqrt{2\ \frac{k}{m}}\ t) - 1))$
 
 $x_2(t) = v_0\ (t  - \sqrt{\frac{m}{2k}}\ sin(\sqrt{2\ \frac{k}{m}}\ t)) + L$
 
-
-
 #+INCLUDE: "../../footer.org" :minlevel 1

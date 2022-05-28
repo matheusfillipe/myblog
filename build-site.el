@@ -71,7 +71,10 @@
             (end-of-line)
             (newline-and-indent)
             (insert "<div class=\"tikzjax\">")
-            (print (format "---> packages=|%s|" (seq-filter (lambda (x) (not (string= x "tikz"))) (split-string (match-tex-packages headers) ","))))
+            ;; (print (format "---> packages=|%s|" (seq-filter
+            ;;                                      (lambda (x)
+            ;;                                        (not (string= x "tikz")))
+            ;;                                      (split-string (match-tex-packages headers) ","))))
             ;; TODO add data-tex-package='{"pgfplots":"","custom-package":"option=special"}'>
             (if (match-tikz-packages headers)
                 (insert (format "<script type=\"text/tikz\" data-tikz-libraries=\"%s\">" (match-tikz-packages headers)))
@@ -91,7 +94,7 @@
                 (end-of-line)
                 (newline-and-indent)
                 ;; Add tikzjax headers to page
-                (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=https://tikzjax.pages.dev/fonts.css\">")
+                (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"https://tikzjax.pages.dev/fonts.css\">")
                 (end-of-line)
                 (newline-and-indent)
                 (insert "#+HTML_HEAD: <script src=\"https://tikzjax.pages.dev/tikzjax.js\"></script>"))))
