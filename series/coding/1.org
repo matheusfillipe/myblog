@@ -6,6 +6,8 @@
 #+TOC: headlines 4
 
 
+
+
 * Introduction
 
 [[https://www.overleaf.com/learn/latex/TikZ_package][TikZ]] is an latex package that lets you draw basic math shapes including lines, dots, curves, circles, rectangles etc. I found the need for it right on my first attempt of writing a math article here: [[file:~/Projects/sciblog/series/wave_propagation/1.org][the wave model pt1]].
@@ -204,7 +206,7 @@ I adapted my build elisp script to place the ~data-tikz-libraries~ attribute and
 \fill [pattern = north east lines] (-1,5) rectangle (3,5.2);
 \draw[thick] (-1,5) -- (3,5);
 \end{tikzpicture}
-\#+end_src
+,#+end_src
 #+end_src
 
 *RESULT:*

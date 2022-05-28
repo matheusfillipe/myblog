@@ -67,7 +67,7 @@ When a mass $m$ is attached to a spring with Hook's constant $k$, we can state b
 
 $F = ma = -kx$
 
-Which is known as Hook's law, which is combined with Newton's second law there. This just means that the force applied to the object is proportional but with appositive direction of the spring's deflection. For instance if the spring is compressed, x is negative and then the force is positive, otherwise the spring is stretched, x is positive and the force is negative. So the forces varies linearly with x but it is always pointing contrary to it.
+Which is known as Hook's law, which is combined with Newton's second law there. This just means that the force applied to the object is proportional but with opposite direction of the spring's deflection. For instance if the spring is compressed, x is negative and then the force is positive, otherwise the spring is stretched, x is positive and the force is negative. So the forces varies linearly with x but it is always pointing contrary to it.
 
 On this problem the other side of the spring is attached to a "wall". That simply means that it is an immovable object. So you can see this is an specific cause or at least an approximation of the problem we are trying to solve, where instead of two particles with the same mass we have something more like one particle with mass $m$ and another with something millions of times higher than that, that ends up being the "immovable object", an object of infinite mass at least if compared to the particle's mass.
 
@@ -221,105 +221,79 @@ As $x_1$ increases the spring gets compressed, meaning negative $D$, and as $x_2
 
  $x_2(t) = \frac {1}{2} ( Vt + L_0 + A\ sin(\sqrt{2\ \frac{k}{m}}\ t + t_0) )$
 
+ Notice how they are in a phase difference of $\pi$ radians, which is, half cycle. Due to moment conservation this system's center of mass might be walking with constant speed, so it would make sense if both particles were in opposite phases.
+
 ** Boundary Conditions
 So we have solved the mechanics for the physics problem but now to have a better hint about the analogue wave propagation we are trying to make it would be interesting to bring up the boundary conditions since we have 4 constants to figure out on this case: $V_0$, $V$, $A$ and $t_0$. On the beginning of this section we talked about a particle hitting the particle and another conditions that would translate as:
 
-1. Particle 1 has an initial velocity:
+1. $x_1(0) = 0$
+
+2. Particle 1 has an initial velocity:
 
    $\frac{dx_1}{dt} = v_0$
 
-2. Particle 2 is at rest initially:
-
-   $\frac{dx_2}{dt} = 0$
-
-3. $x_1(0) = 0$
-
-4. The spring is initially at rest:
+3. The spring is initially at its rest position:
 
    $D=0$
 
    $x_2 = L$
 
+4. Particle 2 is at rest initially:
 
-For convenience lets make: $t_0 = \frac{\pi}{2}$ so that we can have cosine instead of sine. Both particle 1 and 2 are on the same phase anyway. The advantage of this is that:
+   $\frac{dx_2}{dt} = 0$
 
-$\frac {dx_1}{dt} = \frac{1}{2}(v_0 - A\ \sqrt{2\ \frac{k}{m}}\ sin(\sqrt{2\ \frac{k}{m}}\ t))$
+Since particle 1 begins with the maximum of its speed at $t=0$ so it makes sense to choose $t_0 = 0$ for it, which is the same of using bare sin. We can also from now on ignore the $\frac{1}{2}$ that is multiplying by everything since we have the constants to adjust for on each term of the sum anyway. Applying the conditions for $x_1$:
 
-We can also from now on ignore the $\frac{1}{2}$ that is multiplying by everything since we have the constants to adjust for on each term of the sum anyway. So for the first condition:
+$x_1(t) = (Vt + L_0 - A\ sin(\sqrt{2\ \frac{k}{m}}\ t))$
 
-$\frac {dx_1}{dt}(0) = V - A\ \sqrt{2\ \frac{k}{m}}\ sin(0) = V = v_0$
+$x_1(t=0) = L_0 \to L_0 = 0$
 
-Thus:
+Also:
 
-$x_1(t) = v_0\ t  - A\ cos(\sqrt{2\ \frac{k}{m}}\ t)$
+$\frac {dx_1}{dt}(t=0) = (V - A\ \sqrt{2\ \frac{k}{m}}\ cos(\sqrt{2\ \frac{k}{m}}\ t=0)) = V - A\ \sqrt{2\ \frac{k}{m}}\ = v_0$
 
-And with this we already satisfy 3 as well. Something similar can be done for $x_2$ and the condition 2:
+Similarly for $x_2$:
 
-$\frac {dx_2}{dt}(0) = v_0 + A\ \sqrt{2\ \frac{k}{m}}\ sin(0) = v_0 = 0$
+ $x_2(t) = ( Vt + L_0 + A\ sin(\sqrt{2\ \frac{k}{m}}\ t) )$
 
-And that is an impossible condition to meet, so where are we wrong? Well the thing is, the actual full solution for:
+ $x_2(t=0) = L_0 = L$
 
- $\frac {d^2(x_2 - x_1)}{dt^2} = -2\ \frac{k}{m} (x_2 - x_1)$
+ Notice that this just correcting for our $D$.
 
-is:
+ Also:
 
-$x_2 - x_1 = \sum_i^N A_i sin(\sqrt{\frac{k}{m}} \ t + t_i)$
+$\frac{dx_2}{dt}(t=0) = V + A\ \sqrt{2\ \frac{k}{m}} cos(\sqrt{2\ \frac{k}{m}}\ t) = V + A\ \sqrt(2\ \frac{k}{m}) =  0$
 
-What this means in the end is that mathematically we could choose infinite constants $A_i$ and $t_i$ we could choose.
+Combining this with the one for $x_1$'s initial velocity:
 
+$(V + A\ \sqrt{2\ \frac{k}{m}}) + (V - A\ \sqrt{2\ \frac{k}{m}}) = 2V = v_0$
 
-----------------------------------------------------------------------------------------------------------------------------------------------
+$-(V + A\ \sqrt{2\ \frac{k}{m}}) + (V - A\ \sqrt{2\ \frac{k}{m}}) = -2\ A \sqrt{2\ \frac{k}{m}} = v_0$
 
+So:
 
-#+name: tikz Image2
-#+header: :results file drawer
-#+header: :file /tmp/org_latex_image.png
-#+header: :imagemagick yes
-#+header: :headers '("\\usepackage{tikz}")
-#+HEADER: :fit yes :imoutoptions -geometry 500
-#+begin_src latex
-\begin{tikzpicture}
-\fill[yellow] (0,0) circle (3cm);
-\draw[->] (-3,0) -- (-2,0) arc[radius=0.5cm,start angle=-180,end angle=0] (-1,0) -- (1,0) arc[radius=0.5cm,start angle=180,end angle=0] (2,0) -- (3,0);
-\filldraw (-1.5,0) circle[radius=1mm];
-\filldraw (1.5,0) circle[radius=1mm];
-\end{tikzpicture}
-#+end_src
+$V = \frac{v_0}{2}$
 
-#+RESULTS: tikz Image2
-:results:
-[[file:/tmp/org_latex_image.png]]
-:end:
+$A = - \frac {v_0} {2} \sqrt{\frac{m}{2k}}$
 
 
-We can simply embed the $\frac {1}{2}$ inside $A$ in the future. Also to respect condition 4 we must do:
+So in the end we finally have:
 
-$x_1(t) = v_0\ t  - \frac {1}{2} A\ (cos(\sqrt{2\ \frac{k}{m}}\ t) - 1)$
+$x_1 = \frac{1}{2}(v_0t + A\ sin(\sqrt{2\ \frac{k}{m}}\ t))$
 
-Which is fine given that we will had that constant $L_0$ to use.
+$x_2 = L + \frac{1}{2}(v_0t - A\ sin(\sqrt{2\ \frac{k}{m}}\ t))$
 
-Thus for this case we have the period:
+Where $A = v_0 \sqrt{\frac{m}{2k}}$.
 
-$T = \frac{1}{2\pi}\sqrt{\frac {2k} {m}}$
 
-The only thing we are left with is to figure out is the amplitude $A$. We know that $v_2(0)=0$ so:
+Which fully solves the described problem!
 
-$\frac {dx_2}{dt}(0) = v_0 - A\ \sqrt{2\ \frac{k}{m}}\ sin(0) = v_0 !$
 
-Which is a problem since we want it to be 0. If we change the phase difference to be 0 again, meaning using sin instead of cosine:
+* Conclusion
 
-$\frac {dx_2}{dt}(0) = v_0 + A\ \sqrt{2\ \frac{k}{m}}\ cos(0) = 0$
+We could have gone much far considering particles with different masses and other scenarios like "what happens if there is friction?", but for the original goal of studying longitudinal wave propagation there wont be different masses. What we should do next is try to solve this problem for 3 particles chained together, and then, try to expand for t$N$ particles.
 
-Now we can compute a valid $A$:
+In any case I'm thinking on bringing up an animation of the problem we just solved maybe using something like [[https://github.com/3b1b/manim][manim]]. If I figure out a nifty way of hosting the gifts that would be cool.
 
-$A\ \sqrt{2\ \frac{k}{m}}\ = -v_0$
-
-$A\ = -v_0 \sqrt{\frac{m}{2k}}$
-
-And finally we have the functions:
-
-$x_1(t) = v_0\ (t  + \sqrt{\frac{m}{2k}}\ (cos(\sqrt{2\ \frac{k}{m}}\ t) - 1))$
-
-$x_2(t) = v_0\ (t  - \sqrt{\frac{m}{2k}}\ sin(\sqrt{2\ \frac{k}{m}}\ t)) + L$
 
 #+INCLUDE: "../../footer.org" :minlevel 1
