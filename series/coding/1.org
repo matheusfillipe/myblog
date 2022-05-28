@@ -179,6 +179,8 @@ Centralize horizontally, some bad color choices as usual.
 
 * Import latex libraries
 
+** A nice tikzjax fork
+
 One problem you will face with this approach though is that you cannot import tex libraries with it as described on this [[https://github.com/kisonecat/tikzjax/issues/2][issue]]. Thankfully [[https://github.com/3geek14][3geek14]] pointed out the nice fork of that has this feature: https://github.com/drgrice1/tikzjax. Problem is, no nice cnd to use so we will have to build it ourselves if we want to use latex libs.
 
 I took the freedom to host my build with cloudflare at: https://tikzjax.pages.dev/tikzjax.js
@@ -224,6 +226,37 @@ I adapted my build elisp script to place the ~data-tikz-libraries~ attribute and
 \end{tikzpicture}
 #+end_src
 
+It would be also possible to import tex libraries using this approach but I didn't implement that yet.
+
+** Javascript workaround
+
+For some reason with this tikzjax for the group wouldn't be centered inside the svg, so I created a very dirty javascript script as a workaround:
+
+#+begin_src js
+// Post process tikzjax (centralize workaround)
+document.addEventListener('tikzjax-load-finished', function (e) {
+    let svg = e.target;
+    let g = svg.childNodes[0]
+
+    g.transform.baseVal.getItem(0).setTranslate(0, 0)
+    let gbox = g.getBoundingClientRect()
+    let sbox = svg.getBoundingClientRect()
+
+    g.transform.baseVal.getItem(0).setTranslate(1, 1)
+    let gbox_by_1 = g.getBoundingClientRect()
+    let scale = { x:  gbox.x - gbox_by_1.x, y: gbox.y - gbox_by_1.y }
+
+    g.transform.baseVal.getItem(0).setTranslate((gbox.x - sbox.x) / scale.x, (gbox.y - sbox.y) / scale.y)
+});
+#+end_src
+
+And now it works!
+
+* Conclusion
+
+This works and seems to be a lot of potential. Webassembly is just crazy and opens a new world of possibilities for the web frontend, but it seems to be still a work in progress. Safari is a problematic browser and tikzjax wont ever work on it.
+
+In general I will keep try using this for this blog and take this as a reason to learn tikz since I don't really know nothing about it yet :P
 
 
 
