@@ -14,7 +14,7 @@ I also like to create some CG image and videos when I free time I'm mostly using
 ** First donut tutorial
 #+begin_export html
 <video width="100%" controls>
-  <source src="https://mattf.tk/files/donut.mp4" type="video/mp4">
+  <source src="https://mattf.one/files/donut.mp4" type="video/mp4">
   Your browser does not support HTML video.
 </video>
 #+end_export
@@ -23,7 +23,7 @@ I also like to create some CG image and videos when I free time I'm mostly using
 
 #+begin_export html
 <video width="100%" controls>
-  <source src="https://mattf.tk/files/donut_factory.mp4" type="video/mp4">
+  <source src="https://mattf.one/files/donut_factory.mp4" type="video/mp4">
   Your browser does not support HTML video.
 </video>
 #+end_export
@@ -32,7 +32,7 @@ I also like to create some CG image and videos when I free time I'm mostly using
 
 #+begin_export html
 <video width="100%" controls>
-  <source src="https://mattf.tk/files/space_puzzle.mp4" type="video/mp4">
+  <source src="https://mattf.one/files/space_puzzle.mp4" type="video/mp4">
   Your browser does not support HTML video.
 </video>
 #+end_export

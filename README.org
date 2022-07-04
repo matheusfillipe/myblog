@@ -11,7 +11,7 @@
 
 * My Blog!
 
-This is the source code for my personal blog that can be found at: https://blog.mattf.tk/
+This is the source code for my personal blog that can be found at: https://blog.mattf.one/
 
 This is probably the most bloated emacs org-publish blog ever made so get ready!!!
 

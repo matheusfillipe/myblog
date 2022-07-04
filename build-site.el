@@ -117,7 +117,7 @@
                   headline))))
       info)))
 
-(setq org-publish-project-alist '(("mattf.tk" :base-directory "./."
+(setq org-publish-project-alist '(("mattf.one" :base-directory "./."
                                    :base-extension "org"
                                    :publishing-directory "./html"
                                    :with-creator t

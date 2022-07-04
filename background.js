@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'OrbitControls';
 import { setCookie, getCookie, eraseCookie, isMobile, getParams } from '/utils.js'
 
-WsIrcClient.default_username = 'matt.tk'
+WsIrcClient.default_username = 'matt.one'
 WsIrcClient.default_nick_prefix = 'mtk-'
 
 var scene = null;
