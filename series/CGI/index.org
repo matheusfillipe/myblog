@@ -37,6 +37,25 @@ I also like to create some CG image and videos when I free time I'm mostly using
 </video>
 #+end_export
 
+** Freecad Corsair P4U
+
+#+begin_export html
+<video width="100%" controls>
+  <source src="https://mattf.one/files/airplane/plane.mp4" type="video/mp4">
+  Your browser does not support HTML video.
+</video>
+
+<img src="https://mattf.one/files/airplane/plane1.jpg" width="100%">
+<img src="https://mattf.one/files/airplane/plane2.jpg" width="100%">
+<img src="https://mattf.one/files/airplane/plane3.jpg" width="100%">
+
+#+end_export
+
+
+Plane made with freecad and rendered on blender's eeve.
+
+Tutorial: [[https://www.youtube.com/watch?v=NftZDCw5Ino][https://www.youtube.com/watch?v=NftZDCw5Ino]]
+
 * Posts
 
 # LIST BEGIN
