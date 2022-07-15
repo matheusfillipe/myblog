@@ -1,6 +1,7 @@
 ;; Set the package installation directory so that packages aren't stored in the
 ;; ~/.emacs.d/elpa path.
 (require 'package)
+
 (setq package-user-dir (expand-file-name "./.packages"))
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
@@ -12,6 +13,8 @@
 
 ;; Install dependencies
 (package-install 'htmlize)
+(package-install 's)
+(require 's)
 (require 'ox-publish)
 
 ;; Org Publish Config
@@ -41,7 +44,7 @@
       (when (match-string 1 str)
         (match-string 1 str)))))
 
-(defun tikzjax-convert (backend)
+(defun tikzjax-convert ()
   "Convert a latex org src block with tikz headers into a tizkjax html export block."
   (setq is-tikz nil)
   ;; Loop over src blocks and stops when there is no left
@@ -100,10 +103,8 @@
                 (insert "#+HTML_HEAD: <script src=\"https://tikzjax.pages.dev/tikzjax.js\"></script>"))))
 
 
-(add-hook 'org-export-before-parsing-hook #'tikzjax-convert)
-
-
 (defun org-export-collect-headlines (info &optional n scope)
+  "Collect headlines for export."
   (let ((limit (plist-get info
                           :headline-levels)))
     (setq n (if (wholenump n)
@@ -117,6 +118,62 @@
                   headline))))
       info)))
 
+(defun my/org-html-format-headline-function (todo todo-type priority text tags info)
+  "Format a headline with a link to itself."
+  (let* ((headline (get-text-property 0 :parent text))
+         (id (or (org-element-property :CUSTOM_ID headline)
+                 (org-export-get-reference headline info)
+                 (org-element-property :ID headline)))
+         (link (if id
+                   (format "<a href=\"#%s\">%s</a>" id text)
+                 text)))
+    (org-html-format-headline-default-function todo todo-type priority link tags info)))
+
+(defun my/title-to-filename (title)
+  "Convert TITLE to a reasonable filename."
+  ;; Based on the slug logic in org-roam, but org-roam also uses a
+  ;; timestamp, and I use only the slug. BTW "slug" comes from
+  ;; <https://en.wikipedia.org/wiki/Clean_URL#Slug>
+  (setq title (s-downcase title))
+  (setq title (s-replace-regexp "[^a-zA-Z0-9]+" "-" title))
+  (setq title (s-replace-regexp "-+" "-" title))
+  (setq title (s-replace-regexp "^-" "" title))
+  (setq title (s-replace-regexp "-$" "" title))
+  title)
+
+(defun slug-name (slug existing-ids)
+  "Return a unique slug name for SLUG."
+  (let* ((duplicate-id (member slug existing-ids)))
+    (if duplicate-id (slug-name (format "%s-" slug) existing-ids) slug)))
+
+(defun my/org-generate-custom-ids ()
+  "Generate CUSTOM_ID for any headings that are missing one"
+  (let ((existing-ids (org-map-entries
+                     (lambda () (org-entry-get nil "CUSTOM_ID")))))
+    (org-map-entries
+     (lambda ()
+       (let* ((custom-id (org-entry-get nil "CUSTOM_ID"))
+              (heading (org-heading-components))
+              (level (nth 0 heading))
+              (todo (nth 2 heading))
+              (headline (nth 4 heading))
+              (slug (my/title-to-filename headline)))
+         (when (and (not custom-id)
+                    (< level 5)
+                    (not todo))
+           (let* ((new-id (slug-name slug existing-ids)))
+             (push new-id existing-ids)
+             (org-entry-put nil "CUSTOM_ID" new-id))))))))
+
+
+(defun preprocess (backend)
+  "Preprocess the org file before exporting."
+  (tikzjax-convert)
+  (my/org-generate-custom-ids))
+
+(add-hook 'org-export-before-parsing-hook #'preprocess)
+
+
 (setq org-publish-project-alist '(("mattf.one" :base-directory "./."
                                    :base-extension "org"
                                    :publishing-directory "./html"
@@ -127,6 +184,7 @@
                                    :recursive t
                                    :exclude "template.org\\|README.org\\|sitemap.org"
                                    :publishing-function org-html-publish-to-html
+                                   :html-format-headline-function my/org-html-format-headline-function
                                    :headline-levels 4
                                    :htmlized-source t
                                    :html-postamble "

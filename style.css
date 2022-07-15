@@ -654,3 +654,14 @@ div.comment timestamp {
 .shell-wrapper .terminal.lips {
     background: var(--dark-bg);
 }
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, h7 a, h8 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited, h7 a:visited, h8 a:visited {
+    text-decoration: none;
+    color: inherit;
+}

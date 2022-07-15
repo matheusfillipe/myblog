@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         g.transform.baseVal.getItem(0).setTranslate(1, 1)
         let gbox_by_1 = g.getBoundingClientRect()
-        let scale = { x:  gbox.x - gbox_by_1.x, y: gbox.y - gbox_by_1.y }
+        let scale = { x: gbox.x - gbox_by_1.x, y: gbox.y - gbox_by_1.y }
 
         g.transform.baseVal.getItem(0).setTranslate((gbox.x - sbox.x) / scale.x, (gbox.y - sbox.y) / scale.y)
     });
