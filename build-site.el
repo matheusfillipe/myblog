@@ -188,7 +188,6 @@
                                    :headline-levels 4
                                    :htmlized-source t
                                    :html-postamble "
-                                        <h2>﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏</h2>
                                         <p class=\"title\"><a href=\"#top\">%t</a></p>
                                         <p class=\"author\">Author: %a</p>
                                         <div class=\"postamble-left\">
@@ -209,7 +208,6 @@
                                         <span class=\"topbar-menu\"><a class=\"nobox\" href=\"https://www.youtube.com/channel/UC9v3ZuKniNaDvLrhffnTt9A\"><img title=\"My automated videos channel\" src=\"/assets/youtube.png\"></a></span>
                                         <span class=\"topbar-menu\"><a class=\"nobox\" href=\"https://github.com/matheusfillipe/myblog\"><img title=\"View this blog repo's in github\" src=\"/assets/github.png\"></a></span>
                                         </ul>"
-
                                    :auto-preamble t)))
 
 (org-publish-all t)

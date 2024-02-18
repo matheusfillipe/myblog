@@ -2,9 +2,19 @@ const repourl = "https://github.com/matheusfillipe/myblog/blob/master/"
 
 let hasLoadedContent = false;
 
+function fixFooter() {
+    let postambleStyle = document.querySelector("#postamble").style;
+
+    // Fix footer position to bottom when content is not enough
+    if (document.body.scrollHeight <= window.innerHeight) {
+        postambleStyle.bottom = "0";
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     if (hasLoadedContent) return;
     hasLoadedContent = true
+    fixFooter();
 
     // Mark current page
     const navElements = document.querySelectorAll(".topbar-menu a.current")

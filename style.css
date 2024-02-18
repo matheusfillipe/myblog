@@ -4,6 +4,8 @@
     --blue: #3c81ba;
     --spacing: 10px;
     overflow-x: hidden;
+    background-image: url('/assets/nebula.png');
+    background-size: 80%;
 }
 
 body {
@@ -12,8 +14,6 @@ body {
     overflow: auto;
     color: #d7dadc;
     background: var(--dark-bg);
-    background-image: url('/assets/nebula.png');
-    background-size: 80%;
 }
 
 h1:first-child {
@@ -563,14 +563,17 @@ div.comment timestamp {
 }
 
 #postamble {
-    padding: 0 15px 30px 15px;
-    /* border-radius: 15px 50px 0px 0px; */
+    padding: 20px 15px 30px 15px;
+    border-radius: 20px 20px 0 0;
     background: black;
     background: #1a1a1bf4;
-    width: 99vw;
-    left: 0.1vw;
-    /* margin: 2.5vw; */
     position: absolute;
+    width: 90vw;
+    left: 4vw;
+    /* bottom: 0; */
+    margin: 10vh 0 0 0;
+    box-shadow: 0 0 10px rgb(63, 136, 197);
+    z-index: 100;
 }
 
 #postamble h2 {
