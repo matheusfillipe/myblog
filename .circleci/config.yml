@@ -7,8 +7,8 @@ jobs:
     steps:
       - checkout
       - run: |
-          yes | LC_ALL=en_US.UTF-8 pacman -Syu --no-confirm || true
-          yes | LC_ALL=en_US.UTF-8 pacman -Sy --no-confirm emacs git nodejs npm tree wget || true
+          yes | LC_ALL=en_US.UTF-8 pacman -Syu --noconfirm || true
+          yes | LC_ALL=en_US.UTF-8 pacman -Sy --noconfirm emacs git nodejs npm tree wget || true
           npm install netlify-cli -g
           wget https://github.com/tdewolff/minify/releases/download/v2.11.1/minify_linux_amd64.tar.gz
           tar -xf minify_linux_amd64.tar.gz
