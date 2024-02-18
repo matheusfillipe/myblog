@@ -7,9 +7,9 @@
 
 
 * WELCOME
-This is my personal homepage/blog build with emacs org-mode. Don't forget to check out the terminal and the fancy 3D mode on the left corner.
+This is my personal homepage/blog build with emacs org-mode. I will mostly keep this as a place where I save things for myself that I could not put somewhere else. Also will use this page for doing some web experiments. Don't forget to check out the terminal and the fancy 3D mode on the left corner.
 
-I like to code in general, create music, 3D art and games. I also have a high interest in many areas of physics and math which I will also write about here.
+I like to code in general, try creating music, 3D art and games. I also have a high interest in many areas of physics and math which I will also try to include about when I have time.
 
 This whole site is build from a CI pipeline that invokes emacs on a archlinux container building the static content. The source code for this whole blog can be found at [[https://github.com/matheusfillipe/myblog][this]] github repository. If you want to correct anything or ask anything [[https://docs.github.com/en/github-ae@latest/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests][PR's]] are welcome!
 

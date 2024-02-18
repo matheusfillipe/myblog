@@ -5,3 +5,5 @@ tmp/
 **/*.html
 html/*
 sitemap.org
+minify
+.packages
