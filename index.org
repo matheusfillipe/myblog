@@ -31,7 +31,7 @@ This whole site is build from a CI pipeline that invokes emacs on a archlinux co
 * Links
 
 ** Contact
-- You might find me on this [[https://mangle.ga/irc][irc]].
+- You might find me on this [[https://chat.dot.org.es/][irc]].
 - Or you can also [[mailto:matheusfillipeag@gmail.com][Mail me]].
 
 ** Projects
